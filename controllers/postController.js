@@ -4,7 +4,7 @@ const Comment = require('../models/comment');
 const Subzeddit = require('../models/subzeddit');
 
 exports.post_create = function(req, res) {
-  // + get subzeddit to add post to
+  // get User => create Post => add Post to Subzeddit
   async.waterfall([
     function(callback) {
       User
@@ -26,18 +26,46 @@ exports.post_create = function(req, res) {
         })
         .exec((err, data) => {
           if (err || user === 'error') {
-            res.json({ result: 'error' });
+            callback(null, 'error');
           } else {
-            res.json({ result: 'success', data: data });
+            callback(null, data);
+          }
+        })
+    },
+    function(data, callback) {
+      Subzeddit
+        .findById(req.body.subzeddit._id)
+        .exec((err, subzeddit) => {
+          if (err) {
+            console.log(err);
+            res.end();
+          } else {
+            subzeddit.posts.push(data);
+            res.end();
           }
         })
     }
-  ])
+  ], 
+  function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Created succesfully');
+    }
+  });
 }
 
 exports.post_detail = function(req, res) {
-  // get one post
-
+  Post
+    .findById(req.params.id)
+    .exec((err, post) => {
+      if (err) {
+        console.log(err);
+        res.end();
+      } else {
+        res.json({ post });
+      }
+    })
 }
 
 exports.post_comment = function(req, res) {

@@ -6,6 +6,7 @@ import SignInForm from './views/SignIn/SignInForm';
 import SignUpForm from './views/SignUp/SignUpForm';
 import SubzedditCreateForm from './views/SubzedditCreate/SubzedditCreate';
 import SubzedditList from './views/SubzedditList/SubzedditList';
+import SubzedditPage from './views/SubzedditPage/SubzedditPage';
 import { logout } from './redux/actionCreators';
 
 const mapStateToProps = state => ({
@@ -64,6 +65,9 @@ class App extends React.Component {
               </Route>
               <Route path='/create_subzeddit'>
                 <SubzedditCreateForm />
+              </Route>
+              <Route path='/sz/:title'>
+                <SubzedditPage />
               </Route>
               <Route path='/sz'>
                 <SubzedditList />

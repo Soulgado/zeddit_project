@@ -36,8 +36,45 @@ export const getSubzedditsList = () => ({
   }
 });
 
-// helper function for connecting to backend
+export const getSubzeddit = (title) => ({
+  type: types.SUBZEDDIT_DETAIL,
+  meta: {
+    type: 'api',
+    url: `/api/sz/subzeddit/${title}`
+  }
+});
 
-function fetch(path, data) {
+export const createNewPost = (user, formData, subzeddit) => ({
+  type: types.CREATE_POST,
+  meta: {
+    type: 'api',
+    url: '/api/sz/post/create',
+    method: 'POST',
+    body: JSON.stringify({...formData, user, subzeddit}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+});
 
-}
+export const getPost = (post, subzeddit) => ({
+  type: types.GET_POST,
+  meta: {
+    type: 'api',
+    url: `/api/sz/subzeddit/${subzeddit}/${post}`  // template
+  }
+})
+
+export const postComment = (user, comment, post) => ({
+  types: types.POST_COMMENT,
+  meta: {
+    type: 'api',
+    url: '',
+    method: 'POST',
+    body: JSON.stringify({user, comment, post}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+});
+

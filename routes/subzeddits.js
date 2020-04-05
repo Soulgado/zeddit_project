@@ -7,4 +7,6 @@ router.post('/create', subzeddit_controller.subzeddit_create);
 
 router.get('/index', subzeddit_controller.subzeddit_all);
 
+router.get('/subzeddit/:subzeddit', subzeddit_controller.get_subzeddit);
+
 module.exports = router;

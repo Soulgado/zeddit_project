@@ -3,3 +3,7 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const CREATE_SUBZEDDIT = 'CREATE_SUBZEDDIT';
 export const GET_SUBZEDDITS = 'GET_SUBZEDDITS';
+export const SUBZEDDIT_DETAIL = 'SUBZEDDIT_DETAIL';
+export const CREATE_POST = 'CREATE_POST';
+export const GET_POST = 'GET_POST';
+export const POST_COMMENT = 'POST_COMMENT';

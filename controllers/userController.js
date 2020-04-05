@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Subzeddit = require('../models/subzeddit');
 
 exports.create_account = function(req, res) {
   User.create({ username: req.body.username, password: req.body.password },
@@ -23,5 +24,19 @@ exports.sign_in = function(req, res) {
       } 
     }
   )
+}
+
+exports.subscribe_to_subzeddit = function(req, res) {
+  User
+    .findById(req.body.user._id)
+    .exec(function(err, user) {
+      if (err) {
+        console.log(err);
+        res.end();
+      } else {
+        user.subscribedSubzeddits.push(req.body.subzeddit);
+        res.end();
+      } 
+    })
 }
 
