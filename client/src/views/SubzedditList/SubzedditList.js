@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, Switch, Route, useRouteMatch } from 'react-router-dom';
 import { getSubzedditsList } from '../../redux/actionCreators';
+import '../../styles/subzedditList.sass';
 
 const mapStateToProps = state => ({
   subzedditsList: state.subzedditsList,
@@ -14,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
 
 function SubzedditList(props) {
   const { url, path } = useRouteMatch();
-  const subzedditNumber = props.subzedditsNumber;
+  const { subzedditNumber } = props;
 
   useEffect(() => {
       props.getSubzeddits();  // return function or infinite requests loop happen
@@ -23,7 +24,7 @@ function SubzedditList(props) {
   return (
     <div>
       <p>Total subzeddits number: {props.subzedditsNumber}</p>
-      <ul>
+      <ul id='subzeddits-list'>
       {props.subzedditsNumber === 0
         ? <li>No subzeddits yet.</li>
         : props.subzedditsList.map(subzeddit => {

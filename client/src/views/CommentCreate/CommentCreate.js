@@ -7,7 +7,7 @@ function CommentCreateForm() {
   const [comment, setComment] = useState('')
   return (
     <form>
-      <label for='comment'>Comment:</label>
+      <label htmlFor='comment'>Comment:</label>
       <input
         id='comment'
         type='text'

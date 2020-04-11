@@ -68,6 +68,7 @@ exports.subzeddit_all = function(req, res) {
 exports.get_subzeddit = function(req, res) {
   Subzeddit
     .findOne({ title: req.params.subzeddit })  // aslo populate Posts field
+    .populate('posts')
     .exec(function(err, data) {
       if (err) {
         res.json({ result: 'error' });

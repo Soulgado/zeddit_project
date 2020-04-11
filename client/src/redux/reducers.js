@@ -5,7 +5,8 @@ export const initialState = {
   loggedIn: false,
   subzedditsNumber: 0,
   subzedditsList: [],
-  subzeddit: {}
+  subzeddit: {},
+  posts: []
 }
 
 export const rootReducer = (state=initialState, action) => {
@@ -25,6 +26,9 @@ export const rootReducer = (state=initialState, action) => {
       return {...state};
     case types.SUBZEDDIT_DETAIL:
       return {...state, subzeddit: action.payload.data}
+    case types.GET_POST:
+      state.posts.push(action.payload.post);
+      return {...state};
     default:
       return state;
   }

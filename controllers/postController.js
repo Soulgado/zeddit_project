@@ -2,9 +2,10 @@ const Post = require('../models/post');
 const User = require('../models/user');
 const Comment = require('../models/comment');
 const Subzeddit = require('../models/subzeddit');
+const async = require('async');
 
 exports.post_create = function(req, res) {
-  // get User => create Post => add Post to Subzeddit
+  // get User => create Post => add Post to Subzeddit and save it
   async.waterfall([
     function(callback) {
       User
@@ -22,28 +23,37 @@ exports.post_create = function(req, res) {
         .create({
           title: req.body.title,
           author: user,
-          content: req.body.content
-        })
-        .exec((err, data) => {
+          content: req.body.content,
+        }, function(err, post) {
           if (err || user === 'error') {
             callback(null, 'error');
           } else {
-            callback(null, data);
+            callback(null, post);
           }
         })
     },
     function(data, callback) {
       Subzeddit
         .findById(req.body.subzeddit._id)
-        .exec((err, subzeddit) => {
+        .exec(function(err, subzeddit) {
           if (err) {
             console.log(err);
             res.end();
           } else {
-            subzeddit.posts.push(data);
-            res.end();
+            callback(null, subzeddit, data);
           }
         })
+    },
+    function(subzeddit, data, callback) {
+      subzeddit.posts.push(data);
+      subzeddit.save(function(err) {
+        if (err) {
+          console.log(err);
+          res.json({ result: 'error'});
+        } else {
+          res.json({ resuls: 'success'});
+        }
+      })
     }
   ], 
   function (err) {
@@ -56,17 +66,21 @@ exports.post_create = function(req, res) {
 }
 
 exports.post_detail = function(req, res) {
-  Post
-    .findById(req.params.id)
-    .exec((err, post) => {
+  Subzeddit
+    .findOne({ title: req.params.subzeddit })
+    .populate({
+      path: 'posts',
+      match: { title: req.params.post}
+    })
+    .exec(function(err, subzeddit) {
       if (err) {
         console.log(err);
-        res.end();
+        res.json({ post: undefined });
       } else {
-        res.json({ post });
+        res.json({ post: subzeddit.posts[0]});
       }
-    })
-}
+    });
+  }
 
 exports.post_comment = function(req, res) {
   // first get post object =>

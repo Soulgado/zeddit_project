@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Route, Switch} from 'react-router-dom';
 import { connect } from 'react-redux';
 import './App.css';
+import './styles/navigation.sass';
 import SignInForm from './views/SignIn/SignInForm';
 import SignUpForm from './views/SignUp/SignUpForm';
 import SubzedditCreateForm from './views/SubzedditCreate/SubzedditCreate';
@@ -24,10 +25,10 @@ class App extends React.Component {
     if (!this.props.loggedIn) {
       return (
         <>
-        <li>
+        <li className='navigation-element'>
           <Link to='/register'>Create Account</Link>
         </li>
-        <li>
+        <li className='navigation-element'>
           <Link to='/login'>Sign In</Link>
         </li>
         </>
@@ -46,13 +47,13 @@ class App extends React.Component {
       <div className="App">
         <nav>
           <ul>
-            <li>
+            <li className='navigation-element'>
               <Link to='/'>Main Page</Link>
             </li>
-            <li>
+            <li className='navigation-element'>
               <Link to='/create_subzeddit'>Create Subzeddit</Link>
             </li>
-            <li>
+            <li className='navigation-element'>
               <Link to='/sz'>All subzeddits</Link>
             </li>
             {this.checkLoggedIn()}
