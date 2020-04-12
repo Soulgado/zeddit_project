@@ -15,6 +15,7 @@ const mapDispatchToProps = dispatch => ({
 function PostPage(props) {
   // should fetch the post and all? first level comments
   // specific component for comment body
+  // comments and post don't show on the first load
   const { post, title } = useParams();  // title of the post
   const [ thisPost, setPost] = useState('');
 
@@ -35,7 +36,7 @@ function PostPage(props) {
     <div className='post-page-wrapper'>
       <h1>{thisPost.title}</h1>
       <p>{thisPost.content}</p>
-      <CommentCreateForm />
+      <CommentCreateForm post={thisPost}/>
       <div className='post-comments'>
         <ul>
           {!thisPost.comments

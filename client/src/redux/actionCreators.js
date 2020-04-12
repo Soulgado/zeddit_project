@@ -66,10 +66,10 @@ export const getPost = (post, subzeddit) => ({
 })
 
 export const postComment = (user, comment, post) => ({
-  types: types.POST_COMMENT,
+  type: types.POST_COMMENT,
   meta: {
     type: 'api',
-    url: '',
+    url: '/api/sz/comment/create',
     method: 'POST',
     body: JSON.stringify({user, comment, post}),
     headers: {

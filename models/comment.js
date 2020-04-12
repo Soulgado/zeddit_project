@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const CommentSchema = ({
   author: { type: Schema.Types.ObjectId, ref: 'User', required: true},
   content: { type: String, maxlength: 1000, required: true},
-  childComments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}]
+  parentComment: { type: Schema.Types.ObjectId, ref: 'Comment'}
 });
 
 module.exports = mongoose.model('Comment', CommentSchema);

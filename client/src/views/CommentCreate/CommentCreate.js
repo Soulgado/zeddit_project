@@ -1,12 +1,33 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { postComment } from '../../redux/actionCreators';
 
-// should I send parent post as props?
+const mapStateToProps = state => ({
+  user: state.user
+});
 
-function CommentCreateForm() {
-  const [comment, setComment] = useState('')
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  const { dispatch } = dispatchProps;
+
+  return {
+    postComment: (comment) => dispatch(
+      postComment(
+        stateProps.user,
+        comment,
+        ownProps.post))
+  }
+}
+
+function CommentCreateForm(props) {
+  const [comment, setComment] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.postComment(comment);
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <label htmlFor='comment'>Comment:</label>
       <input
         id='comment'
@@ -18,4 +39,8 @@ function CommentCreateForm() {
   )
 }
 
-export default CommentCreateForm;
+export default connect(
+  mapStateToProps,
+  null,
+  mergeProps
+)(CommentCreateForm);

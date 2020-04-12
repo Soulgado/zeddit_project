@@ -70,7 +70,10 @@ exports.post_detail = function(req, res) {
     .findOne({ title: req.params.subzeddit })
     .populate({
       path: 'posts',
-      match: { title: req.params.post}
+      match: { title: req.params.post},
+      populate: {
+        path: 'comments'
+      }
     })
     .exec(function(err, subzeddit) {
       if (err) {
@@ -85,4 +88,43 @@ exports.post_detail = function(req, res) {
 exports.post_comment = function(req, res) {
   // first get post object =>
   // create and add comment to the post
+  async.waterfall([
+    function(callback) {
+      Comment
+        .create({
+          author: req.body.user,
+          content: req.body.comment
+        }, function(err, comment) {
+          if (err) {
+            console.log(err);
+            callback(null, 'error');
+          } else {
+            callback(null, comment);
+          }
+        });
+    },
+    function(comment, callback) {
+      Post
+        .findOne({ _id: req.body.post._id })
+        .exec(function(err, post) {
+          if (err) {
+            console.log(err);
+            callback(null, 'error');
+          } else {
+            callback(null, post, comment);
+          }
+        });
+    },
+    function(post, comment, callback) {
+      post.comments.push(comment);
+      post.save(function(err) {
+        if (err) {
+          console.log(err);
+          res.json({ post: 'error' });
+        } else {
+          res.json({ post });
+        }
+      });
+    }
+  ]);
 }

@@ -14,4 +14,6 @@ router.get('/subzeddit/:subzeddit', subzeddit_controller.get_subzeddit);
 
 router.post('/post/create', post_controller.post_create);
 
+router.post('/comment/create', post_controller.post_comment);
+
 module.exports = router;

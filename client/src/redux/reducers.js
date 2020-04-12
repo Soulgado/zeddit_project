@@ -29,6 +29,8 @@ export const rootReducer = (state=initialState, action) => {
     case types.GET_POST:
       state.posts.push(action.payload.post);
       return {...state};
+    case types.POST_COMMENT:
+      return {...state};
     default:
       return state;
   }
