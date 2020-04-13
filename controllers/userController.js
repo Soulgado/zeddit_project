@@ -2,6 +2,8 @@ const User = require('../models/user');
 const Subzeddit = require('../models/subzeddit');
 
 exports.create_account = function(req, res) {
+  // add encryption (bscrypt?)
+  // send e-mail confirmation
   User.create({ username: req.body.username, password: req.body.password },
     function(err, newUser) {
     if (err) {
@@ -13,6 +15,7 @@ exports.create_account = function(req, res) {
 }
 
 exports.sign_in = function(req, res) {
+  // add decryption of the password
   User.findOne({ username: req.body.username }, 
     function(err, user) {
       if (err) {

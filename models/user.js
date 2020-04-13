@@ -9,6 +9,4 @@ const UserSchema = ({
   subscribedSubzeddits: [{ type: Schema.Types.ObjectId, ref: 'Subzeddit' }]
 });
 
-
-
 module.exports = mongoose.model('User', UserSchema);

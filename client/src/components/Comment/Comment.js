@@ -8,7 +8,7 @@ function Comment(props) {
 
   return (
     <div className='comment-body'>
-      <div>
+      <div> 
         <span>{props.comment.author} - posted {props.comment.date}</span>
       </div>
       <p>{props.comment.content}</p>
@@ -23,3 +23,5 @@ function Comment(props) {
     </div>
   )
 }
+
+export default Comment;

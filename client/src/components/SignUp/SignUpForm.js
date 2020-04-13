@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { createAccount } from '../../redux/actionCreators';
 
 const mapDispatchToProps = dispatch => ({
-
+  signUp: (formData) => dispatch(createAccount(formData)) 
 });
 
 // use Formik for forms
 
-function SignUpForm() {
+function SignUpForm(props) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,30 +18,13 @@ function SignUpForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (name === "" || password === "") return;
-    let response = sendData();
-    if (response.result === 'success') {
-      history.goBack();
-    }
-  }
-
-  function sendData() {
+    if (name === "" || password === "" || password !== confPass) return;
     let formData = {
       username: name,
       password: password
     }
-    fetch('/api/users/register', {
-      method: 'POST',
-      body: JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then(res => res.json())
-    .then(res =>  {
-      console.log(res);
-      return res;
-    });
+    props.signUp(formData);
+    history.goBack();
   }
 
   return (
@@ -77,4 +61,7 @@ function SignUpForm() {
   )
 }
 
-export default SignUpForm;
+export default connect(
+  null,
+  mapDispatchToProps
+)(SignUpForm);

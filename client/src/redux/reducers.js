@@ -6,7 +6,9 @@ export const initialState = {
   subzedditsNumber: 0,
   subzedditsList: [],
   subzeddit: {},
-  posts: []
+  posts: [],
+  mostPopularGlobal: [],
+  mostPopularSpecific: []
 }
 
 export const rootReducer = (state=initialState, action) => {
@@ -14,7 +16,11 @@ export const rootReducer = (state=initialState, action) => {
     case types.CREATE_ACCOUNT:
       return {...state, user: action.payload};
     case types.LOGIN:
-      return {...state, user: action.payload, loggedIn: true};
+      if (action.payload.result === 'success') {
+        return {...state, user: action.payload.user, loggedIn: true};
+      } else {
+        return {...state};
+      } 
     case types.LOGOUT:
       return {...state, user: undefined, loggedIn: false};
     case types.GET_SUBZEDDITS:
@@ -27,10 +33,14 @@ export const rootReducer = (state=initialState, action) => {
     case types.SUBZEDDIT_DETAIL:
       return {...state, subzeddit: action.payload.data}
     case types.GET_POST:
+      action.payload.post.upvotes = action.payload.upvotes;
+      action.payload.post.downvotes = action.payload.downvotes;
       state.posts.push(action.payload.post);
       return {...state};
     case types.POST_COMMENT:
       return {...state};
+    case types.GET_MOST_POPULAR_GLOBAL:
+      return {...state, mostPopularGlobal: action.payload.posts}
     default:
       return state;
   }

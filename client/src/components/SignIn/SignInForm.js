@@ -8,34 +8,21 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  signIn: (user) => dispatch(login(user))
+  signIn: (formData) => dispatch(login(formData))
 })
 
 function SignInForm(props) {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
     if (name === "" || password === "") return;
     let formData = {
       username: name,
       password: password
     }
-    fetch('/api/users/signin', {
-      method: 'POST',
-      body: JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then(res => res.json())
-    .then(res =>  {
-      if (res.result === 'success') {
-        props.signIn(res.user);
-      }
-      console.log(res);
-    });
+    props.signIn(formData);
   }
 
   return (

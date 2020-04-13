@@ -6,7 +6,16 @@ export function createAccount() {
 
 export const login = (user) => ({
   type: types.LOGIN,
-  payload: user
+  payload: '',
+  meta: {
+    type: 'api',
+    url: '/api/users/signin',
+    method: 'POST',
+    body: JSON.stringify(user),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
 });
 
 export const logout = () => ({
@@ -61,7 +70,7 @@ export const getPost = (post, subzeddit) => ({
   type: types.GET_POST,
   meta: {
     type: 'api',
-    url: `/api/sz/subzeddit/${subzeddit}/${post}`  // template
+    url: `/api/sz/subzeddit/posts/${subzeddit}/${post}` 
   }
 })
 
@@ -78,3 +87,31 @@ export const postComment = (user, comment, post) => ({
   }
 });
 
+export const getMostPopularGlobal = () => ({
+  type: types.GET_MOST_POPULAR_GLOBAL,
+  meta: {
+    type: 'api',
+    url: 'api/sz/subzeddit/popular'   // template 
+  }
+});
+
+export const getMostPopularSpecific = (user) => ({
+  type: types.GET_MOST_POPULAR_SPECIFIC,
+  meta: {
+    type: 'api',
+    url: `api/sz/subzeddit/${user.username}/popular`   // template 
+  }
+});
+
+export const upvotePost = (post, user, rate) => ({
+  type: types.UPVOTE_POST,
+  meta: {
+    type: 'api',
+    url: 'api/sz/post/rate_post',
+    body: JSON.stringify({ post, user, rate }),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+});
