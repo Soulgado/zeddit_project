@@ -1,8 +1,18 @@
 import * as types from './types';
 
-export function createAccount() {
-
-}
+export const createAccount = (formData) => ({
+  type: types.CREATE_ACCOUNT,
+  payload: '',
+  meta: {
+    type: 'api',
+    method: 'POST',
+    url: 'api/users/register',
+    body: JSON.stringify(formData),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+})
 
 export const login = (user) => ({
   type: types.LOGIN,

@@ -21,7 +21,8 @@ function SignUpForm(props) {
     if (name === "" || password === "" || password !== confPass) return;
     let formData = {
       username: name,
-      password: password
+      password: password,
+      email: email
     }
     props.signUp(formData);
     history.goBack();
@@ -57,6 +58,7 @@ function SignUpForm(props) {
           onChange={(e) => setConfPass(e.target.value)}>
         </input>
       </label>
+      <button type='submit'>Create Account</button>
     </form>
   )
 }

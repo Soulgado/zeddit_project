@@ -3,26 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var pgp = require('pg-promise')();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 let subzedditsRouter = require('./routes/subzeddits');
 
 var app = express();
-
-/*
-PostgreDB
-var db = pgp('postgres://postgres:admin@127.0.0.1:5432/postgres');
-*/
-// setup database connection - MongoDB
-
-let mongoose = require('mongoose');
-let mongoDB = 'mongodb://127.0.0.1:27017';
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true});
-let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
