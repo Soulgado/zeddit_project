@@ -30,6 +30,7 @@ function SignUpForm(props) {
 
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
+      <p className='form-title'>Sign Up</p>
       <label>Username:
         <input 
           type='text'
@@ -58,7 +59,7 @@ function SignUpForm(props) {
           onChange={(e) => setConfPass(e.target.value)}>
         </input>
       </label>
-      <button type='submit'>Create Account</button>
+      <button className='form-button sign-up-button' type='submit'>Create Account</button>
     </form>
   )
 }

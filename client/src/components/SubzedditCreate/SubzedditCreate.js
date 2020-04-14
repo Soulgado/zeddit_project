@@ -20,16 +20,16 @@ function SubzedditCreateForm(props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <p>Create New Subzeddit</p>
+      <p className='form-title'>Create New Subzeddit</p>
       <div>
-        <label htmlFor='title'>Title</label>
+        <label htmlFor='title'>Title:</label>
         <input
           id='title'
           type='text'
           value={title}
           onChange={(e) => setTitle(e.target.value)}></input>
       </div>
-      <button type='submit'>Create Subzeddit</button>
+      <button className='form-button' type='submit'>Create Subzeddit</button>
     </form>
   )
 }

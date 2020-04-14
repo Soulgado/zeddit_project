@@ -3,7 +3,6 @@ import * as types from './types';
 export const initialState = {
   user: undefined,
   loggedIn: false,
-  subzedditsNumber: 0,
   subzedditsList: [],
   subzeddit: {},
   posts: [],
@@ -24,8 +23,7 @@ export const rootReducer = (state=initialState, action) => {
     case types.LOGOUT:
       return {...state, user: undefined, loggedIn: false};
     case types.GET_SUBZEDDITS:
-      return {...state, subzedditsNumber: action.payload.result.number,
-        subzedditsList: action.payload.result.subzeddits};
+      return {...state, subzedditsList: action.payload.data};
     case types.CREATE_SUBZEDDIT:
       return {...state};
     case types.CREATE_POST:

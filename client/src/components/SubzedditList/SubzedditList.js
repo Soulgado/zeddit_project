@@ -1,43 +1,42 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Link, Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getSubzedditsList } from '../../redux/actionCreators';
 import '../../styles/subzedditList.sass';
 
 const mapStateToProps = state => ({
-  subzedditsList: state.subzedditsList,
-  subzedditsNumber: state.subzedditsNumber
+  subzedditsList: state.subzedditsList
 });
 
 const mapDispatchToProps = dispatch => ({
   getSubzeddits: () => dispatch(getSubzedditsList())
 })
 
-function SubzedditList(props) {
-  const { url, path } = useRouteMatch();
-  const { subzedditNumber } = props;
-
-  useEffect(() => {
-      props.getSubzeddits();  // return function or infinite requests loop happen
-    }, [subzedditNumber]);
+class SubzedditList extends React.Component {
+  componentDidMount() {
+    this.props.getSubzeddits();
+  }
   
-  return (
-    <div>
-      <p>Total subzeddits number: {props.subzedditsNumber}</p>
-      <ul id='subzeddits-list'>
-      {props.subzedditsNumber === 0
-        ? <li>No subzeddits yet.</li>
-        : props.subzedditsList.map(subzeddit => {
-        return (
-          <li key={subzeddit.title}>
-            <Link to={`${url}/${subzeddit.title}`}>
-                {subzeddit.title}</Link>
-          </li>
-        )
-      })}
-      </ul>
-    </div>
-  )
+  render() {
+    const { url } = this.props.match;
+    const { subzedditsList } = this.props;
+    return (
+      <div>
+        <p>List of all subzeddits:</p>
+        <ul id='subzeddits-list'>
+          {subzedditsList.map(subzeddit => {
+          return (
+            <li key={subzeddit.title}>
+              <Link to={`${url}/${subzeddit.title}`}>
+                  {subzeddit.title}</Link>
+            </li>
+          )
+        })}
+        </ul>
+      </div>
+    )
+  }
+  
 }
 
 export default connect(

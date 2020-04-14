@@ -10,7 +10,7 @@ exports.create_account = function(req, res) {
       res.json({ result: 'success' });
     })
     .catch(error => {
-      res.json({ result: 'error' });  // create frontend handler for errors
+      res.status(400).json({ result: 'error' });  // create frontend handler for errors
       console.log(error);
     })
 }
@@ -25,9 +25,9 @@ exports.sign_in = function(req, res) {
     })
     .catch(error => {
       console.log(error);
-      res.json({ result: 'error'})
+      res.status(400).json({ result: 'error'})
     })
-}
+  }
 
 exports.subscribe_to_subzeddit = function(req, res) {
   // to be implemented

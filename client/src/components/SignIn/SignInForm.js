@@ -27,13 +27,14 @@ function SignInForm(props) {
 
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
-      <label>Username
+      <p className='form-title'>Sign In</p>
+      <label>Username:
         <input type='text' value={name} onChange={(e) => setName(e.target.value)}></input> 
       </label>
-      <label>Password
+      <label>Password:
         <input type='text' value={password} onChange={(e) => setPassword(e.target.value)}></input>
       </label>
-      <button type='submit'>Sign In</button>
+      <button className='form-button sign-in-button' type='submit'>Sign In</button>
     </form>
   )
 }
