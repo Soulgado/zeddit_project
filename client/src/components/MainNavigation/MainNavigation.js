@@ -16,14 +16,14 @@ function MainNavigation(props) {
   function checkLoggedIn() {
     if (!props.loggedIn) {
       return (
-        <>
-        <li className='navigation-element'>
-          <Link to='/register'>Create Account</Link>
-        </li>
-        <li className='navigation-element'>
-          <Link to='/login'>Sign In</Link>
-        </li>
-        </>
+        <ul>
+          <li className='navigation-element'>
+            <Link to='/register'>Create Account</Link>
+          </li>
+          <li className='navigation-element'>
+            <Link to='/login'>Sign In</Link>
+          </li>
+        </ul>
       )
     } else {
       return (
@@ -41,14 +41,16 @@ function MainNavigation(props) {
         <li className='navigation-element'>
           <Link to='/'>Main Page</Link>
         </li>
-        <li className='navigation-element'>
-          <Link to='/create_subzeddit'>Create Subzeddit</Link>
-        </li>
+        {props.loggedIn
+          ? (<li className='navigation-element'>
+              <Link to='/create_subzeddit'>Create Subzeddit</Link>
+            </li>)
+          : ''}
         <li className='navigation-element'>
           <Link to='/sz'>All subzeddits</Link>
         </li>
-        {checkLoggedIn()}
       </ul>
+        {checkLoggedIn()}
     </nav>
   )
 }

@@ -41,14 +41,17 @@ exports.subzeddit_all = function(req, res) {
 }
 
 exports.get_subzeddit = function(req, res) {
-  db.one(
-    'SELECT * FROM subzeddits WHERE title = $1',
-    [req.params.title]
-  )
-  .then(subzeddit => {
+  db.task(async t => {
+    const subzeddit = await t.one('SELECT * FROM subzeddits WHERE title = $1',
+    [req.params.title]);
+    const posts = await t.any('SELECT * FROM posts WHERE subzeddit = $1 ORDER BY creation_date DESC LIMIT 10', subzeddit.id);
+    subzeddit.posts = posts;
+    return subzeddit;
+  })
+  .then(data => {
     res.json({
       result: 'success',
-      data: subzeddit
+      data: data
     })
   })
   .catch(error => {

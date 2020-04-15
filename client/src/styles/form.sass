@@ -9,19 +9,35 @@ form
   border: 1px solid
   border-radius: 5px
   box-shadow: 3px 3px 5px 5px
-  background-color: #52AFAF
+  background-color: #aeaeff
   .form-title
-    font-size: 30px
+    margin-bottom: 20px
+    font-size: 36px
     font-weight: bold
+  .form-element
+    width: 80%
+    margin: 20px auto
+    text-align: left
   label
+    margin: 10px auto
     font-size: 22px
-    margin: 10px auto
   input
-    font-size: 1em
+    width: 100%
+    margin-top: 10px
+    font-size: 1.2em
+    border-radius: 3px
   .form-button
-    width: 50%
-    margin: 10px auto
-    margin-bottom: 10px
+    margin: 30px auto
+    padding: 10px 20px
     font-size: 26px
+    background-color: limegreen
+    border: 1px
+    border-radius: 20px
     cursor: pointer
+    &:hover
+      box-shadow: inset 0px 0px 25px 1px green
 
+
+@media (max-width: 500px)
+  form
+    width: 300px

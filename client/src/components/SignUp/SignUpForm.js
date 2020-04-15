@@ -31,34 +31,46 @@ function SignUpForm(props) {
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
       <p className='form-title'>Sign Up</p>
-      <label>Username:
+      <div className='form-element'>
+        <label htmlFor='username'>Username:</label>
         <input 
+          id='username'
           type='text'
           value={name}
-          onChange={(e) => setName(e.target.value)}>
-        </input>
-      </label>
-      <label>E-mail:
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+      </div>
+      <div className='form-element'>
+        <label htmlFor='email'>E-mail:</label>
         <input
+          id='email'
           type='email'
           value={email}
-          onChange={(e) => setEmail(e.target.value)}>
-        </input>
-      </label>
-      <label>Password:
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+      <div className='form-element'>
+        <label htmlFor='password'>Password:</label>
         <input
+          id='password'
           type='password'
           value={password}
-          onChange={(e) => setPassword(e.target.value)}>
-        </input>
-      </label>
-      <label>Confirm Password:
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+      <div className='form-element'>
+        <label htmlFor='conf-password'>Confirm Password:</label>
         <input
+          id='conf-password'
           type='password' 
           value={confPass}
-          onChange={(e) => setConfPass(e.target.value)}>
-        </input>
-      </label>
+          onChange={(e) => setConfPass(e.target.value)}
+          required
+        />
+      </div>
       <button className='form-button sign-up-button' type='submit'>Create Account</button>
     </form>
   )

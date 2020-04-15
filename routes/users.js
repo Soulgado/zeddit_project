@@ -7,6 +7,9 @@ router.post('/register', user_controller.create_account);
 
 router.post('/signin', user_controller.sign_in);
 
+router.post('/subscribe_to_subzeddit', user_controller.subscribe_to_subzeddit);
+
+router.get('/:id/subscriptions', user_controller.get_user_subscriptions);
 
 
 router.get('/', function(req, res, next) {
