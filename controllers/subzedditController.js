@@ -24,7 +24,13 @@ exports.subzeddit_create = function(req, res) {
 
 exports.subzeddit_all = function(req, res) {
   db.any(
-    'SELECT * from subzeddits'
+    `SELECT 
+      subzeddit.title,
+      subzeddit.creation_date,
+      creator.username
+    FROM subzeddits subzeddit
+    LEFT JOIN users creator ON subzeddit.creator = creator.id
+    `
   )
   .then(data => {
     res.json({
@@ -44,7 +50,18 @@ exports.get_subzeddit = function(req, res) {
   db.task(async t => {
     const subzeddit = await t.one('SELECT * FROM subzeddits WHERE title = $1',
     [req.params.title]);
-    const posts = await t.any('SELECT * FROM posts WHERE subzeddit = $1 ORDER BY creation_date DESC LIMIT 10', subzeddit.id);
+    const posts = await t.any(
+      `SELECT 
+        post.id,
+        post.title,
+        post.content,
+        post.creation_date,
+        post.upvotes,
+        post.downvotes,
+        creator.username
+      FROM posts post 
+      LEFT JOIN users creator ON post.creator = creator.id
+      WHERE subzeddit = $1 ORDER BY creation_date DESC LIMIT 10`, subzeddit.id);
     subzeddit.posts = posts;
     return subzeddit;
   })

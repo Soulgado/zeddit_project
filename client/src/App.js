@@ -35,6 +35,9 @@ class App extends React.Component {
                 ? <Redirect from='/login' to='/' />
                 : <Route path='/login' component={SignInForm} />}
               <Route path='/register' component={SignUpForm} />
+              <Route path='/profile/:username'>
+                <p>User profile page template.</p>
+              </Route>
             </Switch> 
         </main>
       </div>

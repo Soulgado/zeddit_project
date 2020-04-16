@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Route, Link, useParams, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, useParams, useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux'; 
 import { getSubzeddit } from '../../redux/actionCreators';
 import PostCreateForm from '../PostCreate/PostCreate';
 import PostPage from '../PostPage/PostPage';
+import PostMinified from '../PostMinified/PostMinified';
+import '../../styles/subzedditPage.sass';
 
 const mapStateToProps = state => ({
+  user: state.user,
+  loggedIn: state.loggedIn,
   subzeddit: state.subzeddit       // use array to store open subzeddits
 })
 
@@ -29,21 +33,21 @@ function SubzedditPage(props) {
       <h1>{props.subzeddit.title}</h1>
       <Switch>
         <Route exact path={`${url}/`}>
-          <ul>
+          <ul className='posts-list'>
           {!props.subzeddit.posts
             ? <p>No posts yet, want to add the first?</p>
             : props.subzeddit.posts.map(post => {
               return (
-                <li key={post._id}>
-                  <Link to={`${url}/${post.title}`}>
-                    <span>{post.title}</span>
-                  </Link>
+                <li key={post.id}>
+                  <PostMinified url={url} post={post} />
                 </li>
               );
             })
           } 
           </ul>
-          <PostCreateForm subzeddit={props.subzeddit} />
+          {props.loggedIn 
+            ? <PostCreateForm subzeddit={props.subzeddit} />
+            : ''}
         </Route>
         <Route path={`${path}/:post`}>
           <PostPage />

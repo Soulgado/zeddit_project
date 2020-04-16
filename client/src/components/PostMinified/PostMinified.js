@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import VoteButtons from '../VoteButtons/VoteButtons';
 
 class PostMinified extends React.Component {
   constructor(props) {
@@ -6,6 +8,7 @@ class PostMinified extends React.Component {
     this.state = {
       contentActive: false
     }
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
@@ -15,18 +18,24 @@ class PostMinified extends React.Component {
   }
 
   render() {
+    const { post, url } = this.props;
     return (
-      <div>
-        <div>
-          <p>{this.props.post.title}</p>
+      <div className='post-mini-wrapper'>
+        <VoteButtons post={post} />
+        <div className='post-mini-content-wrapper'>
+          <div className='post-mini-title'>
+            <Link to={`${url}/${post.title}`}>
+              {post.title}
+            </Link>
+          </div>
+          <div>
+            <p>Created {post.creation_date} by {post.username}</p>
+          </div>
+          <button type='button' onClick={this.handleClick}>Details</button>
+          {this.state.contentActive
+            ? <div>{post.content}</div>
+            : ''}
         </div>
-        <div>
-          <p>Created {this.props.post.creation_date} by {this.props.post.creator}</p>
-        </div>
-        <button type='button' onClick={this.handleClick}>Details</button>
-        {this.state.contentActive
-          ? <div>{this.props.post.content}</div>
-          : ''}
       </div>
     )
   }

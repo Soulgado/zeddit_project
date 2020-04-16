@@ -12,7 +12,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return {
     ...stateProps,
     ...ownProps,
-    createPost: (formData) => dispatch(createNewPost(stateProps.user, formData, ownProps.subzeddit))
+    createPost: (formData) => dispatch(createNewPost(stateProps.user, formData, ownProps.subzeddit.title))
   }
 }
 
@@ -29,20 +29,24 @@ function PostCreateForm(props) {
 
   return (
   <form onSubmit={e => handleSubmit(e)}>
-    <p>Create new Post</p>
-    <label htmlFor='title'>Post title:</label>
-    <input
-      id='title'
-      type='text'
-      value={title}
-      onChange={e => setTitle(e.target.value)}></input>
-    <label htmlFor='content'>Post content:</label>
-    <input
-      id='content'
-      type='text'
-      value={content}
-      onChange={e => setContent(e.target.value)}></input>
-    <button type='submit'>Create Post</button> 
+    <p className='form-title'>Create new Post</p>
+    <div className='form-element'>
+      <label htmlFor='title'>Post title:</label>
+      <input
+        id='title'
+        type='text'
+        value={title}
+        onChange={e => setTitle(e.target.value)} />
+    </div>
+    <div className='form-element'>
+      <label htmlFor='content'>Post content:</label>
+      <input
+        id='content'
+        type='text'
+        value={content}
+        onChange={e => setContent(e.target.value)} />
+    </div>
+    <button className='form-button' type='submit'>Create Post</button> 
   </form>
   )
 }

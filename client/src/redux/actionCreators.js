@@ -101,7 +101,7 @@ export const getMostPopularGlobal = () => ({
   type: types.GET_MOST_POPULAR_GLOBAL,
   meta: {
     type: 'api',
-    url: 'api/sz/subzeddit/popular'   // template 
+    url: '/api/sz/subzeddit/popular'   // template 
   }
 });
 
@@ -109,16 +109,16 @@ export const getMostPopularSpecific = (user) => ({
   type: types.GET_MOST_POPULAR_SPECIFIC,
   meta: {
     type: 'api',
-    url: `api/sz/subzeddit/${user.username}/popular`   // template 
+    url: `/api/sz/subzeddit/${user.username}/popular`   // template 
   }
 });
 
-export const upvotePost = (post, user, rate) => ({
-  type: types.UPVOTE_POST,
+export const votePost = (post, user, user_rating) => ({
+  type: types.VOTE_POST,
   meta: {
     type: 'api',
-    url: 'api/sz/post/rate_post',
-    body: JSON.stringify({ post, user, rate }),
+    url: '/api/sz/post/rate',
+    body: JSON.stringify({ post, user, user_rating }),
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

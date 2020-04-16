@@ -29,6 +29,7 @@ function MainNavigation(props) {
       return (
         <>
         <li><span>Hello, {props.user.username}!</span></li>
+        <li><Link to={`/profile/${props.user.username}`}>Profile</Link></li>
         <li><button type='button' onClick={props.logout}>Sign out</button></li>
         </>
       )

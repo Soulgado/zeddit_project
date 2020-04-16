@@ -1,4 +1,5 @@
 const db = require('../db');
+const uuid = require('uuid');
 
 exports.post_create = function(req, res) {
   // get User => create Post => add Post to Subzeddit and save it
@@ -25,9 +26,10 @@ exports.post_create = function(req, res) {
 
 exports.post_detail = function(req, res) {
   // get Subzeddit => get post??
-  db.one(
-    'SELECT * FROM posts WHERE id = $1', [req.params.post]
-  )
+  db.task(async t => {
+    const post = await t.one('SELECT * FROM posts WHERE id = $1', [req.params.post]);
+    return post;
+  })
   .then(post => {
     res.json({
       result: 'success',
@@ -64,8 +66,53 @@ exports.post_comment = function(req, res) {
   })
 }
   
-exports.rate_post = function(req, res, next) {}
-  // get user and post
-  // check for existing relationship
-  // if exists - update
-  // if not - create
+exports.rate_post = function(req, res) {
+  const { user, user_rating, post } = req.body;
+  db.tx('rate-post', async t => {
+    // get existing entry on post rating from user
+    // update or create based on result
+    const rating = await t.oneOrNone('SELECT * FROM posts_rating WHERE user_id = $1 AND post = $2', [user.id, post]);
+    if (rating) {
+      if (user_rating === rating.rating) return;
+      else {
+      await t.none(`UPDATE posts 
+          SET upvotes = upvotes + $1,
+              downvotes = downvotes - $1
+          WHERE id = $2`,
+          [user_rating, post])
+      }
+      return t.none(`UPDATE posts_rating
+          SET rating = $2
+          WHERE id = $1`,
+          [rating.id, user_rating]
+      )
+    } else {
+      const id = uuid.v4();
+      if (user_rating === 1) {
+        await t.none(`UPDATE posts
+            SET upvotes = upvotes + 1
+            WHERE id = $1`,
+            post);
+      } else if (user_rating === -1) {
+        await t.none(`UPDATE posts
+            SET downvotes = downvotes + 1
+            WHERE id = $1`,
+            post);
+      }
+      return t.none(`INSERT INTO posts_rating(id, user_id, post, rating)
+          VALUES($1, $2, $3, $4)`,
+          [id, user.id, post, user_rating]);
+    }
+  })
+  .then(() => {
+    res.json({
+      result: 'success'
+    })
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(400).json({
+      result: 'error'
+    })
+  })
+}

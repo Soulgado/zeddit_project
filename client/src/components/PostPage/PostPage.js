@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import CommentCreateForm from '../CommentCreate/CommentCreate';
 import Comment from '../Comment/Comment';
-import { getPost, upvotePost } from '../../redux/actionCreators';
+import { getPost } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -12,8 +12,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getPost: (post, subzeddit) => dispatch(getPost(post, subzeddit)),
-  ratePost: (post, user, rate) => dispatch(upvotePost(post, user, rate))
+  getPost: (post, subzeddit) => dispatch(getPost(post, subzeddit))
 });
 
 function PostPage(props) {

@@ -14,6 +14,8 @@ router.get('/subzeddit/:title', subzeddit_controller.get_subzeddit);
 
 router.post('/post/create', post_controller.post_create);
 
+router.post('/post/rate', post_controller.rate_post);
+
 router.post('/comment/create', post_controller.post_comment);
 
 router.post('/post/rate_post', post_controller.rate_post);
