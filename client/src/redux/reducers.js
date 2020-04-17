@@ -1,5 +1,7 @@
 import * as types from './types';
 
+// ToDo: divide reducers
+
 export const initialState = {
   user: undefined,
   loggedIn: false,
@@ -7,7 +9,11 @@ export const initialState = {
   subzeddit: {},
   posts: [],
   mostPopularGlobal: [],
-  mostPopularSpecific: []
+  mostPopularSpecific: [],
+  userSubscriptions: [],
+  userSubscriptionsStatus: {},
+  userUpvotedPosts: [],
+  userDownvotedPosts: []
 }
 
 export const rootReducer = (state=initialState, action) => {
@@ -31,14 +37,22 @@ export const rootReducer = (state=initialState, action) => {
     case types.SUBZEDDIT_DETAIL:
       return {...state, subzeddit: action.payload.data}
     case types.GET_POST:
-      action.payload.post.upvotes = action.payload.upvotes;
-      action.payload.post.downvotes = action.payload.downvotes;
-      state.posts.push(action.payload.post);
+      state.posts.push(action.payload.data);
       return {...state};
     case types.POST_COMMENT:
       return {...state};
     case types.GET_MOST_POPULAR_GLOBAL:
       return {...state, mostPopularGlobal: action.payload.posts}
+    case types.GET_USER_SUBSCRIPTIONS:
+      return {...state, userSubscriptions: [...action.payload.data]}
+    case types.GET_USER_SUBSCRIPTION:
+      let { subzeddit, status } = action.payload.data;
+      state.userSubscriptionsStatus[subzeddit] = status;
+      return {...state}
+    case types.GET_USER_UPVOTED_POSTS:
+      return {...state, userUpvotedPosts: action.payload.data}
+    case types.GET_USER_DOWNVOTED_POSTS:
+      return {...state, userDownvotedPosts: action.payload.data}
     default:
       return state;
   }

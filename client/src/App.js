@@ -10,6 +10,7 @@ import SubzedditCreateForm from './components/SubzedditCreate/SubzedditCreate';
 import SubzedditList from './components/SubzedditList/SubzedditList';
 import SubzedditPage from './components/SubzedditPage/SubzedditPage';
 import MainNavigation from './components/MainNavigation/MainNavigation';
+import UserProfile from './components/UserProfile/UserProfile';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -35,9 +36,7 @@ class App extends React.Component {
                 ? <Redirect from='/login' to='/' />
                 : <Route path='/login' component={SignInForm} />}
               <Route path='/register' component={SignUpForm} />
-              <Route path='/profile/:username'>
-                <p>User profile page template.</p>
-              </Route>
+              <Route path='/profile/:username' component={UserProfile} />
             </Switch> 
         </main>
       </div>

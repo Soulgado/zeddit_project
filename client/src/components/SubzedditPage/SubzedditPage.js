@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Route, useParams, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, Link, useParams, useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux'; 
 import { getSubzeddit } from '../../redux/actionCreators';
 import PostCreateForm from '../PostCreate/PostCreate';
 import PostPage from '../PostPage/PostPage';
 import PostMinified from '../PostMinified/PostMinified';
+import SubscribeButton from '../SubscribeButton/SubscribeButton';
 import '../../styles/subzedditPage.sass';
 
 const mapStateToProps = state => ({
@@ -31,6 +32,9 @@ function SubzedditPage(props) {
   return (
     <div className='subzeddit-page-wrapper'>
       <h1>{props.subzeddit.title}</h1>
+      {props.loggedIn
+        ? <SubscribeButton subzeddit={title} />
+        : ''}
       <Switch>
         <Route exact path={`${url}/`}>
           <ul className='posts-list'>
@@ -39,7 +43,7 @@ function SubzedditPage(props) {
             : props.subzeddit.posts.map(post => {
               return (
                 <li key={post.id}>
-                  <PostMinified url={url} post={post} />
+                  <PostMinified post={post} />
                 </li>
               );
             })
@@ -49,7 +53,7 @@ function SubzedditPage(props) {
             ? <PostCreateForm subzeddit={props.subzeddit} />
             : ''}
         </Route>
-        <Route path={`${path}/:post`}>
+        <Route path={`${path}/:post_id/:post_title`}>
           <PostPage />
         </Route>
       </Switch>

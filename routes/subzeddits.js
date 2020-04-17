@@ -20,4 +20,6 @@ router.post('/comment/create', post_controller.post_comment);
 
 router.post('/post/rate_post', post_controller.rate_post);
 
+router.get('/subscribe_status?', subzeddit_controller.get_subscription_info);
+
 module.exports = router;

@@ -76,11 +76,11 @@ export const createNewPost = (user, formData, subzeddit) => ({
   }
 });
 
-export const getPost = (post, subzeddit) => ({
+export const getPost = (post) => ({
   type: types.GET_POST,
   meta: {
     type: 'api',
-    url: `/api/sz/subzeddit/posts/${subzeddit}/${post}` 
+    url: `/api/sz/posts/${post}` 
   }
 })
 
@@ -125,3 +125,56 @@ export const votePost = (post, user, user_rating) => ({
     }
   }
 });
+
+export const getUserSubscriptions = user => ({
+  type: types.GET_USER_SUBSCRIPTIONS,
+  meta: {
+    type: 'api',
+    url: `/api/users/${user.id}/subscriptions`
+  }
+});
+
+export const getUserSubscription = (user, subzeddit) => ({
+  type: types.GET_USER_SUBSCRIPTION,
+  meta: {
+    type: 'api',
+    url: `/api/sz/subscribe_status?user=${user}&subzeddit=${subzeddit}`
+  }
+});
+
+export const changeSubscriptionStatus = (user, subzeddit, status) => {
+  let request = {
+    type: types.CHANGE_SUBSCRIPTION_STATUS,
+    meta: {
+      type: 'api',
+      method: 'POST',
+      body: JSON.stringify({user, subzeddit}),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  };
+  if (status) {
+    request.meta.url = '/api/users/unsub_from_subzeddit'
+  } else {
+    request.meta.url = '/api/users/subscribe_to_subzeddit'
+  }
+  return fetch;
+}
+
+export const getUpvotedPosts = user => ({
+  type: types.GET_USER_UPVOTED_POSTS,
+  meta: {
+    type: 'api',
+    url: `/api/users/${user.id}/upvoted`
+  }
+}); 
+
+export const getDownvotedPosts = user => ({
+  type: types.GET_USER_DOWNVOTED_POSTS,
+  meta: {
+    type: 'api',
+    url: `/api/users/${user.id}/downvoted`
+  }
+})
+

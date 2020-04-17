@@ -21,7 +21,7 @@ function SubzedditCreateForm(props) {
   return (
     <form onSubmit={handleSubmit}>
       <p className='form-title'>Create New Subzeddit</p>
-      <div>
+      <div className='form-element'>
         <label htmlFor='title'>Title:</label>
         <input
           id='title'

@@ -25,9 +25,17 @@ exports.post_create = function(req, res) {
   }
 
 exports.post_detail = function(req, res) {
-  // get Subzeddit => get post??
+  // get single post and its comments based on post's id
   db.task(async t => {
-    const post = await t.one('SELECT * FROM posts WHERE id = $1', [req.params.post]);
+    const post = await t.one(
+      `SELECT *
+      FROM posts
+      WHERE id = $1`, [req.params.post]);
+    const comments = await t.any(
+      `SELECT * FROM comments
+      WHERE parent_post = $1`, [req.params.post]
+    );
+    post.comments = comments;
     return post;
   })
   .then(post => {

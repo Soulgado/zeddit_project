@@ -1,30 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getSubzedditsList } from '../../redux/actionCreators';
-import '../../styles/subzedditList.sass';
+import { getUserSubscriptions } from '../../redux/actionCreators';
 import SubzedditMinified from '../SubzedditMinified/SubzedditMinified';
 
 const mapStateToProps = state => ({
-  subzedditsList: state.subzedditsList
+  user: state.user,
+  loggedIn: state.loggedIn,
+  subscriptionsList: state.userSubscriptions
 });
 
 const mapDispatchToProps = dispatch => ({
-  getSubzeddits: () => dispatch(getSubzedditsList())
-})
+  getUserSubscriptions: (user) => dispatch(getUserSubscriptions(user))
+});
 
-class SubzedditList extends React.Component {
+class SubscriptionsList extends React.Component {
   componentDidMount() {
-    this.props.getSubzeddits();
+    // get subscriptions
+    this.props.getUserSubscriptions(this.props.user);
   }
-  
+
   render() {
-    const { subzedditsList } = this.props;
+    let { subscriptionsList } = this.props; 
     return (
       <div className='subzeddits-list-wrapper'>
-        <h1 className='subzeddits-list-title'>List of all subzeddits:</h1>
+        <h1 className='subzeddits-list-title'>List of subscribed subzeddits:</h1>
         <div className='subzeddits-list'>
           <ul id='subzeddits-list'>
-            {subzedditsList.map(subzeddit => {
+            {subscriptionsList.map(subzeddit => {
             return <SubzedditMinified
                 key={subzeddit.title}
                 subzeddit={subzeddit} />
@@ -34,10 +36,9 @@ class SubzedditList extends React.Component {
       </div>
     )
   }
-  
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SubzedditList);
+)(SubscriptionsList);

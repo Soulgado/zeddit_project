@@ -18,13 +18,13 @@ class PostMinified extends React.Component {
   }
 
   render() {
-    const { post, url } = this.props;
+    const { post } = this.props;
     return (
       <div className='post-mini-wrapper'>
         <VoteButtons post={post} />
         <div className='post-mini-content-wrapper'>
           <div className='post-mini-title'>
-            <Link to={`${url}/${post.title}`}>
+            <Link to={`/sz/${post.subzeddit_title}/${post.id}/${post.title}`}>
               {post.title}
             </Link>
           </div>

@@ -1,22 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import SubscribeButton from '../SubscribeButton/SubscribeButton';
 
-const SubzedditMinified = ({ url, subzeddit }) => {
+const mapStateToProps = state => ({
+  user: state.user,
+  loggedIn: state.loggedIn
+});
+
+const SubzedditMinified = ({ user, loggedIn, subzeddit }) => {
   // add subscribe button
   return (
     <li>
       <div>
-        <Link to={`${url}/${subzeddit.title}`}>
+        <Link to={`/sz/${subzeddit.title}`}>
           {subzeddit.title}
         </Link>
         <p>Created {subzeddit.creation_date} by {subzeddit.username}</p>
-        <button type='button'>
-          Subscribe
-          {/* subscribe - unsubscribe buttons */}
-        </button>
+        {loggedIn 
+          ? <SubscribeButton subzeddit={subzeddit.title} />
+          : ''}
       </div>
     </li>
   )
 }
 
-export default SubzedditMinified;
+export default connect(
+  mapStateToProps
+)(SubzedditMinified);

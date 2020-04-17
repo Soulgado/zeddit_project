@@ -27,11 +27,11 @@ function MainNavigation(props) {
       )
     } else {
       return (
-        <>
-        <li><span>Hello, {props.user.username}!</span></li>
-        <li><Link to={`/profile/${props.user.username}`}>Profile</Link></li>
-        <li><button type='button' onClick={props.logout}>Sign out</button></li>
-        </>
+        <ul>
+          <li className='welcome-message'><span>Hello, {props.user.username}!</span></li>
+          <li className='navigation-element'><Link to={`/profile/${props.user.username}`}>Profile</Link></li>
+          <li className='navigation-element'><button type='button' onClick={props.logout}>Sign out</button></li>
+        </ul>
       )
     }
   }
