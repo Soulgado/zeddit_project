@@ -32,7 +32,13 @@ exports.post_detail = function(req, res) {
       FROM posts
       WHERE id = $1`, [req.params.post]);
     const comments = await t.any(
-      `SELECT * FROM comments
+      `SELECT 
+        comment.id,
+        comment.content,
+        comment.creation_time,
+        author.username
+      FROM comments comment
+      LEFT JOIN users author ON comment.author = author.id
       WHERE parent_post = $1`, [req.params.post]
     );
     post.comments = comments;
@@ -54,11 +60,11 @@ exports.post_comment = function(req, res) {
   // first get post object =>
   // create and add comment to the post
   db.tx('insert-comment', async t => {
-    const post = await t.one('SELECT id FROM posts WHERE id = $1', [req.body.post])
+    const post = await t.one('SELECT id FROM posts WHERE id = $1', req.body.post)
     return t.one(`INSERT INTO 
         comments(author, content, creation_time, parent_post)
         VALUES($1, $2, $3, $4) RETURNING id, author, content, creation_time, parent_post`,
-        [req.body.user.id, req.body.content, new Date(), post]);
+        [req.body.user.id, req.body.content, new Date(), post.id]);
   })
   .then(comment => {
     res.json({
@@ -115,6 +121,39 @@ exports.rate_post = function(req, res) {
   .then(() => {
     res.json({
       result: 'success'
+    })
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(400).json({
+      result: 'error'
+    })
+  })
+}
+
+exports.get_most_popular_default = function(req, res) {
+  // check for user first => get most popular with upvotes
+  db.any(
+  `SELECT 
+    post.id,
+    post.title,
+    post.content,
+    post.creation_date,
+    post.upvotes,
+    post.downvotes,
+    creator.username,
+    subzeddit.title subzeddit_title,
+    user_rating.rating
+  FROM posts post 
+  LEFT JOIN users creator ON post.creator = creator.id
+  LEFT JOIN subzeddits subzeddit ON post.subzeddit = subzeddit.id
+  LEFT JOIN posts_rating user_rating ON user_rating.post = post.id AND user_rating.user_id = $1
+  ORDER BY upvotes DESC LIMIT 10`,
+  req.query.user)
+  .then(data => {
+    res.json({
+      result: 'success',
+      data
     })
   })
   .catch(error => {

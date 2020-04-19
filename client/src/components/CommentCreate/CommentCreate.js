@@ -18,6 +18,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   }
 }
 
+// doesn't fetch created content until page reload 
 function CommentCreateForm(props) {
   const [comment, setComment] = useState('');
 

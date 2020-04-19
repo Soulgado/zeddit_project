@@ -5,6 +5,7 @@ import CommentCreateForm from '../CommentCreate/CommentCreate';
 import Comment from '../Comment/Comment';
 import VoteButtons from '../VoteButtons/VoteButtons';
 import { getPost } from '../../redux/actionCreators';
+import '../../styles/postPage.sass';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -40,20 +41,25 @@ function PostPage(props) {
 
   return (
     <div className='post-page-wrapper'>
-      <VoteButtons post={thisPost} />
-      <h1>{thisPost.title}</h1>
-      <p>{thisPost.content}</p>
-      {props.loggedIn
-        ? <CommentCreateForm post={thisPost}/>
-        : null}
-      <div className='post-comments'>
-        <ul>
-          {!thisPost.comments
-            ? <span>No comment yet.</span>
-            : thisPost.comments.map(comment => {
-              return <li>{<Comment comment={comment} />}</li>
-            })}
-        </ul>
+      <VoteButtons className='post-page-vote' post={thisPost} />
+      <div className='post-general-wrapper'>
+        <h2>{thisPost.title}</h2>
+        <div className='post-content'>
+          <p>{thisPost.content}</p>
+        </div>
+        {props.loggedIn
+          ? <CommentCreateForm post={thisPost.id} />
+          : null}
+        <div className='post-comments'>
+          <p>Comments:</p>
+          <ul>
+            {!thisPost.comments
+              ? <span>No comment yet.</span>
+              : thisPost.comments.map(comment => {
+                return <li key={comment.id}>{<Comment comment={comment} />}</li>
+              })}
+          </ul>
+        </div>
       </div>
     </div>
   )

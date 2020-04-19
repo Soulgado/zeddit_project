@@ -11,6 +11,7 @@ import SubzedditList from './components/SubzedditList/SubzedditList';
 import SubzedditPage from './components/SubzedditPage/SubzedditPage';
 import MainNavigation from './components/MainNavigation/MainNavigation';
 import UserProfile from './components/UserProfile/UserProfile';
+import MainPage from './components/MainPage/MainPage';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -26,9 +27,7 @@ class App extends React.Component {
         </header>
         <main>
             <Switch>
-              <Route exact path='/'>
-                <p style={{fontSize: '30px'}}>This is main page of the Zeddit.</p>
-              </Route>
+              <Route exact path='/' component={MainPage} />
               <Route path='/create_subzeddit' component={SubzedditCreateForm} />
               <Route path='/sz/:title' component={SubzedditPage} />
               <Route path='/sz' component={SubzedditList} />

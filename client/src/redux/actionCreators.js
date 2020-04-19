@@ -84,32 +84,16 @@ export const getPost = (post) => ({
   }
 })
 
-export const postComment = (user, comment, post) => ({
+export const postComment = (user, content, post) => ({
   type: types.POST_COMMENT,
   meta: {
     type: 'api',
     url: '/api/sz/comment/create',
     method: 'POST',
-    body: JSON.stringify({user, comment, post}),
+    body: JSON.stringify({user, content, post}),
     headers: {
       'Content-Type': 'application/json'
     }
-  }
-});
-
-export const getMostPopularGlobal = () => ({
-  type: types.GET_MOST_POPULAR_GLOBAL,
-  meta: {
-    type: 'api',
-    url: '/api/sz/subzeddit/popular'   // template 
-  }
-});
-
-export const getMostPopularSpecific = (user) => ({
-  type: types.GET_MOST_POPULAR_SPECIFIC,
-  meta: {
-    type: 'api',
-    url: `/api/sz/subzeddit/${user.username}/popular`   // template 
   }
 });
 
@@ -176,5 +160,27 @@ export const getDownvotedPosts = user => ({
     type: 'api',
     url: `/api/users/${user.id}/downvoted`
   }
-})
+});
+
+export const getMostPopularDefault = (user) => {
+  if (!user) {
+    return {
+      type: types.GET_MOST_POPULAR_DEFAULT,
+      meta: {
+        type: 'api',
+        url: '/api/sz/most_popular_default?user=0'
+      }
+    }
+  } else {
+    return {
+      type: types.GET_MOST_POPULAR_DEFAULT,
+      meta: {
+        type: 'api',
+        url: `/api/sz/most_popular_default?user=${user.id}`
+      }
+    }
+  }
+};
+
+
 

@@ -25,14 +25,18 @@ function VoteButtons(props) {
   return (
     <div className='post-vote-wrapper'>
       <div className='upvote-wrapper'>
-        <button className='vote-button upvote-button' type='button' onClick={onUpvote}>&#x2BC5;</button>
+        <div
+          className={`vote-button upvote-button ${props.post.rating === 1 ? 'upvote-active' : ''}`}
+          onClick={onUpvote}></div>
         <span>{props.post.upvotes}</span>
       </div>
       <div className='post-rating'>
         {props.post.upvotes - props.post.downvotes}
       </div>
       <div className='downvote-wrapper'>
-        <button className='vote-button downvote-button' type='button' onClick={onDownvote}>&#x2BC6;</button>
+        <div
+          className={`vote-button downvote-button ${props.post.rating === -1 ? 'downvote-active' : ''}`}
+          onClick={onDownvote}></div>
         <span>{props.post.downvotes}</span>
       </div>
     </div>

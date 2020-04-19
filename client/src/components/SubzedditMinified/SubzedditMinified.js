@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
 });
 
 const SubzedditMinified = ({ user, loggedIn, subzeddit }) => {
-  // add subscribe button
+  // subscribe button doesn't receive change text
   return (
     <li>
       <div>

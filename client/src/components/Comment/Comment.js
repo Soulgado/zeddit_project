@@ -1,25 +1,23 @@
-import React, { useState } from 'react';
-import CommentCreateForm from '../CommentCreate/CommentCreate';
+import React from 'react';
 
-function Comment(props) {
-  const [replyActive, setReplyActive] = useState();
+const Comment = (props) => {
 
   // add rendering all child comments
 
   return (
     <div className='comment-body'>
-      <div> 
-        <span>{props.comment.author} - posted {props.comment.date}</span>
+      <div className='comment-info'> 
+        <span>{props.comment.username} - posted {props.comment.creation_time}</span>
       </div>
-      <p>{props.comment.content}</p>
+      <div className='comment-content'>
+        <p>{props.comment.content}</p>
+      </div>
       <div className='comment-buttons'>
         <button
           type='button'
-          onClick={setReplyActive(!replyActive)}
         >Reply
         </button>
       </div>
-      {replyActive && <CommentCreateForm parent={props.comment._id} />}
     </div>
   )
 }

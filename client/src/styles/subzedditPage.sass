@@ -3,20 +3,25 @@
   text-align: left
   li
     padding-bottom: 10px
-    border-bottom: 1px solid
 
 .post-mini-wrapper
   display: flex
   margin-top: 10px
+  padding-bottom: 10px
+  border-bottom: 2px solid
 
 .post-vote-wrapper
-  margin: auto 15px auto 0
-  .upvote-wrapper
-    span
-      padding-bottom: 2px
+  margin-right: 15px
+  margin-left: 10px
   .post-rating
-    padding-top: 5px
-    text-align: right
+    margin: 5px 0
+    text-align: center
+    font-size: 1.2em
+    font-weight: bold
+
+.post-mini-content-wrapper
+  width: 100%
+  margin-left: 10px
 
 .post-mini-title
   a
@@ -26,16 +31,46 @@
     &:hover
       text-decoration: underline
 
+.post-mini-info
+  font-size: 0.7em
+  color: grey
+  p
+    margin-top: 0
+
+.upvote-wrapper,
+.downvote-wrapper
+  display: flex
+  align-items: center
+
 .vote-button
+  width: 25px
+  height: 25px
+  margin-right: 5px
   font-size: 20px
   background-color: inherit
   border: none
+  background: url('./down-arrow.png') no-repeat
+  background-size: cover
+  border: 1px solid
+  border-radius: 50%
   &:hover
     cursor: pointer
-  
-.upvote-button
-  color: green
 
-.downvote-button
-  color: red
+.upvote-active
+  background-color: green
+
+.downvote-active
+  background-color: red
+
+.upvote-button
+  transform: rotate(180deg)
+
+.post-mini-content
+  padding: 10px
+  margin-top: 10px
+  width: 80%
+  border: 2px solid
+  border-radius: 10px
+  background-color: #8080804a
+
     
