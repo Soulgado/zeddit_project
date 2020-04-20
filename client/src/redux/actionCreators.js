@@ -55,11 +55,11 @@ export const getSubzedditsList = () => ({
   }
 });
 
-export const getSubzeddit = (title) => ({
+export const getSubzeddit = (title, user) => ({
   type: types.SUBZEDDIT_DETAIL,
   meta: {
     type: 'api',
-    url: `/api/sz/subzeddit/${title}`
+    url: `/api/sz/subzeddit/${title}?user=${user ? user.id : ''}`
   }
 });
 
@@ -73,6 +73,16 @@ export const createNewPost = (user, formData, subzeddit) => ({
     headers: {
       'Content-Type': 'application/json'
     }
+  }
+});
+
+export const createNewImagePost = formData => ({
+  type: types.CREATE_POST,
+  meta: {
+    type: 'api',
+    url: '/api/sz/post/create_img',
+    method: 'POST',
+    body: formData
   }
 });
 

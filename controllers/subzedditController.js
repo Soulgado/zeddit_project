@@ -47,6 +47,12 @@ exports.subzeddit_all = function(req, res) {
 }
 
 exports.get_subzeddit = function(req, res) {
+  let user;
+  if (req.query.user) {
+    user = req.query.user;
+  } else {
+    user = 0
+  }
   db.task(async t => {
     const subzeddit = await t.one('SELECT * FROM subzeddits WHERE title = $1',
     [req.params.title]);
@@ -58,10 +64,12 @@ exports.get_subzeddit = function(req, res) {
         post.creation_date,
         post.upvotes,
         post.downvotes,
+        user_rating.rating,
         creator.username
       FROM posts post 
       LEFT JOIN users creator ON post.creator = creator.id
-      WHERE subzeddit = $1 ORDER BY creation_date DESC LIMIT 10`, subzeddit.id);
+      LEFT JOIN posts_rating user_rating ON user_rating.post = post.id AND user_rating.user_id = $1
+      WHERE subzeddit = $2 ORDER BY creation_date DESC LIMIT 10`, [user, subzeddit.id]);
     posts.forEach(post => post.subzeddit_title = subzeddit.title);
     subzeddit.posts = posts;
     return subzeddit;

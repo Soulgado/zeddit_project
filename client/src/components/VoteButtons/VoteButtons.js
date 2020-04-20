@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { votePost } from '../../redux/actionCreators';
 
@@ -12,13 +12,33 @@ const mapDispatchToProps = dispatch => ({
 });
 
 function VoteButtons(props) {
+  const [user_rating, setRating] = useState(props.post.rating);
+  const [upvotes, setUpvotes] = useState(props.post.upvotes);
+  const [downvotes, setDownvotes] = useState(props.post.downvotes);
+
+  useEffect(() => {
+    setRating(props.post.rating);
+    setUpvotes(props.post.upvotes);
+    setDownvotes(props.post.downvotes);
+  }, [props])
+
   function onUpvote() {
-    if (!props.loggedIn) return;
+    if (!props.loggedIn || user_rating === 1) return;
+    if (user_rating === -1) {
+      setDownvotes(downvotes - 1);
+    }
+    setRating(1);
+    setUpvotes(upvotes + 1);
     props.votePost(props.post, props.user, 1);
   }
 
   function onDownvote() {
-    if (!props.loggedIn) return;
+    if (!props.loggedIn || user_rating === -1) return;
+    if (user_rating === 1) {
+      setUpvotes(upvotes - 1);
+    } 
+    setRating(-1);
+    setDownvotes(downvotes + 1);
     props.votePost(props.post, props.user, -1);
   }
 
@@ -26,18 +46,18 @@ function VoteButtons(props) {
     <div className='post-vote-wrapper'>
       <div className='upvote-wrapper'>
         <div
-          className={`vote-button upvote-button ${props.post.rating === 1 ? 'upvote-active' : ''}`}
+          className={`vote-button upvote-button ${user_rating === 1 ? 'upvote-active' : ''}`}
           onClick={onUpvote}></div>
-        <span>{props.post.upvotes}</span>
+        <span>{upvotes}</span>
       </div>
       <div className='post-rating'>
-        {props.post.upvotes - props.post.downvotes}
+        {upvotes - downvotes}
       </div>
       <div className='downvote-wrapper'>
         <div
-          className={`vote-button downvote-button ${props.post.rating === -1 ? 'downvote-active' : ''}`}
+          className={`vote-button downvote-button ${user_rating === -1 ? 'downvote-active' : ''}`}
           onClick={onDownvote}></div>
-        <span>{props.post.downvotes}</span>
+        <span>{downvotes}</span>
       </div>
     </div>
     

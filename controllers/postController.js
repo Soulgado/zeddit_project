@@ -1,14 +1,19 @@
 const db = require('../db');
 const uuid = require('uuid');
 
+const POST_TYPES = {
+  image: 'image',
+  text: 'text'
+}
+
 exports.post_create = function(req, res) {
   // get User => create Post => add Post to Subzeddit and save it
   db.tx('insert-post', async t => {
     const subzeddit = await t.one('SELECT id FROM subzeddits WHERE title = $1', [req.body.subzeddit]);
-    return t.one(`INSERT INTO posts(title, creator, content, creation_date, subzeddit)
-          VALUES ($1, $2, $3, $4, $5)
+    return t.one(`INSERT INTO posts(title, creator, content, creation_date, subzeddit, type)
+          VALUES ($1, $2, $3, $4, $5, $6)
           RETURNING id, title, creator, content, creation_date, subzeddit`,
-          [req.body.title, req.body.user.id, req.body.content, new Date(), subzeddit.id]);
+          [req.body.title, req.body.user.id, req.body.content, new Date(), subzeddit.id, POST_TYPES.text]);
   })
     .then(data => {
       res.json({
@@ -23,6 +28,31 @@ exports.post_create = function(req, res) {
       });
     });
   }
+
+exports.post_create_image = function(req, res) {
+  console.log(req.file, req.body);
+  const filename = req.file.filename;
+  // save post in database with filename
+  db.tx('insert-image-post', async t => {
+    const subzeddit = await t.one('SELECT id FROM subzeddits WHERE title = $1', [req.body.subzeddit]);
+    return t.one(`INSERT INTO posts(title, creator, filename, creation_date, subzeddit, type)
+          VALUES ($1, $2, $3, $4, $5, $6)
+          RETURNING id, title, creator, filename, creation_date, subzeddit`,
+          [req.body.title, Number(req.body.user), filename, new Date(), subzeddit.id, POST_TYPES.image]);
+  })
+  .then(data => {
+    res.json({
+      result: 'success',
+      data: data
+    });
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(400).json({
+      error: 'error'
+    });
+  });
+}
 
 exports.post_detail = function(req, res) {
   // get single post and its comments based on post's id
@@ -139,8 +169,10 @@ exports.get_most_popular_default = function(req, res) {
     post.title,
     post.content,
     post.creation_date,
+    post.filename,
     post.upvotes,
     post.downvotes,
+    post.type,
     creator.username,
     subzeddit.title subzeddit_title,
     user_rating.rating

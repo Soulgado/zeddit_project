@@ -3,6 +3,7 @@ import { Switch, Route, Link, useParams, useRouteMatch } from 'react-router-dom'
 import { connect } from 'react-redux'; 
 import { getSubzeddit } from '../../redux/actionCreators';
 import PostCreateForm from '../PostCreate/PostCreate';
+import PostCreateImageForm from '../PostCreateImage/PostCreateImage';
 import PostPage from '../PostPage/PostPage';
 import PostMinified from '../PostMinified/PostMinified';
 import SubscribeButton from '../SubscribeButton/SubscribeButton';
@@ -15,7 +16,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getSubzeddit: (title) => dispatch(getSubzeddit(title))
+  getSubzeddit: (title, user) => dispatch(getSubzeddit(title, user))
 })
 
 function SubzedditPage(props) {
@@ -26,7 +27,7 @@ function SubzedditPage(props) {
   const { url, path } = useRouteMatch();
   
   useEffect(() => {
-    props.getSubzeddit(title);    // page doesn't reload on new post creation
+    props.getSubzeddit(title, props.user);    // page doesn't reload on new post creation
   }, [subzeddit, title]);   // eslint warning
 
   return (
@@ -50,7 +51,11 @@ function SubzedditPage(props) {
           } 
           </ul>
           {props.loggedIn 
-            ? <PostCreateForm subzeddit={props.subzeddit} />
+            ? (<>
+                <PostCreateForm subzeddit={props.subzeddit} />
+                <PostCreateImageForm subzeddit={props.subzeddit} />
+              </>
+              )
             : ''}
         </Route>
         <Route path={`${path}/:post_id/:post_title`}>
