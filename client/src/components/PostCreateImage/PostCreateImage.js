@@ -4,7 +4,8 @@ import { createNewImagePost } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
   user: state.user,
-  loggedIn: state.loggedIn
+  loggedIn: state.loggedIn,
+  subzeddits: state.subzedditsTitles
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -16,7 +17,10 @@ class PostCreateImageForm extends React.Component {
     super(props);
     this.state = {
       selectedFile: null,
-      title: ''
+      title: '',
+      subzeddit: '',
+      dropdownActive: false,
+      titlesList: []
     }
   }
 
@@ -41,6 +45,48 @@ class PostCreateImageForm extends React.Component {
     data.append('title', this.state.title);
     console.log(data);
     this.props.createImgPost(data);
+  }
+
+  handleSubzedditChange = event => {
+    let matchedTitles = this.matchedSubzeddits(event.target.value);
+    this.setState({
+      subzeddit: event.target.value,
+      titlesList: matchedTitles
+    })
+  }
+
+  handleSubzedditFocus = () => {
+    this.setState({
+      dropdownActive: true
+    })
+  }
+
+  handleSubzedditBlur = () => {
+    this.setState({
+      dropdownActive: false
+    })
+  }
+
+  matchedSubzeddits = (title) => {
+    return this.props.subzeddits.filter(subzeddit => {
+      const regex = new RegExp(title, 'gi')
+      return subzeddit.title.match(regex);
+    })
+  }
+
+  renderMatches = () => {
+    // specific component is required
+    return (
+      <ul className='form-subzeddits-dropdown'>
+        {this.state.titlesList.map(subzeddit => {
+          return (
+            <li key={subzeddit.title}>
+              {subzeddit.title}
+            </li>
+          )
+        })}
+      </ul>
+    )
   }
 
   render() {
@@ -69,6 +115,19 @@ class PostCreateImageForm extends React.Component {
             name='file'
             onChange={this.onFileChange}
           />
+        </div>
+        <div className='form-element'>
+          <label htmlFor='subzeddit'>Submit post to subzeddit:</label>
+          <input
+            id='subzeddit'
+            type='text'
+            value={this.state.subzeddit}
+            onChange={this.handleSubzedditChange} 
+            onFocus={this.handleSubzedditFocus}
+            onBlur={this.handleSubzedditBlur}/>
+          {this.state.dropdownActive
+            ? this.renderMatches()
+            : null}
         </div>
         <button className='form-button' type='submit'>Create Post</button>
       </form>

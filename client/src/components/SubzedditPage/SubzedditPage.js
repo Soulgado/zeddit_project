@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Switch, Route, Link, useParams, useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux'; 
 import { getSubzeddit } from '../../redux/actionCreators';
-import PostCreateForm from '../PostCreate/PostCreate';
-import PostCreateImageForm from '../PostCreateImage/PostCreateImage';
 import PostPage from '../PostPage/PostPage';
 import PostMinified from '../PostMinified/PostMinified';
 import SubscribeButton from '../SubscribeButton/SubscribeButton';
@@ -30,12 +28,21 @@ function SubzedditPage(props) {
     props.getSubzeddit(title, props.user);    // page doesn't reload on new post creation
   }, [subzeddit, title]);   // eslint warning
 
+  // higher-order component for only logged components
   return (
     <div className='subzeddit-page-wrapper'>
       <h1>{props.subzeddit.title}</h1>
       {props.loggedIn
         ? <SubscribeButton subzeddit={title} />
-        : ''}
+        : null}
+      {props.loggedIn 
+        ? <Link to={{
+            pathname: '/submit_post',
+            state: {
+              subzeddit: title
+            }
+          }}>Submit a new post</Link>
+        : null}
       <Switch>
         <Route exact path={`${url}/`}>
           <ul className='posts-list'>
@@ -50,13 +57,6 @@ function SubzedditPage(props) {
             })
           } 
           </ul>
-          {props.loggedIn 
-            ? (<>
-                <PostCreateForm subzeddit={props.subzeddit} />
-                <PostCreateImageForm subzeddit={props.subzeddit} />
-              </>
-              )
-            : ''}
         </Route>
         <Route path={`${path}/:post_id/:post_title`}>
           <PostPage />

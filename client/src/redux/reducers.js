@@ -6,6 +6,7 @@ export const initialState = {
   user: undefined,
   loggedIn: false,
   subzedditsList: [],
+  subzedditsTitles: [],
   subzeddit: {},
   posts: [],
   mostPopularGlobal: [],
@@ -53,6 +54,8 @@ export const rootReducer = (state=initialState, action) => {
       return {...state, userDownvotedPosts: action.payload.data}
     case types.GET_MOST_POPULAR_DEFAULT:
       return {...state, mostPopularGlobal: action.payload.data}
+    case types.GET_SUBZEDDITS_TITLES:
+      return {...state, subzedditsTitles: action.payload.data}
     default:
       return state;
   }

@@ -63,19 +63,20 @@ export const getSubzeddit = (title, user) => ({
   }
 });
 
-export const createNewPost = (user, formData, subzeddit) => ({
+export const createNewPost = (user, formData) => ({
   type: types.CREATE_POST,
   meta: {
     type: 'api',
     url: '/api/sz/post/create',
     method: 'POST',
-    body: JSON.stringify({...formData, user, subzeddit}),
+    body: JSON.stringify({...formData, user}),
     headers: {
       'Content-Type': 'application/json'
     }
   }
 });
 
+// do not set headers
 export const createNewImagePost = formData => ({
   type: types.CREATE_POST,
   meta: {
@@ -191,6 +192,15 @@ export const getMostPopularDefault = (user) => {
     }
   }
 };
+
+export const getSubzedditTitles = () => ({
+  type: types.GET_SUBZEDDITS_TITLES,
+  meta: {
+    type: 'api',
+    url: '/api/sz/get_subzeddits_titles'
+  }
+})
+
 
 
 

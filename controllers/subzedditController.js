@@ -122,7 +122,26 @@ exports.get_subscription_info = function(req, res) {
   })
   .catch(error => {
     console.log(error);
+    res.status(400).json({
+      result: 'error'
+    })
+  })
+}
+
+exports.get_subzeddits_titles = function(req, res) {
+  db.any(
+    `SELECT title
+    FROM subzeddits`
+  )
+  .then(data => {
     res.json({
+      result: 'success',
+      data
+    })
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(400).json({
       result: 'error'
     })
   })
