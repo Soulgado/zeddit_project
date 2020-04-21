@@ -4,12 +4,14 @@ import {
   getMostPopularDefault
 } from '../../redux/actionCreators';
 import PostMinified from '../PostMinified/PostMinified';
+import Placeholder from '../fetchingPlaceholder';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  loggedIn: state.loggedIn,
-  mostPopularGlobal: state.mostPopularGlobal,
-  mostPopularUser: state.mostPopularSpecific
+  user: state.currentUser.user,
+  loggedIn: state.currentUser.loggedIn,
+  fetching: state.subzeddit.fetching,
+  mostPopularGlobal: state.subzeddit.mostPopularGlobal,
+  mostPopularUser: state.subzeddit.mostPopularSpecific
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -42,7 +44,10 @@ class MainPage extends React.Component {
         <p style={{fontSize: '30px'}}>This is main page of the Zeddit.</p>
         <div>
           <p>Most popular posts:</p>
-          {this.renderPosts(this.props.mostPopularGlobal)}
+          {this.props.fetching
+            ? <Placeholder /> 
+            : this.renderPosts(this.props.mostPopularGlobal)
+          }
         </div>
       </div>
     );

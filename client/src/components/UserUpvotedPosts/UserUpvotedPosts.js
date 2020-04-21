@@ -4,9 +4,9 @@ import { getUpvotedPosts } from '../../redux/actionCreators';
 import PostMinified from '../PostMinified/PostMinified';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  loggedIn: state.loggedIn,
-  postsList: state.userUpvotedPosts
+  user: state.currentUser.user,
+  loggedIn: state.currentUser.loggedIn,
+  postsList: state.userAction.userUpvotedPosts
 });
 
 const mapDispatchToProps = dispatch => ({

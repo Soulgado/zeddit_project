@@ -8,9 +8,9 @@ import SubscribeButton from '../SubscribeButton/SubscribeButton';
 import '../../styles/subzedditPage.sass';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  loggedIn: state.loggedIn,
-  subzeddit: state.subzeddit       // use array to store open subzeddits
+  user: state.currentUser.user,
+  loggedIn: state.currentUser.loggedIn,
+  subzeddit: state.subzeddit.subzeddit       // use array to store open subzeddits
 })
 
 const mapDispatchToProps = dispatch => ({

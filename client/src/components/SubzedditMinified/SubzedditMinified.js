@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import SubscribeButton from '../SubscribeButton/SubscribeButton';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  loggedIn: state.loggedIn
+  user: state.currentUser.user,
+  loggedIn: state.currentUser.loggedIn
 });
 
 const SubzedditMinified = ({ user, loggedIn, subzeddit }) => {

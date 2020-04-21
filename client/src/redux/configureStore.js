@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-import { initialState, rootReducer } from './reducers';
+import { initialState, rootReducer } from './rootReducer';
 
 import apiMiddleware from './apiMiddleware';
 
@@ -11,7 +11,6 @@ export const configureStore = () => {
       apiMiddleware
     )
   );
-
   return store;
 }
 

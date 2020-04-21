@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { createNewPost } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.currentUser.user
 });
 
 // change to dispatch props

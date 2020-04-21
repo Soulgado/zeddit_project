@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './App.css';
 import './styles/navigation.sass';
@@ -15,8 +15,8 @@ import PostCreatePage from './components/PostCreatePage/PostCreatePage';
 import MainPage from './components/MainPage/MainPage';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  loggedIn: state.loggedIn
+  user: state.currentUser.user,
+  loggedIn: state.currentUser.loggedIn
 });
 
 class App extends React.Component {
@@ -32,9 +32,7 @@ class App extends React.Component {
               <Route path='/create_subzeddit' component={SubzedditCreateForm} />
               <Route path='/sz/:title' component={SubzedditPage} />
               <Route path='/sz' component={SubzedditList} />
-              {this.props.loggedIn
-                ? <Redirect from='/login' to='/' />
-                : <Route path='/login' component={SignInForm} />}
+              <Route path='/login' component={SignInForm} />}
               <Route path='/register' component={SignUpForm} />
               <Route path='/profile/:username' component={UserProfile} />
               <Route page='/submit_post' component={PostCreatePage} />

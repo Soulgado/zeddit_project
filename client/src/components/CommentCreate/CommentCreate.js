@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { postComment } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.currentUser.user
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {

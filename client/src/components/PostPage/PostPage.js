@@ -8,9 +8,9 @@ import { getPost } from '../../redux/actionCreators';
 import '../../styles/postPage.sass';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  posts: state.posts,
-  loggedIn: state.loggedIn
+  user: state.currentUser.user,
+  posts: state.post.posts,
+  loggedIn: state.currentUser.loggedIn
 });
 
 const mapDispatchToProps = dispatch => ({

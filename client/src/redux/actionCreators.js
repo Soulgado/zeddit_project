@@ -1,5 +1,7 @@
 import * as types from './types';
 
+// create specific actionCreators for reducers
+
 export const createAccount = (formData) => ({
   type: types.CREATE_ACCOUNT,
   payload: '',

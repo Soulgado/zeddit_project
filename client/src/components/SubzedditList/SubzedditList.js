@@ -5,7 +5,7 @@ import '../../styles/subzedditList.sass';
 import SubzedditMinified from '../SubzedditMinified/SubzedditMinified';
 
 const mapStateToProps = state => ({
-  subzedditsList: state.subzedditsList
+  subzedditsList: state.subzeddit.subzedditsList
 });
 
 const mapDispatchToProps = dispatch => ({

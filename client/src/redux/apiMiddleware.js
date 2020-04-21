@@ -3,6 +3,12 @@ const apiMiddleware = store => next => action => {
     return next(action);
   }
 
+  // begin fetching
+  store.dispatch({
+    type: 'FETCHING',
+    payload: null
+  })
+
   const {url} = action.meta;
   const fetchOptions = Object.assign({}, action.meta);
 

@@ -6,8 +6,8 @@ import UserUpvotedPosts from '../UserUpvotedPosts/UserUpvotedPosts';
 import UserDownvotedPosts from '../UserDownvotedPosts/UserDonwvotedPosts';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  loggedIn: state.loggedIn
+  user: state.currentUser.user,
+  loggedIn: state.currentUser.loggedIn
 });
 
 class UserProfile extends React.Component {

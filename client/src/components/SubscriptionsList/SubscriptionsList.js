@@ -4,9 +4,9 @@ import { getUserSubscriptions } from '../../redux/actionCreators';
 import SubzedditMinified from '../SubzedditMinified/SubzedditMinified';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  loggedIn: state.loggedIn,
-  subscriptionsList: state.userSubscriptions
+  user: state.currentUser.user,
+  loggedIn: state.currentUser.loggedIn,
+  subscriptionsList: state.userAction.userSubscriptions
 });
 
 const mapDispatchToProps = dispatch => ({

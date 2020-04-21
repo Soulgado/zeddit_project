@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { logout } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  loggedIn: state.loggedIn
+  user: state.currentUser.user,
+  loggedIn: state.currentUser.loggedIn
 });
 
 const mapDispatchToProps = dispatch => ({

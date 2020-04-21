@@ -6,9 +6,9 @@ import {
 } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  loggedIn: state.loggedIn,
-  userSubscriptionsStatus: state.userSubscriptionsStatus
+  user: state.currentUser.user,
+  loggedIn: state.currentUser.loggedIn,
+  userSubscriptionsStatus: state.userAction.userSubscriptionsStatus
 });
 
 const mapDispatchToProps = dispatch => ({

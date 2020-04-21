@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { votePost } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  loggedIn: state.loggedIn
+  user: state.currentUser.user,
+  loggedIn: state.currentUser.loggedIn
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -60,8 +60,6 @@ function VoteButtons(props) {
         <span>{downvotes}</span>
       </div>
     </div>
-    
-    
   )
 }
 

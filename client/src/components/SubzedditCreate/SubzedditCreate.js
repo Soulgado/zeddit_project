@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { createSubzeddit } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.currentUser.user
 })
 
 const mapDispatchToProps = dispatch => ({

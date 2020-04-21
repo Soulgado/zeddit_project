@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { login } from '../../redux/actionCreators';
+import { withLogging } from '../withLogging';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  loggedIn: state.loggedIn
-});
+  loggedIn: state.currentUser.loggedIn
+})
 
 const mapDispatchToProps = dispatch => ({
   signIn: (formData) => dispatch(login(formData))
@@ -52,7 +52,10 @@ function SignInForm(props) {
   )
 }
 
+// check for logged in state
+const connectedComp = withLogging(SignInForm, '/');
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SignInForm);
+)(connectedComp);

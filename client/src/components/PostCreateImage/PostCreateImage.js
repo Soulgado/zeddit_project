@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { createNewImagePost } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
-  user: state.user,
-  loggedIn: state.loggedIn,
-  subzeddits: state.subzedditsTitles
+  user: state.currentUser.user,
+  loggedIn: state.currentUser.loggedIn,
 });
 
 const mapDispatchToProps = dispatch => ({
