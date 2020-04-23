@@ -13,6 +13,7 @@ import MainNavigation from './components/MainNavigation/MainNavigation';
 import UserProfile from './components/UserProfile/UserProfile';
 import PostCreatePage from './components/PostCreatePage/PostCreatePage';
 import MainPage from './components/MainPage/MainPage';
+import PostEditPage from './components/PostEditPage/PostEditPage';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
@@ -35,6 +36,7 @@ class App extends React.Component {
               <Route path='/login' component={SignInForm} />}
               <Route path='/register' component={SignUpForm} />
               <Route path='/profile/:username' component={UserProfile} />
+              <Route path='/edit_post' component={PostEditPage} />
               <Route page='/submit_post' component={PostCreatePage} />
             </Switch> 
         </main>

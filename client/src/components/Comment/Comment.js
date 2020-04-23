@@ -5,7 +5,9 @@ const Comment = (props) => {
   // add rendering all child comments
 
   return (
-    <div className='comment-body'>
+    <div
+    style={{marginLeft: `${props.comment.level*20}px`}}
+    className='comment-body'>
       <div className='comment-info'> 
         <span>{props.comment.username} - posted {props.comment.creation_time}</span>
       </div>

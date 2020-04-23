@@ -64,6 +64,8 @@ exports.get_subzeddit = function(req, res) {
         post.creation_date,
         post.upvotes,
         post.downvotes,
+        post.updated,
+        post.type,
         user_rating.rating,
         creator.username
       FROM posts post 

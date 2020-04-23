@@ -31,7 +31,7 @@ router.get('/index', subzeddit_controller.subzeddit_all);
 
 router.get('/most_popular_default?', post_controller.get_most_popular_default);
 
-router.get('/posts/:post', post_controller.post_detail);
+router.get('/posts/:post?', post_controller.post_detail);
 
 router.get('/subzeddit/:title?', subzeddit_controller.get_subzeddit);
 
@@ -46,6 +46,8 @@ router.post('/post/rate', post_controller.rate_post);
 router.post('/comment/create', post_controller.post_comment);
 
 router.post('/post/rate_post', post_controller.rate_post);
+
+router.post('/edit_post', post_controller.edit_post);
 
 router.get('/subscribe_status?', subzeddit_controller.get_subscription_info);
 

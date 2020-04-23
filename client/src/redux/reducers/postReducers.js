@@ -1,7 +1,8 @@
 import * as types from '../types';
 
 export const initialState = {
-  posts: []
+  posts: [],
+  post: null
 }
 
 export const reducer = (state=initialState, action) => {
@@ -13,6 +14,8 @@ export const reducer = (state=initialState, action) => {
       return {...state};
     case types.POST_COMMENT:
       return {...state};
+    case types.EDIT_POST:
+      return {...state, post: action.payload.data}
     default: 
       return state;
   }

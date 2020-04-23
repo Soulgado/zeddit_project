@@ -28,7 +28,7 @@ class MainPage extends React.Component {
     return (
       <div className='posts-list'>
         {posts.map(post => {
-          return <PostMinified post={post} />;
+          return <PostMinified key={post.id} post={post} />;
         })}
       </div>
     );

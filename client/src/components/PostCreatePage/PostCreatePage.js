@@ -59,7 +59,6 @@ class PostCreatePage extends React.Component {
           : <PostCreateImageForm subzeddits={this.props.subzeddits} />}
       </div>
     )
-    
   }
 }
 

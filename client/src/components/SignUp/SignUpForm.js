@@ -25,6 +25,7 @@ function SignUpForm(props) {
       email: email
     }
     props.signUp(formData);
+    // redirect to success/failure page?
     history.goBack();
   }
 

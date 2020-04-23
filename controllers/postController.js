@@ -58,20 +58,54 @@ exports.post_detail = function(req, res) {
   // get single post and its comments based on post's id
   db.task(async t => {
     const post = await t.one(
-      `SELECT *
-      FROM posts
-      WHERE id = $1`, [req.params.post]);
+    `SELECT 
+      post.id,
+      post.title,
+      post.content,
+      post.creation_date,
+      post.filename,
+      post.upvotes,
+      post.downvotes,
+      post.type,
+      post.updated,
+      creator.username,
+      subzeddit.title subzeddit_title,
+      user_rating.rating
+    FROM posts post 
+    LEFT JOIN users creator ON post.creator = creator.id
+    LEFT JOIN subzeddits subzeddit ON post.subzeddit = subzeddit.id
+    LEFT JOIN posts_rating user_rating ON user_rating.post = post.id AND user_rating.user_id = $1
+    WHERE post.id = $2`, [req.query.user, req.params.post]);
     const comments = await t.any(
       `SELECT 
         comment.id,
         comment.content,
-        comment.creation_time,
+				comment.creation_time,
+				comment.parent_comment,
+				comment.level,
         author.username
       FROM comments comment
       LEFT JOIN users author ON comment.author = author.id
-      WHERE parent_post = $1`, [req.params.post]
-    );
-    post.comments = comments;
+      WHERE parent_post = $1 ORDER BY level`, [req.params.post]
+		);
+    let commentListObject = {}; // mapping??
+    comments.forEach(comment => {
+			comment.child_comments = [];
+      commentListObject[comment.id] = comment;
+		});
+    Object.values(commentListObject).forEach(comment => {
+			if (comment.parent_comment) {
+        commentListObject[comment.parent_comment].child_comments.push(comment);
+      }
+		});
+    let resultList = [];
+    Object.values(commentListObject).forEach(comment => {
+			if (comment.level === 1) {
+				resultList.push(comment);
+			}
+		});
+    // O^3 complexity, better algorithm?? 
+    post.comments = resultList;
     return post;
   })
   .then(post => {
@@ -173,6 +207,7 @@ exports.get_most_popular_default = function(req, res) {
     post.upvotes,
     post.downvotes,
     post.type,
+    post.updated,
     creator.username,
     subzeddit.title subzeddit_title,
     user_rating.rating
@@ -190,6 +225,46 @@ exports.get_most_popular_default = function(req, res) {
   })
   .catch(error => {
     console.log(error);
+    res.status(400).json({
+      result: 'error'
+    })
+  })
+}
+
+exports.edit_post = function(req, res) {
+  db.tx('get user and post', async t => {
+    const post = await t.one(`SELECT creator FROM posts WHERE id = $1`, req.body.post);
+    if (Number(post.creator) !== req.body.user.id) {
+      return "Wrong user"; // template, implement error
+    }
+    // change creation_date to current time
+    // add column for is_updated - boolean and set to true
+    return t.one(
+      `UPDATE posts
+        SET 
+          title = $1,
+          content = $2,
+          creation_date = CURRENT_TIMESTAMP,
+          updated = true
+        WHERE id = $3
+        RETURNING *`,
+      [req.body.title, req.body.content, req.body.post]
+    )
+  })
+  .then(data => {
+    if (data === 'Wrong user') {
+      res.status(400).json({
+        result: 'error'
+      })
+    } else {
+      res.json({
+        result: 'success',
+        data
+      })
+    }
+  })
+  .catch(error => {
+    console.log(error); 
     res.status(400).json({
       result: 'error'
     })

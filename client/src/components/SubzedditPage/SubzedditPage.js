@@ -5,6 +5,7 @@ import { getSubzeddit } from '../../redux/actionCreators';
 import PostPage from '../PostPage/PostPage';
 import PostMinified from '../PostMinified/PostMinified';
 import SubscribeButton from '../SubscribeButton/SubscribeButton';
+import PostEditPage from '../PostEditPage/PostEditPage';
 import '../../styles/subzedditPage.sass';
 
 const mapStateToProps = state => ({
@@ -58,9 +59,7 @@ function SubzedditPage(props) {
           } 
           </ul>
         </Route>
-        <Route path={`${path}/:post_id/:post_title`}>
-          <PostPage />
-        </Route>
+        <Route path={`${path}/:post_id/:post_title`} component={PostPage} />
       </Switch>
     </div>
   )

@@ -89,13 +89,20 @@ export const createNewImagePost = formData => ({
   }
 });
 
-export const getPost = (post) => ({
-  type: types.GET_POST,
-  meta: {
-    type: 'api',
-    url: `/api/sz/posts/${post}` 
+export const getPost = (post, user) => {
+  let request = {
+    type: types.GET_POST,
+    meta: {
+      type: 'api'
+    }
   }
-})
+  if (user) {
+    request.meta.url = `/api/sz/posts/${post}?user=${user.id}`;
+  } else {
+    request.meta.url = `/api/sz/posts/${post}?user=0`; 
+  }
+  return request;
+}
 
 export const postComment = (user, content, post) => ({
   type: types.POST_COMMENT,
@@ -200,6 +207,19 @@ export const getSubzedditTitles = () => ({
   meta: {
     type: 'api',
     url: '/api/sz/get_subzeddits_titles'
+  }
+});
+
+export const editPost = (user, post, formData) => ({
+  type: types.EDIT_POST,
+  meta: {
+    type: 'api',
+    method: 'POST',
+    url: '/api/sz/edit_post',
+    body: JSON.stringify({user, post, ...formData}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   }
 })
 

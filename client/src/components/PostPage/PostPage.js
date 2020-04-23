@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import CommentCreateForm from '../CommentCreate/CommentCreate';
 import Comment from '../Comment/Comment';
 import VoteButtons from '../VoteButtons/VoteButtons';
+import CommentsList from '../CommentsList/CommentsList';
 import { getPost } from '../../redux/actionCreators';
 import '../../styles/postPage.sass';
 
@@ -14,7 +15,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getPost: (post) => dispatch(getPost(post))
+  getPost: (post, user) => dispatch(getPost(post, user))
 });
 
 function PostPage(props) {
@@ -32,7 +33,7 @@ function PostPage(props) {
       });
     }
     if (!currPost) {
-      props.getPost(post_id); 
+      props.getPost(post_id, props.user); 
     } else {
       setPost(currPost);
     }
@@ -44,21 +45,36 @@ function PostPage(props) {
       <VoteButtons className='post-page-vote' post={thisPost} />
       <div className='post-general-wrapper'>
         <h2>{thisPost.title}</h2>
+        <div className='post-info'>
+          <p>
+            {thisPost.updated 
+              ? 'Updated '
+              : 'Posted '
+            }  
+            by {thisPost.username} on {thisPost.creation_date}</p>
+        </div>
         <div className='post-content'>
           <p>{thisPost.content}</p>
         </div>
+        {props.loggedIn && thisPost.username === props.user.username 
+          ? <Link to={{
+              pathname: '/edit_post',
+              state: {
+                post: thisPost
+              }
+            }}>
+              <button type='button'>Edit post</button>
+            </Link>
+          : null}
         {props.loggedIn
           ? <CommentCreateForm post={thisPost.id} />
           : null}
         <div className='post-comments'>
           <p>Comments:</p>
-          <ul>
             {!thisPost.comments
               ? <span>No comment yet.</span>
-              : thisPost.comments.map(comment => {
-                return <li key={comment.id}>{<Comment comment={comment} />}</li>
-              })}
-          </ul>
+              : <CommentsList comments={thisPost.comments} />
+              }
         </div>
       </div>
     </div>

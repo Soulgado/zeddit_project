@@ -29,7 +29,16 @@ class PostMinified extends React.Component {
             </Link>
           </div>
           <div className='post-mini-info'>
-            <p>Posted {post.creation_date} by {post.username} to <Link to={`/sz/${post.subzeddit_title}`}>{post.subzeddit_title}</Link></p>
+            <p>
+              {post.updated 
+                ? 'Updated '
+                : 'Posted '
+              }  
+              {post.creation_date} by {post.username} to <Link
+                to={`/sz/${post.subzeddit_title}`}>
+                  {post.subzeddit_title}
+                </Link>
+            </p>    
           </div>
           <button type='button' onClick={this.handleClick}>Details</button>
           {this.state.contentActive
