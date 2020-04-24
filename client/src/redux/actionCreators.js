@@ -14,7 +14,7 @@ export const createAccount = (formData) => ({
       'Content-Type': 'application/json'
     }
   }
-})
+});
 
 export const login = (user) => ({
   type: types.LOGIN,
@@ -221,7 +221,20 @@ export const editPost = (user, post, formData) => ({
       'Content-Type': 'application/json'
     }
   }
-})
+});
+
+export const voteComment = (comment, user, user_rating) => ({
+  type: types.VOTE_COMMENT,
+  meta: {
+    type: 'api',
+    url: '/api/sz/comment/rate_comment',
+    body: JSON.stringify({ comment, user, user_rating }),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+});
 
 
 

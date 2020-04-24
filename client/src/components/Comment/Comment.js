@@ -1,4 +1,5 @@
 import React from 'react';
+import CommentVoteButtons from '../CommentVoteButtons/CommentVoteButtons';
 
 const Comment = (props) => {
 
@@ -8,6 +9,7 @@ const Comment = (props) => {
     <div
     style={{marginLeft: `${props.comment.level*20}px`}}
     className='comment-body'>
+      <CommentVoteButtons comment={props.comment} />
       <div className='comment-info'> 
         <span>{props.comment.username} - posted {props.comment.creation_time}</span>
       </div>

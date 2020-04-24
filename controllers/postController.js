@@ -83,10 +83,12 @@ exports.post_detail = function(req, res) {
 				comment.creation_time,
 				comment.parent_comment,
 				comment.level,
-        author.username
+        author.username,
+        rating.rating
       FROM comments comment
       LEFT JOIN users author ON comment.author = author.id
-      WHERE parent_post = $1 ORDER BY level`, [req.params.post]
+      LEFT JOIN comments_rating rating ON rating.comment = comment.id AND rating.user_id = $1
+      WHERE parent_post = $2 ORDER BY level`, [req.query.user, req.params.post]
 		);
     let commentListObject = {}; // mapping??
     comments.forEach(comment => {
@@ -126,9 +128,16 @@ exports.post_comment = function(req, res) {
   db.tx('insert-comment', async t => {
     const post = await t.one('SELECT id FROM posts WHERE id = $1', req.body.post)
     return t.one(`INSERT INTO 
-        comments(author, content, creation_time, parent_post)
-        VALUES($1, $2, $3, $4) RETURNING id, author, content, creation_time, parent_post`,
-        [req.body.user.id, req.body.content, new Date(), post.id]);
+        comments(author, content, creation_time, parent_post, parent_comment)
+        VALUES($1, $2, $3, $4, $5)
+        RETURNING id, author, content, creation_time, parent_post, parent_comment`,
+        [
+          req.body.user.id,
+          req.body.content,
+          new Date(),
+          post.id,
+          req.body.parent_comment ? req.body.parent_comment : null
+        ]);
   })
   .then(comment => {
     res.json({

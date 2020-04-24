@@ -1,8 +1,21 @@
 const db = require('../db');
+const { body, validationResult } = require('express-validator');
 
-exports.create_account = function(req, res) {
+exports.create_account = [
+  body('username').trim().notEmpty().isAscii().isLength({ min: 3}),
+  body('password').trim().notEmpty().isLength({ min: 5, max: 60 }),
+  body('email').trim().notEmpty().isEmail().normalizeEmail(),
+
+  (req, res) => {
   // add encryption (bscrypt?)
   // send e-mail confirmation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      result: 'error',
+      errors: errors.array()
+    })
+  }
   db.none(
     'INSERT INTO users(username, password, email) VALUES($1, $2, $3)', 
     [req.body.username, req.body.password, req.body.email])
@@ -13,9 +26,20 @@ exports.create_account = function(req, res) {
       res.status(400).json({ result: 'error' });  // create frontend handler for errors
       console.log(error);
     })
-}
+}]
 
-exports.sign_in = function(req, res) {
+exports.sign_in = [
+  body('username').trim().notEmpty().isAscii(),
+  body('password').trim().notEmpty().isLength({ min: 5, max: 60 }),
+
+  (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      result: 'error',
+      errors: errors.array()
+    })
+  }
   // add decryption of the password
   db.one(
     'SELECT * FROM users WHERE username=$1 AND password=$2',
@@ -27,9 +51,20 @@ exports.sign_in = function(req, res) {
       console.log(error);
       res.status(400).json({ result: 'error'})
     })
-  }
+  }]
 
-exports.subscribe_to_subzeddit = function(req, res) {
+exports.subscribe_to_subzeddit = [
+  body('subzeddit').trim().isAscii(),
+  // only send user id
+
+  (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      result: 'error',
+      errors: errors.array()
+    })
+  }
   // get subzeddit, subscribe (ToDo: add checking user later)
   db.tx('create_subscription', async t => {
     const subzeddit = await t.one('SELECT id FROM subzeddits WHERE title = $1', [req.body.subzeddit]);
@@ -50,9 +85,19 @@ exports.subscribe_to_subzeddit = function(req, res) {
       result: 'error'
     });
   });
-}
+}]
 
-exports.unsubscribe_from_subzeddit = function(req, res) {
+exports.unsubscribe_from_subzeddit = [
+  body('subzeddit').trim().isAscii(),
+
+  (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      result: 'error',
+      errors: errors.array()
+    })
+  }
   db.tx('delete_subscription', async t => {
     const subzeddit = await t.one('SELECT id FROM subzeddits WHERE title = $1', [req.body.subzeddit]);
     return t.none(`DELETE FROM subzeddit_subscriptions
@@ -70,9 +115,19 @@ exports.unsubscribe_from_subzeddit = function(req, res) {
       result: 'error'
     })
   })
-}
+}]
 
-exports.get_user_subscriptions = function(req, res) {
+exports.get_user_subscriptions = [
+  body('id').trim().toInt().isInt(), // change after id type
+
+  (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      result: 'error',
+      errors: errors.array()
+    })
+  }
   db.any(
     `
     SELECT 
@@ -99,7 +154,7 @@ exports.get_user_subscriptions = function(req, res) {
       result: 'error'
     })
   })
-}
+}]
 
 exports.get_upvoted_posts = function(req, res) {
   db.any(

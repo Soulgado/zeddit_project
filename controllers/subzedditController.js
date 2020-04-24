@@ -1,4 +1,5 @@
 const db = require('../db');
+const { body, validationResult } = require('express-validator');
 
 exports.subzeddit_create = function(req, res) {
 // first get User and then create subzeddit
