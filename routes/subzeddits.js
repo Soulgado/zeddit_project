@@ -28,7 +28,7 @@ const upload = multer({ storage: storage });
 
 router.post('/create', subzeddit_controller.subzeddit_create);
 
-router.get('/index', subzeddit_controller.subzeddit_all);
+router.get('/subzeddits_list?', subzeddit_controller.subzeddit_all);
 
 router.get('/most_popular_default?', post_controller.get_most_popular_default);
 

@@ -17,6 +17,7 @@ const SubzedditMinified = ({ user, loggedIn, subzeddit }) => {
           {subzeddit.title}
         </Link>
         <p>Created {subzeddit.creation_date} by {subzeddit.username}</p>
+        <p>{subzeddit.subscriptions} subscribers</p>
         {loggedIn 
           ? <SubscribeButton subzeddit={subzeddit.title} />
           : ''}

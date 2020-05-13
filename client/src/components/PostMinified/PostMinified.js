@@ -38,7 +38,8 @@ class PostMinified extends React.Component {
                 to={`/sz/${post.subzeddit_title}`}>
                   {post.subzeddit_title}
                 </Link>
-            </p>    
+            </p>
+            <p>{post.comments} comments</p>    
           </div>
           <button type='button' onClick={this.handleClick}>Details</button>
           {this.state.contentActive

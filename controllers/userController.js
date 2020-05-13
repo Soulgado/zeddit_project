@@ -1,5 +1,7 @@
 const db = require('../db');
-const { body, validationResult } = require('express-validator');
+const { body, param, validationResult } = require('express-validator');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 exports.create_account = [
   body('username').trim().notEmpty().isAscii().isLength({ min: 3}),
@@ -7,8 +9,6 @@ exports.create_account = [
   body('email').trim().notEmpty().isEmail().normalizeEmail(),
 
   (req, res) => {
-  // add encryption (bscrypt?)
-  // send e-mail confirmation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
@@ -16,16 +16,19 @@ exports.create_account = [
       errors: errors.array()
     })
   }
-  db.none(
-    'INSERT INTO users(username, password, email) VALUES($1, $2, $3)', 
-    [req.body.username, req.body.password, req.body.email])
-    .then(() => {
-      res.json({ result: 'success' });
-    })
-    .catch(error => {
-      res.status(400).json({ result: 'error' });  // create frontend handler for errors
-      console.log(error);
-    })
+  // check for existing username 
+  bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+    db.none(
+      'INSERT INTO users(username, password, email) VALUES($1, $2, $3)', 
+      [req.body.username, hash, req.body.email])
+      .then(() => {
+        res.json({ result: 'success' });
+      })
+      .catch(error => {
+        res.status(400).json({ result: 'error' });  
+        console.log(error);
+      })
+  })
 }]
 
 exports.sign_in = [
@@ -40,12 +43,18 @@ exports.sign_in = [
       errors: errors.array()
     })
   }
-  // add decryption of the password
   db.one(
-    'SELECT * FROM users WHERE username=$1 AND password=$2',
-    [req.body.username, req.body.password])
-    .then(data => {
-      res.json({ result: 'success', user: data })
+    `SELECT * FROM users WHERE username=$1`,
+    req.body.username)
+    .then(user => {
+      bcrypt.compare(req.body.password, user.password, function(err, result) {
+        if (result) {
+          user.password = req.body.password;
+          res.json({ result: 'success', user });
+        } else {
+          res.json({ result: 'error', errors: 'Wrong password'});
+        }
+      });
     })
     .catch(error => {
       console.log(error);
@@ -66,7 +75,9 @@ exports.subscribe_to_subzeddit = [
     })
   }
   // get subzeddit, subscribe (ToDo: add checking user later)
+  // add check for subzeddit 
   db.tx('create_subscription', async t => {
+    await t.none('UPDATE subzeddits SET subscriptions = subscriptions + 1 WHERE title = $1', req.body.subzeddit);
     const subzeddit = await t.one('SELECT id FROM subzeddits WHERE title = $1', [req.body.subzeddit]);
     return t.one(`INSERT INTO subzeddit_subscriptions(subscriber, subzeddit)
           VALUES ($1, $2)
@@ -98,7 +109,9 @@ exports.unsubscribe_from_subzeddit = [
       errors: errors.array()
     })
   }
+  // ToDo: check for existing subscription
   db.tx('delete_subscription', async t => {
+    await t.none('UPDATE subzeddits SET subscriptions = subscriptions - 1 WHERE title = $1', req.body.subzeddit);
     const subzeddit = await t.one('SELECT id FROM subzeddits WHERE title = $1', [req.body.subzeddit]);
     return t.none(`DELETE FROM subzeddit_subscriptions
           WHERE subscriber = $1 AND subzeddit = $2`,
@@ -156,9 +169,18 @@ exports.get_user_subscriptions = [
   })
 }]
 
-exports.get_upvoted_posts = function(req, res) {
-  db.any(
-    `SELECT 
+exports.get_upvoted_posts = [
+  param('id').trim().notEmpty().isInt(),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        result: 'error',
+        errors: errors.array()
+      })
+    }
+    db.any(
+      `SELECT 
       post.id,
       post.title,
       post.content,
@@ -172,27 +194,36 @@ exports.get_upvoted_posts = function(req, res) {
     LEFT JOIN users creator ON post.creator = creator.id
     LEFT JOIN subzeddits subzeddit ON post.subzeddit = subzeddit.id
     WHERE rated.user_id = $1 AND rated.rating = 1`,
-    req.params.id
-  )
-  .then(data => {
-    res.json({
-      result: 'success',
-      data: data
-    })
-  })
-  .catch(error => {
-    console.log(error);
-    res.status(400).json({
-      result: 'error'
-    })
-  })
-}
-
+      req.params.id
+    )
+      .then(data => {
+        res.json({
+          result: 'success',
+          data: data
+        })
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(400).json({
+          result: 'error'
+        })
+      })
+  }
+]
 // unite these two controllers??
 
-exports.get_downvoted_posts = function(req, res) {
-  db.any(
-    `SELECT 
+exports.get_downvoted_posts = [
+  param('id').trim().notEmpty().isInt(),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        result: 'error',
+        errors: errors.array()
+      })
+    }
+    db.any(
+      `SELECT 
       post.id,
       post.title,
       post.content,
@@ -206,18 +237,19 @@ exports.get_downvoted_posts = function(req, res) {
     LEFT JOIN users creator ON post.creator = creator.id
     LEFT JOIN subzeddits subzeddit ON post.subzeddit = subzeddit.id
     WHERE rated.user_id = $1 AND rated.rating = -1`,
-    req.params.id
-  )
-  .then(data => {
-    res.json({
-      result: 'success',
-      data: data
-    })
-  })
-  .catch(error => {
-    console.log(error);
-    res.status(400).json({
-      result: 'error'
-    })
-  })
-}
+      req.params.id
+    )
+      .then(data => {
+        res.json({
+          result: 'success',
+          data: data
+        })
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(400).json({
+          result: 'error'
+        })
+      })
+  }
+];

@@ -5,7 +5,6 @@ import { getSubzeddit } from '../../redux/actionCreators';
 import PostPage from '../PostPage/PostPage';
 import PostMinified from '../PostMinified/PostMinified';
 import SubscribeButton from '../SubscribeButton/SubscribeButton';
-import PostEditPage from '../PostEditPage/PostEditPage';
 import '../../styles/subzedditPage.sass';
 
 const mapStateToProps = state => ({
@@ -33,6 +32,7 @@ function SubzedditPage(props) {
   return (
     <div className='subzeddit-page-wrapper'>
       <h1>{props.subzeddit.title}</h1>
+      <p>{props.subzeddit.subscriptions} subscribers</p>
       {props.loggedIn
         ? <SubscribeButton subzeddit={title} />
         : null}

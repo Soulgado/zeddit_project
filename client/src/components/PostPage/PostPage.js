@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import CommentCreateForm from '../CommentCreate/CommentCreate';
-import Comment from '../Comment/Comment';
 import VoteButtons from '../VoteButtons/VoteButtons';
 import CommentsList from '../CommentsList/CommentsList';
 import { getPost } from '../../redux/actionCreators';
@@ -52,6 +51,7 @@ function PostPage(props) {
               : 'Posted '
             }  
             by {thisPost.username} on {thisPost.creation_date}</p>
+          <p>{thisPost.comments} comments</p>
         </div>
         <div className='post-content'>
           <p>{thisPost.content}</p>

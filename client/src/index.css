@@ -25,3 +25,8 @@ code {
 .loading-animation {
   margin: 0 auto;
 }
+
+ul {
+  padding-left: 10px
+}
+  

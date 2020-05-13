@@ -1,5 +1,5 @@
 const db = require('../db');
-const { body, validationResult } = require('express-validator');
+const { body, query, validationResult } = require('express-validator');
 
 exports.subzeddit_create = function(req, res) {
 // first get User and then create subzeddit
@@ -24,14 +24,26 @@ exports.subzeddit_create = function(req, res) {
 }
 
 exports.subzeddit_all = function(req, res) {
+  // get all subzeddits
+  // also fetch subscription status
+  let user;
+  if (req.query.user) {
+    user = req.query.user;
+  } else {
+    user = 0
+  }
   db.any(
-    `SELECT 
+    `SELECT
+      subzeddit.id,
       subzeddit.title,
       subzeddit.creation_date,
+      subzeddit.subscriptions,
+      subscription.id subscription_status,
       creator.username
     FROM subzeddits subzeddit
     LEFT JOIN users creator ON subzeddit.creator = creator.id
-    `
+    LEFT JOIN subzeddit_subscriptions subscription ON subscription.subzeddit = subzeddit.id AND subscription.subscriber = $1
+    `, user
   )
   .then(data => {
     res.json({
@@ -67,6 +79,8 @@ exports.get_subzeddit = function(req, res) {
         post.downvotes,
         post.updated,
         post.type,
+        post.filename,
+        post.comments,
         user_rating.rating,
         creator.username
       FROM posts post 
@@ -92,6 +106,7 @@ exports.get_subzeddit = function(req, res) {
 }
 
 exports.get_subscription_info = function(req, res) {
+  // check if user is subscribed to subzeddit
   const { user, subzeddit } = req.query;
   db.task(async t => {
     const user_id = await t.oneOrNone('SELECT id FROM users WHERE username = $1', user);

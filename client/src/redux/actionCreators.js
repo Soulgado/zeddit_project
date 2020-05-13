@@ -48,12 +48,12 @@ export const createSubzeddit = (formData) => ({
   }
 });
 
-export const getSubzedditsList = () => ({
+export const getSubzedditsList = (user) => ({
   type: types.GET_SUBZEDDITS,
   payload: 0,
   meta: {
     type: 'api',
-    url: '/api/sz/index'
+    url: `/api/sz/subzeddits_list?user=${user ? user.id : ''}`
   }
 });
 
@@ -163,7 +163,7 @@ export const changeSubscriptionStatus = (user, subzeddit, status) => {
   } else {
     request.meta.url = '/api/users/subscribe_to_subzeddit'
   }
-  return fetch;
+  return request;
 }
 
 export const getUpvotedPosts = user => ({

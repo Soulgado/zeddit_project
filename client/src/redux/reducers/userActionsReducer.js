@@ -14,7 +14,7 @@ export const reducer = (state=initialState, action) => {
     case types.GET_USER_DOWNVOTED_POSTS:
       return {...state, userDownvotedPosts: action.payload.data}
     case types.GET_USER_SUBSCRIPTIONS:
-      return { ...state, userSubscriptions: [...action.payload.data] }
+      return { ...state, userSubscriptions: action.payload.data }
     case types.GET_USER_SUBSCRIPTION:
       let { subzeddit, status } = action.payload.data;
       state.userSubscriptionsStatus[subzeddit] = status;

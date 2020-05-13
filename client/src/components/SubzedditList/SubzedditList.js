@@ -5,17 +5,20 @@ import '../../styles/subzedditList.sass';
 import SubzedditMinified from '../SubzedditMinified/SubzedditMinified';
 
 const mapStateToProps = state => ({
+  user: state.currentUser.user,
   subzedditsList: state.subzeddit.subzedditsList
 });
 
 const mapDispatchToProps = dispatch => ({
-  getSubzeddits: () => dispatch(getSubzedditsList())
+  getSubzeddits: (user) => dispatch(getSubzedditsList(user))
 })
 
 class SubzedditList extends React.Component {
   componentDidMount() {
-    this.props.getSubzeddits();
+    this.props.getSubzeddits(this.props.user);
   }
+  
+  // problem doesn't show subscription status on first render
   
   render() {
     const { subzedditsList } = this.props;

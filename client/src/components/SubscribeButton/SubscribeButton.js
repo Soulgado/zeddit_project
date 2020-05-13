@@ -1,49 +1,51 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  changeSubscriptionStatus,
-  getUserSubscription
+  changeSubscriptionStatus
 } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
   loggedIn: state.currentUser.loggedIn,
-  userSubscriptionsStatus: state.userAction.userSubscriptionsStatus
 });
 
 const mapDispatchToProps = dispatch => ({
-  getUserSubscription: (user, subzeddit) => dispatch(getUserSubscription(user, subzeddit)),
   changeSubscriptionStatus: (user, subzeddit, status) => dispatch(changeSubscriptionStatus(user, subzeddit, status))
 });
 
 class SubscribeButton extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      isSubscribed: false
+    }
 
     this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
-    this.props.getUserSubscription(this.props.user.username, this.props.subzeddit);
+    let sub = this.props.subzeddit.subscription_status ? true : false;
+    this.setState({
+      isSubscribed: sub
+    })
   }
 
   handleClick() {
     this.props.changeSubscriptionStatus(
       this.props.user,
       this.props.subzeddit,
-      this.props.userSubscriptionsStatus[this.props.subzeddit]
+      this.state.isSubscribed
       )
-    this.props.getUserSubscription(this.props.user.username, this.props.subzeddit);
+    this.setState({
+      isSubscribed: !this.state.isSubscribed
+    })
   }
-
-  // problem: button doesn't change 
 
   render() {
     return (
       <div className='subscribe-button-wrapper'>
         <button type='button' onClick={this.handleClick}>
-        {this.props.userSubscriptionsStatus[this.props.subzeddit]
+        {this.state.isSubscribed
           ? 'Unsubscribe'
           : 'Subscribe'}
         </button>
