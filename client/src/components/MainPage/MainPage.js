@@ -9,7 +9,7 @@ import Placeholder from '../fetchingPlaceholder';
 const mapStateToProps = state => ({
   user: state.currentUser.user,
   loggedIn: state.currentUser.loggedIn,
-  fetching: state.subzeddit.fetching,
+  loading: state.subzeddit.loading,
   mostPopularGlobal: state.subzeddit.mostPopularGlobal,
   mostPopularUser: state.subzeddit.mostPopularSpecific
 });
@@ -44,7 +44,7 @@ class MainPage extends React.Component {
         <p style={{fontSize: '30px'}}>This is main page of the Zeddit.</p>
         <div>
           <p>Most popular posts:</p>
-          {this.props.fetching
+          {this.props.loading
             ? <Placeholder /> 
             : this.renderPosts(this.props.mostPopularGlobal)
           }

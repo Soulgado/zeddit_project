@@ -10,7 +10,7 @@ import '../../styles/subzedditPage.sass';
 const mapStateToProps = state => ({
   user: state.currentUser.user,
   loggedIn: state.currentUser.loggedIn,
-  subzeddit: state.subzeddit.subzeddit       // use array to store open subzeddits
+  subzeddit: state.subzeddit.subzeddit    
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -18,8 +18,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 function SubzedditPage(props) {
-  // should populate posts in subzeddit request
-  // or request single subzeddit and its posts here
   const { title } = useParams();  // get title from url
   const [subzeddit, setSubzeddit] = useState(props.subzeddit);
   const { url, path } = useRouteMatch();

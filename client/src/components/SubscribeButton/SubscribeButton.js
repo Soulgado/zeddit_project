@@ -33,7 +33,7 @@ class SubscribeButton extends React.Component {
   handleClick() {
     this.props.changeSubscriptionStatus(
       this.props.user,
-      this.props.subzeddit,
+      this.props.subzeddit.title,
       this.state.isSubscribed
       )
     this.setState({

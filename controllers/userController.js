@@ -131,7 +131,7 @@ exports.unsubscribe_from_subzeddit = [
 }]
 
 exports.get_user_subscriptions = [
-  body('id').trim().toInt().isInt(), // change after id type
+  param('id').trim().isInt(), // change after id type
 
   (req, res) => {
   const errors = validationResult(req);
@@ -144,10 +144,12 @@ exports.get_user_subscriptions = [
   db.any(
     `
     SELECT 
+      sub.id subscription_status,
       sub.subscriber,
       sub.subzeddit,
       subzeddit.title,
       subzeddit.creation_date,
+      subzeddit.subscriptions,
       creator.username
     FROM subzeddit_subscriptions sub 
     LEFT JOIN subzeddits subzeddit ON sub.subzeddit = subzeddit.id

@@ -10,7 +10,7 @@ const Placeholder = () => {
         height={'10%'}
         width={'10%'}
         className='loading-animation'/>
-      <p>Fetching the data</p>
+      <p>Loading...</p>
     </div>
   )
 }

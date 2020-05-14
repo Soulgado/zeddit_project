@@ -104,7 +104,7 @@ exports.post_detail = [
       post.downvotes,
       post.type,
       post.updated,
-      post.comments,
+      post.comments comments_num,
       creator.username,
       subzeddit.title subzeddit_title,
       user_rating.rating
@@ -176,6 +176,7 @@ exports.post_comment = [
       }
     // first get post object =>
     // create and add comment to the post
+    console.log(req.body.user, req.body.content);
     db.tx('insert-comment', async t => {
       await t.none('UPDATE posts SET comments = comments + 1 WHERE id = $1', req.body.post);
       const post = await t.one('SELECT id FROM posts WHERE id = $1', req.body.post);
@@ -184,7 +185,7 @@ exports.post_comment = [
         VALUES($1, $2, $3, $4, $5)
         RETURNING id, author, content, creation_time, parent_post, parent_comment`,
         [
-          req.body.user.id,
+          req.body.user,
           req.body.content,
           new Date(),
           post.id,
@@ -208,7 +209,7 @@ exports.post_comment = [
   
 exports.rate_post = [
   body('user').trim().notEmpty(),
-  body('user_rating').trim().notEmpty().isInt(),
+  body('user_rating').trim().notEmpty().isInt().toInt(),
   body('post').trim().notEmpty().isInt(),
   (req, res) => {
     const errors = validationResult(req);
@@ -219,10 +220,11 @@ exports.rate_post = [
         })
       }
     const { user, user_rating, post } = req.body;
+    
     db.tx('rate-post', async t => {
       // get existing entry on post rating from user
       // update or create based on result
-      const rating = await t.oneOrNone('SELECT * FROM posts_rating WHERE user_id = $1 AND post = $2', [user.id, post]);
+      const rating = await t.oneOrNone('SELECT * FROM posts_rating WHERE user_id = $1 AND post = $2', [user, post]);
       if (rating) {
         if (user_rating === rating.rating) return;
         else {
@@ -252,7 +254,7 @@ exports.rate_post = [
         }
         return t.none(`INSERT INTO posts_rating(id, user_id, post, rating)
           VALUES($1, $2, $3, $4)`,
-          [id, user.id, post, user_rating]);
+          [id, user, post, user_rating]);
       }
     })
       .then(() => {

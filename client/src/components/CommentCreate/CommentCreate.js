@@ -12,7 +12,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return {
     postComment: (comment) => dispatch(
       postComment(
-        stateProps.user,
+        stateProps.user.id,
         comment,
         ownProps.post))
   }

@@ -3,11 +3,15 @@ const apiMiddleware = store => next => action => {
     return next(action);
   }
 
-  // begin fetching
-  store.dispatch({
-    type: 'FETCHING',
-    payload: null
-  })
+  // for loading placeholder
+  if (action.meta.loading) {
+    // not every action requires loading placeholder
+    store.dispatch({
+      type: 'LOADING',
+      payload: null
+    });
+  }
+  
 
   const {url} = action.meta;
   const fetchOptions = Object.assign({}, action.meta);

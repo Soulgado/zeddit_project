@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import CommentCreateForm from '../CommentCreate/CommentCreate';
@@ -9,7 +9,7 @@ import '../../styles/postPage.sass';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
-  posts: state.post.posts,
+  post: state.post.post,
   loggedIn: state.currentUser.loggedIn
 });
 
@@ -22,58 +22,48 @@ function PostPage(props) {
   // specific component for comment body
   // comments and post don't show on the first load
   const { post_id, post_title } = useParams();  // title of the post
-  const [thisPost, setPost] = useState('');
 
   useEffect(() => {
-    let currPost;
-    if (props.posts.length !== 0) {
-      currPost = props.posts.find(value => {
-        return value.title === post_title && value.id === parseInt(post_id);
-      });
-    }
-    if (!currPost) {
-      props.getPost(post_id, props.user); 
-    } else {
-      setPost(currPost);
-    }
-  }, [props.posts, props, post_id, post_title]);
-
+    props.getPost(post_id, props.user); 
+  }, [post_id, post_title]);
 
   return (
     <div className='post-page-wrapper'>
-      <VoteButtons className='post-page-vote' post={thisPost} />
+      <VoteButtons className='post-page-vote' post={props.post} />
       <div className='post-general-wrapper'>
-        <h2>{thisPost.title}</h2>
+        <h2>{props.post.title}</h2>
         <div className='post-info'>
           <p>
-            {thisPost.updated 
+            {props.post.updated 
               ? 'Updated '
               : 'Posted '
             }  
-            by {thisPost.username} on {thisPost.creation_date}</p>
-          <p>{thisPost.comments} comments</p>
+            by {props.post.username} on {props.post.creation_date}</p>
+          <p>{props.post.comments_num} comments</p>
         </div>
         <div className='post-content'>
-          <p>{thisPost.content}</p>
+          {props.post.type === 'image'
+            ? <img src={`/static/images/${props.post.filename}`} alt='post content'></img>
+            : <p>{props.post.content}</p>}
         </div>
-        {props.loggedIn && thisPost.username === props.user.username 
+        {props.loggedIn && props.post.username === props.user.username 
           ? <Link to={{
               pathname: '/edit_post',
               state: {
-                post: thisPost
+                post: props.post
               }
             }}>
               <button type='button'>Edit post</button>
             </Link>
           : null}
         {props.loggedIn
-          ? <CommentCreateForm post={thisPost.id} />
+          ? <CommentCreateForm post={props.post.id} />
           : null}
         <div className='post-comments'>
           <p>Comments:</p>
-            {!thisPost.comments
+            {!props.post.comments
               ? <span>No comment yet.</span>
-              : <CommentsList comments={thisPost.comments} />
+              : <CommentsList comments={props.post.comments} />
               }
         </div>
       </div>

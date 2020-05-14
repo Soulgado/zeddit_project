@@ -5,7 +5,8 @@ import CommentCreateForm from '../CommentCreate/CommentCreate';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
-  loggedIn: state.currentUser.loggedIn
+  loggedIn: state.currentUser.loggedIn,
+  post: state.post.post
 })
 
 class Comment extends React.Component {
@@ -50,7 +51,7 @@ class Comment extends React.Component {
             : ''}
           {formActive 
             // get post from redux store or pass props ?
-            ? <CommentCreateForm />
+            ? <CommentCreateForm post={this.props.post}/>
             : ''}
         </div>
       </div>

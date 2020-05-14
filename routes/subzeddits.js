@@ -46,8 +46,6 @@ router.post('/post/rate', post_controller.rate_post);
 
 router.post('/comment/create', post_controller.post_comment);
 
-router.post('/post/rate_post', post_controller.rate_post);
-
 router.post('/comment/rate_comment', comment_controller.rate_comment);
 
 router.post('/edit_post', post_controller.edit_post);

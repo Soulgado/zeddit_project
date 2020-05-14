@@ -29,7 +29,7 @@ function VoteButtons(props) {
     }
     setRating(1);
     setUpvotes(upvotes + 1);
-    props.votePost(props.post, props.user, 1);
+    props.votePost(props.post, props.user.id, 1);
   }
 
   function onDownvote() {
@@ -39,7 +39,7 @@ function VoteButtons(props) {
     } 
     setRating(-1);
     setDownvotes(downvotes + 1);
-    props.votePost(props.post, props.user, -1);
+    props.votePost(props.post, props.user.id, -1);
   }
 
   return (

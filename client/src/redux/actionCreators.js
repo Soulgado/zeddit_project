@@ -39,6 +39,7 @@ export const createSubzeddit = (formData) => ({
   payload: 0,
   meta: {
     type: 'api',
+    loading: true,
     url: '/api/sz/create',
     method: 'POST',
     body: JSON.stringify(formData),
@@ -47,6 +48,11 @@ export const createSubzeddit = (formData) => ({
     }
   }
 });
+
+export const resetCreationSuccess = () => ({
+  type: types.RESET_CREATION_SUCCESS,
+  payload: null
+})
 
 export const getSubzedditsList = (user) => ({
   type: types.GET_SUBZEDDITS,
@@ -134,7 +140,7 @@ export const getUserSubscriptions = user => ({
   type: types.GET_USER_SUBSCRIPTIONS,
   meta: {
     type: 'api',
-    url: `/api/users/${user.id}/subscriptions`
+    url: `/api/users/${user}/subscriptions`
   }
 });
 
@@ -182,25 +188,14 @@ export const getDownvotedPosts = user => ({
   }
 });
 
-export const getMostPopularDefault = (user) => {
-  if (!user) {
-    return {
-      type: types.GET_MOST_POPULAR_DEFAULT,
-      meta: {
-        type: 'api',
-        url: '/api/sz/most_popular_default?user=0'
-      }
-    }
-  } else {
-    return {
-      type: types.GET_MOST_POPULAR_DEFAULT,
-      meta: {
-        type: 'api',
-        url: `/api/sz/most_popular_default?user=${user.id}`
-      }
-    }
+export const getMostPopularDefault = user => ({
+  type: types.GET_MOST_POPULAR_DEFAULT,
+  meta: {
+    type: 'api',
+    loading: true,
+    url: `/api/sz/most_popular_default?user=${user ? user.id : '0'}`
   }
-};
+});
 
 export const getSubzedditTitles = () => ({
   type: types.GET_SUBZEDDITS_TITLES,

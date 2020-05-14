@@ -16,7 +16,7 @@ const mapDispatchToProps = dispatch => ({
 class SubscriptionsList extends React.Component {
   componentDidMount() {
     // get subscriptions
-    this.props.getUserSubscriptions(this.props.user);
+    this.props.getUserSubscriptions(this.props.user.id);
   }
 
   render() {

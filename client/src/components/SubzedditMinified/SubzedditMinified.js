@@ -8,7 +8,7 @@ const mapStateToProps = state => ({
   loggedIn: state.currentUser.loggedIn
 });
 
-const SubzedditMinified = ({ user, loggedIn, subzeddit }) => {
+const SubzedditMinified = ({ loggedIn, subzeddit }) => {
   // subscribe button doesn't receive change text
   return (
     <li>
@@ -19,7 +19,7 @@ const SubzedditMinified = ({ user, loggedIn, subzeddit }) => {
         <p>Created {subzeddit.creation_date} by {subzeddit.username}</p>
         <p>{subzeddit.subscriptions} subscribers</p>
         {loggedIn 
-          ? <SubscribeButton subzeddit={subzeddit.title} />
+          ? <SubscribeButton subzeddit={subzeddit} />
           : ''}
       </div>
     </li>
