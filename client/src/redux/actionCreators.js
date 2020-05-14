@@ -12,8 +12,14 @@ export const createAccount = (formData) => ({
     body: JSON.stringify(formData),
     headers: {
       'Content-Type': 'application/json'
-    }
+    },
+    loading: true
   }
+});
+
+export const resetRegistrationSuccess = () => ({
+  type: types.RESET_REGISTRATION_SUCCESS,
+  payload: null
 });
 
 export const login = (user) => ({
@@ -26,7 +32,8 @@ export const login = (user) => ({
     body: JSON.stringify(user),
     headers: {
       'Content-Type': 'application/json'
-    }
+    },
+    loading: true
   }
 });
 

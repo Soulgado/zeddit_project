@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import './App.css';
 import './styles/navigation.sass';
 import './styles/form.sass';
-import SignInForm from './components/SignIn/SignInForm';
-import SignUpForm from './components/SignUp/SignUpForm';
-import SubzedditCreateForm from './components/SubzedditCreate/SubzedditCreate';
+import SignInPage from './components/SignInPage/SignInPage';
+import SignUpPage from './components/SignUpPage/SignUpPage';
+import SubzedditCreatePage from './components/SubzedditCreatePage/SubzedditCreatePage';
 import SubzedditList from './components/SubzedditList/SubzedditList';
 import SubzedditPage from './components/SubzedditPage/SubzedditPage';
 import MainNavigation from './components/MainNavigation/MainNavigation';
@@ -30,11 +30,11 @@ class App extends React.Component {
         <main>
             <Switch>
               <Route exact path='/' component={MainPage} />
-              <Route path='/create_subzeddit' component={SubzedditCreateForm} />
+              <Route path='/create_subzeddit' component={SubzedditCreatePage} />
               <Route path='/sz/:title' component={SubzedditPage} />
               <Route path='/sz' component={SubzedditList} />
-              <Route path='/login' component={SignInForm} />}
-              <Route path='/register' component={SignUpForm} />
+              <Route path='/login' component={SignInPage} />}
+              <Route path='/register' component={SignUpPage} />
               <Route path='/profile/:username' component={UserProfile} />
               <Route path='/edit_post' component={PostEditPage} />
               <Route page='/submit_post' component={PostCreatePage} />

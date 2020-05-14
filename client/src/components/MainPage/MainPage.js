@@ -36,6 +36,7 @@ class MainPage extends React.Component {
 
   componentDidMount() {
     this.props.getMostPopularGlobal(this.props.user)
+    console.log(this.props.user);
   }
 
   render() {

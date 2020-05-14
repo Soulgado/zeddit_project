@@ -1,3 +1,5 @@
+import * as types from './types';
+
 const apiMiddleware = store => next => action => {
   if (!action.meta || action.meta.type !== 'api') {
     return next(action);
@@ -7,8 +9,7 @@ const apiMiddleware = store => next => action => {
   if (action.meta.loading) {
     // not every action requires loading placeholder
     store.dispatch({
-      type: 'LOADING',
-      payload: null
+      type: types.LOADING,
     });
   }
   
@@ -24,7 +25,11 @@ const apiMiddleware = store => next => action => {
       });
       delete newAction.meta;
       store.dispatch(newAction);
+      store.dispatch({
+        type: types.END_LOADING,
+      })
     })
+  
 }
 
 export default apiMiddleware;

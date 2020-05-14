@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createAccount } from '../../redux/actionCreators';
 
@@ -14,7 +13,6 @@ function SignUpForm(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confPass, setConfPass] = useState('');
-  let history = useHistory();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -25,8 +23,6 @@ function SignUpForm(props) {
       email: email
     }
     props.signUp(formData);
-    // redirect to success/failure page?
-    history.goBack();
   }
 
   return (
