@@ -1,7 +1,8 @@
 import * as types from '../types';
 
 export const initialState = {
-  post: {}
+  post: {},
+  commentCreationFlag: false
 }
 
 export const reducer = (state=initialState, action) => {
@@ -11,9 +12,15 @@ export const reducer = (state=initialState, action) => {
     case types.GET_POST:
       return {...state, post: action.payload.data};
     case types.POST_COMMENT:
-      return {...state};
+      if (action.payload.result === 'success') {
+        return {...state, commentCreationFlag: true}
+      } else {
+        return state;
+      }
     case types.EDIT_POST:
       return {...state, post: action.payload.data}
+    case types.RESET_COMMENT_CREATION_FLAG:
+      return {...state, commentCreationFlag: false}
     default: 
       return state;
   }

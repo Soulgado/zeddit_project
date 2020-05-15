@@ -4,7 +4,7 @@ const { body, validationResult } = require('express-validator');
 
 exports.rate_comment = [
   body('user').trim().notEmpty(),
-  body('user_rating').trim().notEmpty().isInt(),
+  body('user_rating').trim().notEmpty().isInt().toInt(),
   body('comment').trim().notEmpty().isInt(),
   (req, res) => {
     const errors = validationResult(req);
@@ -19,7 +19,7 @@ exports.rate_comment = [
     db.tx('rate-comment', async t => {
       // get existing entry on post rating from user
       // update or create based on result
-      const rating = await t.oneOrNone('SELECT * FROM comments_rating WHERE user_id = $1 AND comment = $2', [user.id, comment]);
+      const rating = await t.oneOrNone('SELECT * FROM comments_rating WHERE user_id = $1 AND comment = $2', [user, comment]);
       if (rating) {
         if (user_rating === rating.rating) return;
         else {
@@ -49,7 +49,7 @@ exports.rate_comment = [
         }
         return t.none(`INSERT INTO comments_rating(id, user_id, comment, rating)
           VALUES($1, $2, $3, $4)`,
-          [id, user.id, comment, user_rating]);
+          [id, user, comment, user_rating]);
       }
     })
       .then(() => {

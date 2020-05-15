@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  voteComment: (comment, user, rating) => dispatch(voteComment(comment.id, user, rating)) 
+  voteComment: (comment, user, rating) => dispatch(voteComment(comment.id, user.id, rating)) 
 });
 
 function CommentVoteButtons(props) {
@@ -32,7 +32,7 @@ function CommentVoteButtons(props) {
     }
     setRating(1);
     setUpvotes(upvotes + 1);
-    props.votePost(props.comment, props.user, 1);
+    props.voteComment(props.comment, props.user, 1);
   }
 
   function onDownvote() {
@@ -42,7 +42,7 @@ function CommentVoteButtons(props) {
     } 
     setRating(-1);
     setDownvotes(downvotes + 1);
-    props.votePost(props.comment, props.user, -1);
+    props.voteComment(props.comment, props.user, -1);
   }
 
   return (

@@ -117,18 +117,22 @@ export const getPost = (post, user) => {
   return request;
 }
 
-export const postComment = (user, content, post) => ({
+export const postComment = (user, content, post, parent_comment) => ({
   type: types.POST_COMMENT,
   meta: {
     type: 'api',
     url: '/api/sz/comment/create',
     method: 'POST',
-    body: JSON.stringify({user, content, post}),
+    body: JSON.stringify({user, content, post, parent_comment}),
     headers: {
       'Content-Type': 'application/json'
     }
   }
 });
+
+export const resetCommentCreationFlag = () => ({
+  type: types.RESET_COMMENT_CREATION_FLAG
+})
 
 export const votePost = (post, user, user_rating) => ({
   type: types.VOTE_POST,

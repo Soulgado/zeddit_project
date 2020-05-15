@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import VoteButtons from '../VoteButtons/VoteButtons';
+import PostPreview from '../PostPreview/PostPreview';
 
 class PostMinified extends React.Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class PostMinified extends React.Component {
     return (
       <div className='post-mini-wrapper'>
         <VoteButtons post={post} />
+        <PostPreview type={post.type} />
         <div className='post-mini-content-wrapper'>
           <div className='post-mini-title'>
             <Link to={`/sz/${post.subzeddit_title}/${post.id}/${post.title}`}>

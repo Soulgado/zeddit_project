@@ -9,7 +9,7 @@ import Placeholder from '../fetchingPlaceholder';
 const mapStateToProps = state => ({
   user: state.currentUser.user,
   loggedIn: state.currentUser.loggedIn,
-  loading: state.subzeddit.loading,
+  loading: state.loading.loading,
   mostPopularGlobal: state.subzeddit.mostPopularGlobal,
   mostPopularUser: state.subzeddit.mostPopularSpecific
 });
@@ -36,7 +36,6 @@ class MainPage extends React.Component {
 
   componentDidMount() {
     this.props.getMostPopularGlobal(this.props.user)
-    console.log(this.props.user);
   }
 
   render() {

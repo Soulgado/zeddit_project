@@ -6,25 +6,26 @@ const mapStateToProps = state => ({
   user: state.currentUser.user
 });
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { dispatch } = dispatchProps;
+const mapDispatchToProps = dispatch => ({
+  postComment: (user, comment, post, parent) => dispatch(
+    postComment(user, comment, post, parent)
+  )
+});
 
-  return {
-    postComment: (comment) => dispatch(
-      postComment(
-        stateProps.user.id,
-        comment,
-        ownProps.post))
-  }
-}
-
-// doesn't fetch created content until page reload 
 function CommentCreateForm(props) {
   const [comment, setComment] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.postComment(comment);
+    if (comment === '') return; // show error
+    props.postComment(
+      props.user.id,
+      comment,
+      props.post,
+      props.parent ? props.parent.id : null);
+    if (props.handleClick) {
+      props.handleClick();
+    }
   }
 
   return (
@@ -42,6 +43,5 @@ function CommentCreateForm(props) {
 
 export default connect(
   mapStateToProps,
-  null,
-  mergeProps
+  mapDispatchToProps
 )(CommentCreateForm);

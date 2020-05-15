@@ -26,7 +26,7 @@ class Comment extends React.Component {
   }
 
   render() {
-    const { comment, loggedIn } = this.props;
+    const { comment, loggedIn, post } = this.props;
     let { formActive } = this.state;
     return (
       <div
@@ -50,14 +50,16 @@ class Comment extends React.Component {
               </div>
             : ''}
           {formActive 
-            // get post from redux store or pass props ?
-            ? <CommentCreateForm post={this.props.post}/>
+            ? <CommentCreateForm
+                parent={comment}
+                post={post.id}
+                handleClick={this.handleClick}
+              />
             : ''}
         </div>
       </div>
     )
   }
-  
 }
 
 export default connect(

@@ -11,13 +11,11 @@ const mapStateToProps = state => ({
 class SubzedditCreatePage extends React.Component {
 
   render() {
-    const { loading, loggedIn, history } = this.props;
+    const { loading } = this.props;
 
     return (
       <div>
-        {loggedIn
-          ? history.goBack()
-          : loading 
+        {loading 
             ? <Placeholder />
             : <SignInForm />}
       </div>
