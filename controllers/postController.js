@@ -97,6 +97,7 @@ exports.post_detail = [
         `SELECT 
       post.id,
       post.title,
+      post.creator,
       post.content,
       post.creation_date,
       post.filename,
@@ -116,12 +117,14 @@ exports.post_detail = [
       const comments = await t.any(
         `SELECT 
         comment.id,
+        comment.author,
         comment.content,
 				comment.creation_time,
 				comment.parent_comment,
         comment.level,
         comment.upvotes,
         comment.downvotes,
+        comment.updated,
         author.username,
         rating.rating
       FROM comments comment
@@ -374,3 +377,53 @@ exports.edit_post = [
       })
   }
 ];
+
+exports.delete_post = [
+  body('user').trim().notEmpty(),
+  body('post').trim().notEmpty().isInt(),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+          result: 'error',
+          errors: errors.array()
+        })
+      }
+    db.tx('check user and delete post', async t => {
+      const post = await t.one(`SELECT creator FROM posts WHERE id = $1`, req.body.post);
+      if (post.creator !== req.body.user) {
+        return 'Wrong user';
+      }
+      return t.one(
+        `UPDATE posts
+        SET title = '[deleted]',
+        content = '[deleted]',
+        filename = null,
+        type = 'text'
+        WHERE id = $1
+        RETURNING *
+        `, req.body.post
+      )
+    })
+    .then(data => {
+      if (data === 'Wrong user') {
+        res.status(400).json({
+          result: 'error',
+          errors: 'Wrong user'
+        })
+      } else {
+        res.json({
+          result: 'success',
+          data
+        })
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(400).json({
+        result: 'error',
+        errors: error
+      })
+    })
+  }
+]

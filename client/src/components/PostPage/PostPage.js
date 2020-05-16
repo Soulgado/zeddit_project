@@ -6,6 +6,7 @@ import VoteButtons from '../VoteButtons/VoteButtons';
 import CommentsList from '../CommentsList/CommentsList';
 import { 
   getPost,
+  deletePost,
   resetCommentCreationFlag
 } from '../../redux/actionCreators';
 import '../../styles/postPage.sass';
@@ -19,6 +20,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getPost: (post, user) => dispatch(getPost(post, user)),
+  deletePost: (user, post) => dispatch(deletePost(user, post)),
   resetFlag: () => dispatch(resetCommentCreationFlag())
 });
 
@@ -34,6 +36,13 @@ class PostPage extends React.Component {
       this.props.getPost(post_id, this.props.user);
       this.props.resetFlag();
     }
+  }
+
+  handleDeleteClick = () => {
+    this.props.deletePost(
+      this.props.user.id,
+      this.props.post.id
+    )
   }
 
   render() {
@@ -58,14 +67,17 @@ class PostPage extends React.Component {
               : <p>{post.content}</p>}
           </div>
           {loggedIn && post.username === user.username 
-            ? <Link to={{
-                pathname: '/edit_post',
-                state: {
-                  post: post
-                }
-              }}>
-                <button type='button'>Edit post</button>
-              </Link>
+            ? <div>
+                <Link to={{
+                  pathname: '/edit_post',
+                  state: {
+                    post: post
+                  }
+                }}>
+                  <button type='button'>Edit post</button>
+                </Link>
+                <button type='button' onClick={this.handleDeleteClick}>Delete post</button>
+              </div>
             : null}
           {loggedIn
             ? <CommentCreateForm post={post.id} />
@@ -81,8 +93,6 @@ class PostPage extends React.Component {
       </div>
     )
   }
-
- 
 }
 
 export default connect(

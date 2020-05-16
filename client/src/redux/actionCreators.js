@@ -134,6 +134,32 @@ export const resetCommentCreationFlag = () => ({
   type: types.RESET_COMMENT_CREATION_FLAG
 })
 
+export const editComment = (user, comment, content) => ({
+  type: types.EDIT_COMMENT,
+  meta: {
+    type: 'api',
+    url: '/api/sz/comment/edit_comment',
+    method: 'POST',
+    body: JSON.stringify({ user, comment, content }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+});
+
+export const deleteComment = (user, comment) => ({
+  type: types.DELETE_COMMENT,
+  meta: {
+    type: 'api',
+    url: '/api/sz/comment/delete_comment',
+    method: 'DELETE',
+    body: JSON.stringify({user, comment}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+})
+
 export const votePost = (post, user, user_rating) => ({
   type: types.VOTE_POST,
   meta: {
@@ -228,6 +254,19 @@ export const editPost = (user, post, formData) => ({
     }
   }
 });
+
+export const deletePost = (user, post) => ({
+  type: types.DELETE_POST,
+  meta: {
+    type: 'api',
+    method: 'DELETE',
+    url: '/api/sz/post/delete_post',
+    body: JSON.stringify({user, post}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+})
 
 export const voteComment = (comment, user, user_rating) => ({
   type: types.VOTE_COMMENT,

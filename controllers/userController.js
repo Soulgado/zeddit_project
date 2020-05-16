@@ -189,6 +189,9 @@ exports.get_upvoted_posts = [
       post.creation_date,
       post.upvotes,
       post.downvotes,
+      post.filename,
+      post.type,
+      post.updated,
       creator.username,
       subzeddit.title subzeddit_title
     FROM posts_rating rated
@@ -226,12 +229,7 @@ exports.get_downvoted_posts = [
     }
     db.any(
       `SELECT 
-      post.id,
-      post.title,
-      post.content,
-      post.creation_date,
-      post.upvotes,
-      post.downvotes,
+      post.*,
       creator.username,
       subzeddit.title subzeddit_title
     FROM posts_rating rated
@@ -255,3 +253,40 @@ exports.get_downvoted_posts = [
       })
   }
 ];
+
+exports.get_created_posts = [
+  param('user').trim().notEmpty(),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        result: 'error',
+        errors: errors.array()
+      })
+    }
+    db.any(
+      `SELECT 
+        post.*,
+        creator.username,
+        subzeddit.title subzeddit_title
+      FROM posts post
+      LEFT JOIN users creator ON post.creator = creator.id,
+      LEFT JOIN subzeddits subzeddit ON post.subzeddit = subzeddit.id
+      WHERE post.creator = $1
+      `, req.params.user
+    )
+    .then(data => {
+      res.json({
+        result: 'success',
+        data
+      })
+    })
+    .catch(error => {
+      console.log(error);
+      res.json({
+        result: 'error',
+        errors: error
+      })
+    })
+  }
+]

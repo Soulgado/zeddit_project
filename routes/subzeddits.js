@@ -48,7 +48,13 @@ router.post('/comment/create', post_controller.post_comment);
 
 router.post('/comment/rate_comment', comment_controller.rate_comment);
 
+router.post('/comment/edit_comment', comment_controller.edit_comment);
+
+router.delete('/comment/delete_comment', comment_controller.delete_comment);
+
 router.post('/edit_post', post_controller.edit_post);
+
+router.delete('/post/delete_post', post_controller.delete_post);
 
 router.get('/subscribe_status?', subzeddit_controller.get_subscription_info);
 

@@ -65,3 +65,101 @@ exports.rate_comment = [
       })
   }
 ];
+
+exports.edit_comment = [
+  body('user').trim().notEmpty(),
+  body('comment').trim().notEmpty(),
+  body('content').trim().notEmpty(),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        result: 'error',
+        errors: errors.array()
+      })
+    }
+    db.tx('edit comment', async t => {
+      const comment = await t.one('SELECT author FROM comments WHERE id = $1', req.body.comment);
+      if (comment.author !== req.body.user) {
+        return "Wrong user"
+      }
+      return t.one(
+        `UPDATE comments
+        SET 
+          content = $1,
+          updated = true
+        WHERE id = $2
+        RETURNING *`,
+        [req.body.content, req.body.comment]
+      )
+    })
+      .then(data => {
+        if (data === 'Wrong user') {
+          res.status(400).json({
+            result: 'error',
+            errors: 'Wrong user'
+          })
+        } else {
+          res.json({
+            result: 'success',
+            data
+          })
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(400).json({
+          result: 'error',
+          errors: error
+        })
+    })
+  }
+];
+
+exports.delete_comment = [
+  body('user').trim().notEmpty(),
+  body('comment').trim().notEmpty(),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        result: 'error',
+        errors: errors.array()
+      })
+    }
+    db.tx('delete comment', async t => {
+      const comment = await t.one('SELECT author FROM comments WHERE id = $1', req.body.comment);
+      if (comment.author !== req.body.user) {
+        return "Wrong user"
+      }
+      return t.one(
+        `UPDATE comments
+        SET 
+          content = '[deleted]'
+        WHERE id = $1
+        RETURNING *`,
+        req.body.comment
+      )
+    })
+      .then(data => {
+        if (data === 'Wrong user') {
+          res.status(400).json({
+            result: 'error',
+            errors: 'Wrong user'
+          })
+        } else {
+          res.json({
+            result: 'success',
+            data
+          })
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(400).json({
+          result: 'error',
+          errors: error
+        })
+    })
+  }
+];

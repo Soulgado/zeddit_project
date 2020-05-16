@@ -17,8 +17,26 @@ export const reducer = (state=initialState, action) => {
       } else {
         return state;
       }
+    case types.EDIT_COMMENT: 
+      if (action.payload.result === 'success') {
+        return {...state, commentCreationFlag: true}
+      } else {
+        return state;
+      }
+    case types.DELETE_COMMENT:
+      if (action.payload.result === 'success') {
+        return {...state, commentCreationFlag: true}
+      } else {
+        return state;
+      }
     case types.EDIT_POST:
       return {...state, post: action.payload.data}
+    case types.DELETE_POST:
+      if (action.payload.result === 'success') {
+        return {...state, commentCreationFlag: true}
+      } else {
+        return state;
+      }
     case types.RESET_COMMENT_CREATION_FLAG:
       return {...state, commentCreationFlag: false}
     default: 
