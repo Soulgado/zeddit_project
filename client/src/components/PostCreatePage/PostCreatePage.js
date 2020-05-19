@@ -5,7 +5,7 @@ import PostCreateImageForm from '../PostCreateImage/PostCreateImage';
 import { getSubzedditTitles } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
-  subzeddits: state.subzedditsTitles
+  subzeddits: state.subzeddit.subzedditsTitles
 });
 
 const mapDispatchToProps = dispatch => ({

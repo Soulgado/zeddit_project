@@ -29,14 +29,12 @@ function CommentCreateForm(props) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor='comment'>Comment:</label>
-      <input
+    <form className='comment-form' onSubmit={handleSubmit}>
+      <textarea
         id='comment'
-        type='text'
         value={comment}
         onChange={e => setComment(e.target.value)} />
-      <button type='submit'>Post comment</button>
+      <button type='submit' className='comment-create-button'>Post comment</button>
     </form>
   )
 }

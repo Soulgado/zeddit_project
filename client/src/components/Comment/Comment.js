@@ -91,23 +91,25 @@ class Comment extends React.Component {
               : <p>{commentText}</p>
             }
           </div>
-          {loggedIn
-            ? <div className='comment-buttons'>
+          <div className='comment-buttons'>
+            {loggedIn
+              ? 
                 <button
                   type='button'
                   onClick={this.handleClick}
                 >{createFormActive ? 'Hide' : 'Reply'}
                 </button>
-              </div>
-            : ''}
-          {loggedIn && Number(comment.author) === user.id 
-            ? <div>
-                <button type='button' onClick={this.handleEditClick}>
-                  {editFormActive ? 'Apply changes' : 'Edit'}
-                </button>
-                <button type='button' onClick={this.handleDeleteClick}>Delete Comment</button>
-              </div>
-            : null}
+              
+              : ''}
+            {loggedIn && Number(comment.author) === user.id 
+              ? <>
+                  <button type='button' onClick={this.handleEditClick}>
+                    {editFormActive ? 'Apply changes' : 'Edit'}
+                  </button>
+                  <button type='button' onClick={this.handleDeleteClick}>Delete Comment</button>
+                </>
+              : null}
+          </div>
           {createFormActive 
             ? <CommentCreateForm
                 parent={comment}

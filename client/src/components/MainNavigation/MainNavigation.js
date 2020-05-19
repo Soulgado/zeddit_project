@@ -2,58 +2,85 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../redux/actionCreators';
+import SubscriptionsListNav from '../SubscriptionsListNav/SubscriptionsListNav';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
-  loggedIn: state.currentUser.loggedIn
+  loggedIn: state.currentUser.loggedIn,
 });
 
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logout())
+  logout: () => dispatch(logout()),
 });
 
-function MainNavigation(props) {
-  function checkLoggedIn() {
-    if (!props.loggedIn) {
+class MainNavigation extends React.Component {
+  checkLoggedIn() {
+    if (!this.props.loggedIn) {
       return (
         <ul>
           <li className='navigation-element'>
-            <Link to='/register'>Create Account</Link>
+            <Link to='/register'>
+              <button type='button'>
+                Create Account
+              </button>
+            </Link>
           </li>
           <li className='navigation-element'>
-            <Link to='/login'>Sign In</Link>
+            <Link to='/login'>
+              <button type='button'>
+                Sign In
+              </button>
+            </Link>
           </li>
         </ul>
       )
     } else {
       return (
         <ul>
-          <li className='welcome-message'><span>Hello, {props.user.username}!</span></li>
-          <li className='navigation-element'><Link to={`/profile/${props.user.username}`}>Profile</Link></li>
-          <li className='navigation-element'><button type='button' onClick={props.logout}>Sign out</button></li>
+          <li className='welcome-message'>
+            <span>Hello, {this.props.user.username}!</span>
+          </li>
+          <li className='navigation-element'>
+            <Link to={`/profile/${this.props.user.username}`}>
+              <button type='button'>
+                Profile
+              </button>
+            </Link>
+          </li>
+          <li className='navigation-element'>
+              <button type='button' onClick={this.props.logout}>Sign out</button>
+          </li>
         </ul>
       )
     }
   }
 
-  return (
-    <nav>
-      <ul>
-        <li className='navigation-element'>
-          <Link to='/'>Main Page</Link>
-        </li>
-        {props.loggedIn
-          ? (<li className='navigation-element'>
-              <Link to='/create_subzeddit'>Create Subzeddit</Link>
-            </li>)
-          : ''}
-        <li className='navigation-element'>
-          <Link to='/sz'>All subzeddits</Link>
-        </li>
-      </ul>
-        {checkLoggedIn()}
-    </nav>
-  )
+  render() {
+    return (
+      <nav>
+        <ul>
+          <li className='navigation-element'>
+            <Link to='/'>
+              <button type='button'>
+                Main Page
+              </button>
+            </Link>
+          </li>
+          {this.props.loggedIn
+            ? <SubscriptionsListNav />
+            : ''}
+          <li className='navigation-element'>
+            <Link to='/sz'>
+              <button type='button'>
+                All subzeddits
+              </button>
+            </Link>
+          </li>
+        </ul>
+          {this.checkLoggedIn()}
+      </nav>
+    )
+  }
 }
 
 export default connect(

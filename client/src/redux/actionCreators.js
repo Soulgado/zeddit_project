@@ -66,6 +66,7 @@ export const getSubzedditsList = (user) => ({
   payload: 0,
   meta: {
     type: 'api',
+    loading: true,
     url: `/api/sz/subzeddits_list?user=${user ? user.id : ''}`
   }
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { 
   getMostPopularDefault
 } from '../../redux/actionCreators';
@@ -35,21 +36,36 @@ class MainPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getMostPopularGlobal(this.props.user)
+    this.props.getMostPopularGlobal(this.props.user);
   }
 
   render() {
     return (
-      <div className='most-popular'>
-        <p style={{fontSize: '30px'}}>This is main page of the Zeddit.</p>
+      <div className='main-page-wrapper'>
+        <div className='most-popular'>
+          <p style={{fontSize: '30px'}}>This is main page of the Zeddit.</p>
+          <div>
+            <p>Most popular posts:</p>
+            {this.props.loading
+              ? <Placeholder /> 
+              : this.renderPosts(this.props.mostPopularGlobal)
+            }
+          </div>
+        </div>
         <div>
-          <p>Most popular posts:</p>
-          {this.props.loading
-            ? <Placeholder /> 
-            : this.renderPosts(this.props.mostPopularGlobal)
-          }
+          <Link to='/create_subzeddit'>
+            <button type='button'>
+              Create Subzeddit
+            </button>
+          </Link>
+          <Link to='/submit_post'>
+            <button type='button'>
+              Submit a new Post
+            </button>
+          </Link>
         </div>
       </div>
+      
     );
   }
 }

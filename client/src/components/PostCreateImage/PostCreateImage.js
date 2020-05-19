@@ -4,7 +4,7 @@ import { createNewImagePost } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
-  loggedIn: state.currentUser.loggedIn,
+  loggedIn: state.currentUser.loggedIn
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -21,6 +21,15 @@ class PostCreateImageForm extends React.Component {
       dropdownActive: false,
       titlesList: []
     }
+  }
+
+  handleDropdownClick = event => {
+    console.log('click');
+    event.stopPropagation();  // avoid submitting form
+    this.setState({
+      subzeddit: event.target.key
+
+    })
   }
 
   onFileChange = event => {
@@ -40,9 +49,8 @@ class PostCreateImageForm extends React.Component {
     const data = new FormData();
     data.append('file', this.state.selectedFile);
     data.append('user', this.props.user.id);
-    data.append('subzeddit', this.props.subzeddit.title);
+    data.append('subzeddit', this.state.subzeddit);
     data.append('title', this.state.title);
-    console.log(data);
     this.props.createImgPost(data);
   }
 
@@ -79,7 +87,7 @@ class PostCreateImageForm extends React.Component {
       <ul className='form-subzeddits-dropdown'>
         {this.state.titlesList.map(subzeddit => {
           return (
-            <li key={subzeddit.title}>
+            <li key={subzeddit.title} onClick={this.handleDropdownClick}>
               {subzeddit.title}
             </li>
           )

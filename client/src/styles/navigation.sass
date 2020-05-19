@@ -1,9 +1,9 @@
 nav 
-  height: 40px
+  height: 50px
   display: flex
   justify-content: space-between
   border-bottom: 1px solid black
-  background-color: #aeaeff
+  background-color: white
   ul 
     height: 100%
     display: flex
@@ -13,31 +13,41 @@ nav
     list-style: none
 
 .navigation-element
-  border-left: 1px solid
-  border-right: 1px solid
-  background-color: #4957ff
   a
     display: inline-block
-    padding: 10px 20px
+    padding: 5px 10px
     color: white
     text-decoration: none
   &:hover
-    background: linear-gradient(#0318ff, #8892ff)
-    cursor: pointer
-    /* background-color: #0e22ff another variant*/
   button
     padding: 10px 20px
-    font-size: 16px
-    background-color: #4957ff
-    color: white
-    border: none
+    font-size: 13px
+    font-weight: bold
+    color: blue
+    border: 2px solid blue
+    border-radius: 10px
     &:hover
-      background: linear-gradient(#0318ff, #8892ff)
+      background: blue
+      color: white
       cursor: pointer
 
 .welcome-message
   margin: auto
   margin-right: 20px
+
+.subscriptions-dropdown
+  height: fit-content
+  flex-direction: column
+  background-color: #dedede
+  border: 1px solid
+  border-radius: 10px
+  li
+    &:hover
+      background-color: #9191fd
+  a
+    color: black
+      
+
     
     
     

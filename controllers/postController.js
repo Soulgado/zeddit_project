@@ -183,9 +183,12 @@ exports.post_comment = [
     db.tx('insert-comment', async t => {
       await t.none('UPDATE posts SET comments = comments + 1 WHERE id = $1', req.body.post);
       const post = await t.one('SELECT id FROM posts WHERE id = $1', req.body.post);
-      const parent_comment_level = await t.one('SELECT level FROM comments WHERE id = $1', parent);
+      let level = 1;
+      if (parent) {
+        const parent_comment_level = await t.one('SELECT level FROM comments WHERE id = $1', parent);
+        level =  parent_comment_level.level + 1;
+      }
       // sent comment_level within body??
-      const level = parent_comment_level ? parent_comment_level.level + 1 : 1;
       return t.one(`INSERT INTO 
         comments(author, content, creation_time, parent_post, parent_comment, level)
         VALUES($1, $2, $3, $4, $5, $6)

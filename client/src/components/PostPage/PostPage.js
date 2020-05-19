@@ -59,7 +59,7 @@ class PostPage extends React.Component {
                 : 'Posted '
               }  
               by {post.username} on {post.creation_date}</p>
-            <p>{post.comments_num} comments</p>
+            
           </div>
           <div className='post-content'>
             {post.type === 'image'
@@ -79,10 +79,12 @@ class PostPage extends React.Component {
                 <button type='button' onClick={this.handleDeleteClick}>Delete post</button>
               </div>
             : null}
-          {loggedIn
-            ? <CommentCreateForm post={post.id} />
-            : null}
+          
+          <p>{post.comments_num} comments</p>
           <div className='post-comments'>
+            {loggedIn
+              ? <CommentCreateForm post={post.id} />
+              : null}
             <p>Comments:</p>
               {!post.comments
                 ? <span>No comment yet.</span>

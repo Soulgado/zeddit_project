@@ -270,7 +270,7 @@ exports.get_created_posts = [
         creator.username,
         subzeddit.title subzeddit_title
       FROM posts post
-      LEFT JOIN users creator ON post.creator = creator.id,
+      LEFT JOIN users creator ON post.creator = creator.id
       LEFT JOIN subzeddits subzeddit ON post.subzeddit = subzeddit.id
       WHERE post.creator = $1
       `, req.params.user
@@ -289,4 +289,5 @@ exports.get_created_posts = [
       })
     })
   }
-]
+];
+
