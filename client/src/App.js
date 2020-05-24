@@ -40,6 +40,9 @@ class App extends React.Component {
               <Route page='/submit_post' component={PostCreatePage} />
             </Switch> 
         </main>
+        <footer>
+          2020, Created with Node.js, Express, React and PostgreSQL.
+        </footer>
       </div>
     )
   }

@@ -1,25 +1,27 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { createNewPost } from '../../redux/actionCreators';
+import { 
+  createNewPost,
+  resetPostFormErrors
+} from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
-  user: state.currentUser.user
+  user: state.currentUser.user,
+  errors: state.post.formErrors
 });
 
-// change to dispatch props
 const mapDispatchToProps = dispatch => ({
-  createPost: (user, formData) => dispatch(createNewPost(user, formData))
-})
+  createPost: (user, formData) => dispatch(createNewPost(user, formData)),
+  resetErrors: () => dispatch(resetPostFormErrors())
+});
 
 function PostCreateForm(props) {
-  // accept different types of content
-  // need subzeddit too
   const { state } = useLocation();
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [subzeddit, setSubzeddit] = useState(state.subzeddit || '');
+  const [subzeddit, setSubzeddit] = useState(state ? state.subzeddit : '');
   const [subzedditsTitles, setTitles] = useState(props.subzeddits);
   const [dropdownActive, setDropdown] = useState(false);
 

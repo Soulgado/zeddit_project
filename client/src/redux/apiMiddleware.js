@@ -13,7 +13,6 @@ const apiMiddleware = store => next => action => {
     });
   }
   
-
   const {url} = action.meta;
   const fetchOptions = Object.assign({}, action.meta);
 

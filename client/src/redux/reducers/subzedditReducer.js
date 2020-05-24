@@ -25,8 +25,6 @@ export const reducer = (state=initialState, action) => {
       return {...state, mostPopularGlobal: action.payload.data}
     case types.GET_SUBZEDDITS_TITLES:
       return {...state, subzedditsTitles: action.payload.data}
-    case 'LOADING':
-      return {...state}
     case types.RESET_CREATION_SUCCESS:
       return {...state, creationSuccess: false};
     default: 

@@ -135,7 +135,8 @@ exports.delete_comment = [
       return t.one(
         `UPDATE comments
         SET 
-          content = '[deleted]'
+          content = '[deleted]',
+          deleted = true
         WHERE id = $1
         RETURNING *`,
         req.body.comment

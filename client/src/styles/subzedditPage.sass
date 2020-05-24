@@ -6,9 +6,11 @@
 
 .post-mini-wrapper
   display: flex
-  margin-top: 10px
+  padding-top: 10px
   padding-bottom: 10px
-  border-bottom: 2px solid
+  border: 1px solid #c5c5c5
+  &:hover
+    border: 1px solid
 
 .post-preview
   width: 60px
@@ -40,21 +42,34 @@
 
 .post-mini-title
   a
-    font-size: 24px
+    font-size: 18px
+    font-weight: bold
     color: black
     text-decoration: none
     &:hover
       text-decoration: underline
 
 .post-mini-info
-  margin: 10px 0
-  font-size: 0.8em
+  margin: 5px 0
+  font-size: 0.7em
   color: grey
   p
     margin: 0
     &:last-child
       font-weight: bold
       margin-top: 5px
+  a
+    font-weight: bold
+    color: black
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+
+.post-mini-user-options
+  display: flex
+  margin: 5px 0
+  > *
+    margin-right: 5px
 
 .upvote-wrapper,
 .downvote-wrapper

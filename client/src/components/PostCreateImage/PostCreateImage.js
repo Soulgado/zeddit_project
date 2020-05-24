@@ -1,14 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createNewImagePost } from '../../redux/actionCreators';
+import { 
+  createNewImagePost,
+  resetPostFormErrors
+} from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
-  loggedIn: state.currentUser.loggedIn
+  loggedIn: state.currentUser.loggedIn,
+  errors: state.post.formErrors
 });
 
 const mapDispatchToProps = dispatch => ({
-  createImgPost: (formData) => dispatch(createNewImagePost(formData))
+  createImgPost: (formData) => dispatch(createNewImagePost(formData)),
+  resetErrors: () => dispatch(resetPostFormErrors())
 })
 
 class PostCreateImageForm extends React.Component {
@@ -28,7 +33,6 @@ class PostCreateImageForm extends React.Component {
     event.stopPropagation();  // avoid submitting form
     this.setState({
       subzeddit: event.target.key
-
     })
   }
 
@@ -79,6 +83,10 @@ class PostCreateImageForm extends React.Component {
       const regex = new RegExp(title, 'gi')
       return subzeddit.title.match(regex);
     })
+  }
+
+  componentWillUnmount()  {
+    this.props.resetErrors();
   }
 
   renderMatches = () => {
@@ -135,6 +143,10 @@ class PostCreateImageForm extends React.Component {
           {this.state.dropdownActive
             ? this.renderMatches()
             : null}
+        </div>
+        <div className='form-errors'>
+          {this.props.errors &&
+            <p>{this.props.errors}</p>}
         </div>
         <button className='form-button' type='submit'>Create Post</button>
       </form>

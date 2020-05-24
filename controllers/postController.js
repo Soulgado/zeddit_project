@@ -9,24 +9,36 @@ const POST_TYPES = {
 
 exports.post_create = [
   body('user').notEmpty(),   // add validation for user
-  body('title').trim().isAscii(),
-  body('content').trim(),  
-  body('subzeddit').trim().notEmpty().isAscii(),
+  body('title')
+    .trim()
+    .notEmpty().withMessage('Title field should not be empty'),
+  body('content')
+    .trim()
+    .notEmpty().withMessage('Content field should not be empty'),  
+  body('subzeddit')
+    .trim()
+    .notEmpty().withMessage('Subzeddit field should not be empty')
+    .isAscii(),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({
         result: 'error',
-        errors: errors.array()
+        errors: errors.array()[0].msg
       })
     }
     // get User => create Post => add Post to Subzeddit and save it
     db.tx('insert-post', async t => {
-      const subzeddit = await t.one('SELECT id FROM subzeddits WHERE title = $1', [req.body.subzeddit]);
+      const subzeddit = await t.oneOrNone('SELECT id FROM subzeddits WHERE title = $1', [req.body.subzeddit]);
       return t.one(`INSERT INTO posts(title, creator, content, creation_date, subzeddit, type)
           VALUES ($1, $2, $3, $4, $5, $6)
           RETURNING id, title, creator, content, creation_date, subzeddit`,
-        [req.body.title, req.body.user.id, req.body.content, new Date(), subzeddit.id, POST_TYPES.text]);
+        [req.body.title,
+        req.body.user,
+        req.body.content,
+        new Date(),
+        subzeddit ? subzeddit.id : 0,
+        POST_TYPES.text]);
     })
       .then(data => {
         res.json({
@@ -35,34 +47,60 @@ exports.post_create = [
         });
       })
       .catch(error => {
-        console.log(error);
+        let msg = '';
+        switch (error.constraint) {
+          case 'Parent subzeddit':
+            msg = 'There is no subzeddit with such title';
+            break;
+          case 'User creator':
+            msg = 'There is no user with such id';
+            break;
+          default:
+            msg = 'Unknown error';
+        }
         res.status(400).json({
-          error: 'error'
+          error: 'error',
+          errors: msg
         });
+        console.log(error);
       });
   }
 ];
 
 exports.post_create_image = [
-  body('title').trim().notEmpty(),
-  body('user').trim().notEmpty().toInt().isInt(),  // change later according to user table
-  body('subzeddit').trim().notEmpty().isAscii(),
+  body('title')
+    .trim()
+    .notEmpty().withMessage('Title field should not be empty'),
+  body('user')
+    .trim()
+    .notEmpty()
+    .toInt()
+    .isInt(),  // change later according to user table
+  body('subzeddit')
+    .trim()
+    .notEmpty().withMessage('Subzeddit field should not be empty')
+    .isAscii(),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
           result: 'error',
-          errors: errors.array()
+          errors: errors.array()[0].msg
         })
       }
     const filename = req.file.filename;
     // save post in database with filename
     db.tx('insert-image-post', async t => {
-      const subzeddit = await t.one('SELECT id FROM subzeddits WHERE title = $1', [req.body.subzeddit]);
+      const subzeddit = await t.oneOrNone('SELECT id FROM subzeddits WHERE title = $1', [req.body.subzeddit]);
       return t.one(`INSERT INTO posts(title, creator, filename, creation_date, subzeddit, type)
           VALUES ($1, $2, $3, $4, $5, $6)
           RETURNING id, title, creator, filename, creation_date, subzeddit`,
-        [req.body.title, Number(req.body.user), filename, new Date(), subzeddit.id, POST_TYPES.image]);
+        [req.body.title,
+        Number(req.body.user),
+        filename,
+        new Date(),
+        subzeddit ? subzeddit.id : 0,
+        POST_TYPES.image]);
     })
       .then(data => {
         res.json({
@@ -71,13 +109,26 @@ exports.post_create_image = [
         });
       })
       .catch(error => {
+        msg = '';
+        // only checks for database errors, add check for general errors
+        switch (error.constraint) {
+          case 'Parent subzeddit':
+            msg = 'There is no subzeddit with such title';
+            break;
+          case 'User creator':
+            msg = 'There is no user with such id';
+            break;
+          default:
+            msg = 'Unknown error';
+        }
         console.log(error);
         res.status(400).json({
-          error: 'error'
+          error: 'error',
+          errors: msg
         });
       });
   }
-]
+];
 
 exports.post_detail = [
   query('user').trim().notEmpty().toInt().isInt(),
@@ -166,15 +217,18 @@ exports.post_detail = [
 ];
 
 exports.post_comment = [
-  body('user').trim().notEmpty(),
-  body('content').trim().notEmpty(),
-
+  body('user')
+    .trim()
+    .notEmpty(),
+  body('content')
+    .trim()
+    .notEmpty().withMessage('Content field should not be empty'),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
           result: 'error',
-          errors: errors.array()
+          errors: errors.array()[0].msg
         })
       }
     const parent = req.body.parent_comment ? req.body.parent_comment : null;
@@ -209,9 +263,24 @@ exports.post_comment = [
         })
       })
       .catch(error => {
+        msg = '';
+        switch(error.constraint) {
+          case 'Comment author':
+            msg = 'There is no user with such id';
+            break;
+          case 'Parent comment':
+            msg = 'There is no comment with such id';
+            break;
+          case 'Parent post':
+            msg = 'There is no post with such id';
+            break;
+          default:
+            msg = 'Unknown error';
+        }
         console.log(error);
         res.json({
-          result: 'error'
+          result: 'error',
+          errors: msg
         })
       })
   }
@@ -230,7 +299,6 @@ exports.rate_post = [
         })
       }
     const { user, user_rating, post } = req.body;
-    
     db.tx('rate-post', async t => {
       // get existing entry on post rating from user
       // update or create based on result
@@ -402,7 +470,8 @@ exports.delete_post = [
         SET title = '[deleted]',
         content = '[deleted]',
         filename = null,
-        type = 'text'
+        type = 'text',
+        deleted = true
         WHERE id = $1
         RETURNING *
         `, req.body.post

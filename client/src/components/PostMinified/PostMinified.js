@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import VoteButtons from '../VoteButtons/VoteButtons';
 import PostPreview from '../PostPreview/PostPreview';
+import CreationTime from '../CreationTime/CreationTime';
 
 class PostMinified extends React.Component {
   constructor(props) {
@@ -32,18 +33,20 @@ class PostMinified extends React.Component {
           </div>
           <div className='post-mini-info'>
             <p>
-              {post.username} - {post.updated 
+              {post.updated 
                 ? 'Updated '
                 : 'Posted '
-              } 
-              {post.creation_date} to <Link
+              } by u/{post.username} 
+              <CreationTime time={post.creation_date} /> to <Link
                 to={`/sz/${post.subzeddit_title}`}>
-                  {post.subzeddit_title}
+                  z/{post.subzeddit_title}
                 </Link>
             </p>
-            <p>{post.comments} comments</p>    
+            <div className='post-mini-user-options'>
+              <button type='button' onClick={this.handleClick}>Details</button>
+              <p>{post.comments} comments</p> 
+            </div>  
           </div>
-          <button type='button' onClick={this.handleClick}>Details</button>
           {this.state.contentActive
             ? <div className='post-mini-content'>
               {post.type === 'image'

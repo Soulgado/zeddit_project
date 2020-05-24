@@ -4,16 +4,28 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 exports.create_account = [
-  body('username').trim().notEmpty().isAscii().isLength({ min: 3}),
-  body('password').trim().notEmpty().isLength({ min: 5, max: 60 }),
-  body('email').trim().notEmpty().isEmail().normalizeEmail(),
-
+  body('username')
+    .trim()
+    .notEmpty().withMessage('Username field should not be empty')
+    .isAscii()
+    .isLength({ min: 3 }).withMessage('Username is too short')
+    .isLength({ max: 60 }).withMessage('Username is too long'),
+  body('password')
+    .trim()
+    .notEmpty().withMessage('Password field should not be empty')
+    .isLength({ min: 5 }).withMessage('Password is too short')
+    .isLength({ max: 60 }).withMessage('Password is too long'),
+  body('email')
+    .trim()
+    .notEmpty().withMessage('E-mail field should not be empty')
+    .isEmail().withMessage('E-mail field should contain valid email address')
+    .normalizeEmail(),
   (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
       result: 'error',
-      errors: errors.array()
+      errors: errors.array()[0].msg
     })
   }
   // check for existing username 
@@ -25,40 +37,71 @@ exports.create_account = [
         res.json({ result: 'success' });
       })
       .catch(error => {
-        res.status(400).json({ result: 'error' });  
+        let msg = ''
+        switch (error.constraint) {
+          case 'Unique username':
+            msg = 'This username already taken';
+            break;
+          default:
+            msg = 'Unknown errors happened, please fill the form fields again'
+        }
+        res.status(400).json({ 
+          result: 'error',
+          errors: msg
+        });  
         console.log(error);
       })
   })
 }]
 
 exports.sign_in = [
-  body('username').trim().notEmpty().isAscii(),
-  body('password').trim().notEmpty().isLength({ min: 5, max: 60 }),
-
+  body('username')
+    .trim()
+    .notEmpty().withMessage('Username field must not be empty')
+    .isAscii(),
+  body('password')
+    .trim()
+    .notEmpty().withMessage('Password field must not be empty')
+    .isLength({ min: 5, max: 60 }),
   (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
       result: 'error',
-      errors: errors.array()
+      errors: errors.array()[0].msg
     })
   }
-  db.one(
+  db.oneOrNone(
     `SELECT * FROM users WHERE username=$1`,
     req.body.username)
     .then(user => {
-      bcrypt.compare(req.body.password, user.password, function(err, result) {
-        if (result) {
-          user.password = req.body.password;
-          res.json({ result: 'success', user });
-        } else {
-          res.json({ result: 'error', errors: 'Wrong password'});
-        }
-      });
+      if (user) {
+        bcrypt.compare(req.body.password, user.password, function(err, result) {
+          if (result) {
+            user.password = req.body.password;
+            res.json({ result: 'success', user });
+          } else {
+            res
+              .status(400)
+              .json({
+                result: 'error',
+                errors: 'Wrong username or password'});
+          }
+        });
+      } else {
+        // if user has not been found
+        return res.status(400).json({
+          result: 'error',
+          errors: 'Wrong username or password'
+        })
+      }
     })
     .catch(error => {
       console.log(error);
-      res.status(400).json({ result: 'error'})
+      res.status(400).json({ 
+        result: 'error',
+        errors: error.message 
+      })
     })
   }]
 

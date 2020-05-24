@@ -6,6 +6,7 @@ import {
 } from '../../redux/actionCreators';
 import PostMinified from '../PostMinified/PostMinified';
 import Placeholder from '../fetchingPlaceholder';
+import '../../styles/mainPage.sass';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
@@ -42,17 +43,16 @@ class MainPage extends React.Component {
   render() {
     return (
       <div className='main-page-wrapper'>
-        <div className='most-popular'>
-          <p style={{fontSize: '30px'}}>This is main page of the Zeddit.</p>
-          <div>
+        <p className='main-page-title' style={{fontSize: '30px'}}>Zeddit</p>
+        <div className='main-page-content'>
+          <div className='most-popular-posts'>
             <p>Most popular posts:</p>
             {this.props.loading
               ? <Placeholder /> 
               : this.renderPosts(this.props.mostPopularGlobal)
             }
           </div>
-        </div>
-        <div>
+          <aside className='main-page-sidebar'>
           <Link to='/create_subzeddit'>
             <button type='button'>
               Create Subzeddit
@@ -63,6 +63,7 @@ class MainPage extends React.Component {
               Submit a new Post
             </button>
           </Link>
+        </aside>
         </div>
       </div>
       

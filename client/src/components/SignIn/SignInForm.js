@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { login } from '../../redux/actionCreators';
+import { 
+  login,
+  resetUserFormErrors
+} from '../../redux/actionCreators';
 import { withLogging } from '../withLogging';
 
 const mapStateToProps = state => ({
-  loggedIn: state.currentUser.loggedIn
+  loggedIn: state.currentUser.loggedIn,
+  errors: state.currentUser.formErrors
 })
 
 const mapDispatchToProps = dispatch => ({
-  signIn: (formData) => dispatch(login(formData))
+  signIn: (formData) => dispatch(login(formData)),
+  resetErrors: () => dispatch(resetUserFormErrors())
 })
 
 function SignInForm(props) {
@@ -47,6 +52,10 @@ function SignInForm(props) {
           required
         />
       </div>
+      <div className='form-errors'>
+          {props.errors &&
+            <p>{props.errors}</p>}
+      </div> 
       <button className='form-button sign-in-button' type='submit'>Sign In</button>
     </form>
   )

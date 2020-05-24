@@ -57,8 +57,11 @@ export const createSubzeddit = (formData) => ({
 });
 
 export const resetCreationSuccess = () => ({
-  type: types.RESET_CREATION_SUCCESS,
-  payload: null
+  type: types.RESET_CREATION_SUCCESS
+});
+
+export const resetUserFormErrors = () => ({
+  type: types.RESET_USER_FORM_ERRORS
 })
 
 export const getSubzedditsList = (user) => ({
@@ -92,7 +95,6 @@ export const createNewPost = (user, formData) => ({
   }
 });
 
-// do not set headers
 export const createNewImagePost = formData => ({
   type: types.CREATE_POST,
   meta: {
@@ -102,6 +104,10 @@ export const createNewImagePost = formData => ({
     body: formData
   }
 });
+
+export const resetPostFormErrors = () => ({
+  type: types.RESET_POST_FORM_ERRORS
+})
 
 export const getPost = (post, user) => {
   let request = {

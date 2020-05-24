@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSubzeddit } from '../../redux/actionCreators';
 
-
 const mapStateToProps = state => ({
   user: state.currentUser.user,
 })
@@ -12,10 +11,10 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class SubzedditCreateForm extends React.Component {
-    handleSubmit = e => {
+  handleSubmit = e => {
     e.preventDefault();
-    const title = this.state.title;
-    const user = this.props.user;
+    const title = this.props.title;
+    const user = this.props.user.id;
     this.props.createSubzeddit({ title, user });
   }
 
