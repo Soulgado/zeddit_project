@@ -7,7 +7,6 @@ exports.subzeddit_create = [
   body('title')
     .trim()
     .notEmpty().withMessage('Title field should not be empty'),
-
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -42,7 +41,7 @@ exports.subzeddit_create = [
         }
         res.status(400).json({
           result: 'error',
-          type: msg
+          errors: msg
         })
         console.log(error);
       })
@@ -103,20 +102,13 @@ exports.get_subzeddit = [
       user = 0
     }
     db.task(async t => {
+      await t.none(`UPDATE subzeddits SET online = online + 1 WHERE title = $1`,
+        req.params.title);
       const subzeddit = await t.one('SELECT * FROM subzeddits WHERE title = $1',
-        [req.params.title]);
+        req.params.title);
       const posts = await t.any(
         `SELECT 
-        post.id,
-        post.title,
-        post.content,
-        post.creation_date,
-        post.upvotes,
-        post.downvotes,
-        post.updated,
-        post.type,
-        post.filename,
-        post.comments,
+        post.*,
         user_rating.rating,
         creator.username
       FROM posts post 
@@ -199,4 +191,4 @@ exports.get_subzeddits_titles = function(req, res) {
       result: 'error'
     })
   })
-}
+};

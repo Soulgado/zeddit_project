@@ -44,15 +44,15 @@ class MainPage extends React.Component {
     return (
       <div className='main-page-wrapper'>
         <p className='main-page-title' style={{fontSize: '30px'}}>Zeddit</p>
-        <div className='main-page-content'>
-          <div className='most-popular-posts'>
+        <div className='main-content'>
+          <div className='posts-list-wrapper'>
             <p>Most popular posts:</p>
             {this.props.loading
               ? <Placeholder /> 
               : this.renderPosts(this.props.mostPopularGlobal)
             }
           </div>
-          <aside className='main-page-sidebar'>
+          <aside className='sidebar-wrapper main-page-sidebar'>
           <Link to='/create_subzeddit'>
             <button type='button'>
               Create Subzeddit

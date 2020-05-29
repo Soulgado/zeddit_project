@@ -4,7 +4,8 @@ export const initialState = {
   userSubscriptions: [],
   userSubscriptionsStatus: {},
   userUpvotedPosts: [],
-  userDownvotedPosts: []
+  userDownvotedPosts: [],
+  userSubmittedPosts: []
 }
 
 export const reducer = (state=initialState, action) => {
@@ -19,6 +20,8 @@ export const reducer = (state=initialState, action) => {
       let { subzeddit, status } = action.payload.data;
       state.userSubscriptionsStatus[subzeddit] = status;
       return { ...state }
+    case types.GET_SUBMITTED_POSTS:
+      return {...state, userSubmittedPosts: action.payload.data}
     default:
       return state;
   }

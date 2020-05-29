@@ -41,6 +41,9 @@ class CommentCreateForm extends React.Component {
       comment,
       post,
       parent ? parent.id : null);
+    this.setState({
+      comment: ''
+    });
     if (this.props.handleClick) {
       this.props.handleClick();
     }
@@ -63,6 +66,7 @@ class CommentCreateForm extends React.Component {
         <textarea
           id='comment'
           value={this.state.comment}
+          placeholder='Write your comment here'
           onChange={this.handleChange} />
         <div className='form-errors'>
           {this.state.errors && 
@@ -70,7 +74,7 @@ class CommentCreateForm extends React.Component {
           {this.props.errors &&
             <p>{this.props.errors}</p>}
         </div> 
-        <button type='submit' className='comment-create-button'>Post comment</button>
+        <button type='submit' className='comment-create-button'>COMMENT</button>
       </form>
     )
   }

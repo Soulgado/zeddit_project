@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createSubzeddit } from '../../redux/actionCreators';
+import { createSubzeddit, resetSubzedditFormErrors } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
+  errors: state.subzeddit.formErrors
 })
 
 const mapDispatchToProps = dispatch => ({
-  createSubzeddit: (formData) => dispatch(createSubzeddit(formData))
+  createSubzeddit: (formData) => dispatch(createSubzeddit(formData)),
+  resetErrors: () => dispatch(resetSubzedditFormErrors())
 })
 
 class SubzedditCreateForm extends React.Component {
@@ -18,8 +20,12 @@ class SubzedditCreateForm extends React.Component {
     this.props.createSubzeddit({ title, user });
   }
 
+  componentWillUnmount() {
+    this.props.resetErrors();
+  }
+
   render() {
-    // ToDo: simplify
+    // ToDo: front-end errors handler
     const { handleChange, title } = this.props;
 
     return (
@@ -32,6 +38,10 @@ class SubzedditCreateForm extends React.Component {
             type='text'
             value={title}
             onChange={handleChange}></input>
+        </div>
+        <div className='form-errors'>
+          {this.props.errors &&
+            <p>{this.props.errors}</p>}
         </div>
         <button className='form-button' type='submit'>Create Subzeddit</button>
       </form>

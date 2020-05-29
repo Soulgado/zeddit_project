@@ -4,13 +4,19 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  /* font-family: 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+  font-family: 'IBM Plex Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #dae0e6;
   /* background: linear-gradient(rgb(255, 255, 255) 50%, rgb(154, 176, 248) 100%) no-repeat; */
   min-height: 100vh;
+}
+
+main {
+  min-height: 85vh;
+  background-color: white
 }
 
 #root {

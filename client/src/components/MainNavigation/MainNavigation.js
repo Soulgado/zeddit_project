@@ -41,7 +41,7 @@ class MainNavigation extends React.Component {
             <span>Hello, {this.props.user.username}!</span>
           </li>
           <li className='navigation-element'>
-            <Link to={`/profile/${this.props.user.username}`}>
+            <Link to={`/profile/${this.props.user.username}/settings`}>
               <button type='button'>
                 Profile
               </button>

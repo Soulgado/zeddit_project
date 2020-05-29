@@ -60,6 +60,10 @@ export const resetCreationSuccess = () => ({
   type: types.RESET_CREATION_SUCCESS
 });
 
+export const resetSubzedditFormErrors = () => ({
+  type: types.RESET_SUBZEDDIT_FORM_ERRORS
+})
+
 export const resetUserFormErrors = () => ({
   type: types.RESET_USER_FORM_ERRORS
 })
@@ -288,6 +292,52 @@ export const voteComment = (comment, user, user_rating) => ({
   }
 });
 
+export const editUsername = (formData) => ({
+  type: types.UPDATE_USERNAME,
+  meta: {
+    type: 'api',
+    url: '/api/users/update_username',
+    method: 'PUT',
+    body: JSON.stringify(formData),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+});
+
+export const editPassword = (username, password, new_password) => ({
+  type: types.UPDATE_PASSWORD,
+  meta: {
+    type: 'api',
+    url: '/api/users/update_password',
+    method: 'PUT',
+    body: JSON.stringify({ username, password, new_password }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+});
+
+export const deleteAccount = (username, password) => ({
+  type: types.DELETE_ACCOUNT,
+  meta: {
+    type: 'api',
+    url: '/api/users/delete_user',
+    method: 'DELETE',
+    body: JSON.stringify({ username, password }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+});
+
+export const getSubmittedPosts = user => ({
+  type: types.GET_SUBMITTED_POSTS,
+  meta: {
+    type: 'api',
+    url: `/api/users/${user.id}/created_posts`
+  }
+})
 
 
 

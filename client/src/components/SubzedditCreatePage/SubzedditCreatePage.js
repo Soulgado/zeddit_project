@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { resetCreationSuccess } from '../../redux/actionCreators';
+import { 
+  resetCreationSuccess,
+  resetSubzedditFormErrors
+} from '../../redux/actionCreators';
 import Placeholder from '../fetchingPlaceholder';
 import SubzedditCreateForm from '../SubzedditCreate/SubzedditCreate';
 
@@ -11,7 +14,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  resetCreationSuccess: () => dispatch(resetCreationSuccess())
+  resetCreationSuccess: () => dispatch(resetCreationSuccess()),
+  resetErrors: () => dispatch(resetSubzedditFormErrors())
 })
 
 class SubzedditCreatePage extends React.Component {
@@ -25,7 +29,8 @@ class SubzedditCreatePage extends React.Component {
   handleChange = e => {
     this.setState({
       title: e.target.value
-    })
+    });
+    this.props.resetErrors();
   }
 
   componentWillUnmount() {

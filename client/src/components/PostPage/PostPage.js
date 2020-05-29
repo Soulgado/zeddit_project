@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import CommentCreateForm from '../CommentCreate/CommentCreate';
 import VoteButtons from '../VoteButtons/VoteButtons';
 import CommentsList from '../CommentsList/CommentsList';
+import CreationTime from '../CreationTime/CreationTime';
 import { 
   getPost,
   deletePost,
@@ -58,7 +59,7 @@ class PostPage extends React.Component {
                 ? 'Updated '
                 : 'Posted '
               }  
-              by {post.username} on {post.creation_date}</p>
+              by {post.username} <CreationTime time={post.creation_date} /></p>
             
           </div>
           <div className='post-content'>

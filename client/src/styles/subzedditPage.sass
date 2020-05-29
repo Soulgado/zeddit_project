@@ -1,3 +1,17 @@
+.subzeddit-header
+  display: flex
+  margin: 20px 0 20px 10px
+  padding: 10px 0 10px 10px
+  text-align: left
+  background-color: white
+  border: 1px solid #c5c5c5
+  h1
+    margin: 0
+    margin-right: 20px
+  
+.subzeddit-page-wrapper
+  background-color: #dae0e6
+
 .posts-list
   list-style: none
   text-align: left
@@ -9,19 +23,27 @@
   padding-top: 10px
   padding-bottom: 10px
   border: 1px solid #c5c5c5
+  &:first-child
+    border-top-left-radius: 10px
+    border-top-right-radius: 10px
   &:hover
     border: 1px solid
 
 .post-preview
-  width: 60px
+  width: 100px
   height: 60px
+  background-color: #e0e0e0
+  border-radius: 10px
   img
-    width: 60px
-    height: 60px
+    width: 40px
+    height: 40px
+    display: block
+    margin: 10px auto
     
 .post-vote-wrapper
   margin-right: 15px
   margin-left: 10px
+  font-size: 14px
   .post-rating
     margin: 5px 0
     text-align: center
@@ -50,14 +72,12 @@
       text-decoration: underline
 
 .post-mini-info
-  margin: 5px 0
+  margin-bottom: 5px
+  margin-top: 1px
   font-size: 0.7em
   color: grey
   p
     margin: 0
-    &:last-child
-      font-weight: bold
-      margin-top: 5px
   a
     font-weight: bold
     color: black
@@ -68,6 +88,7 @@
 .post-mini-user-options
   display: flex
   margin: 5px 0
+  font-weight: bold
   > *
     margin-right: 5px
 
@@ -77,10 +98,9 @@
   align-items: center
 
 .vote-button
-  width: 25px
-  height: 25px
+  width: 16px
+  height: 16px
   margin-right: 5px
-  font-size: 20px
   background-color: inherit
   border: none
   background: url('./down-arrow.png') no-repeat
@@ -100,14 +120,49 @@
   transform: rotate(180deg)
 
 .post-mini-content
-  padding: 10px
   margin-top: 10px
   width: 80%
-  border: 2px solid
-  border-radius: 10px
-  background-color: #8080804a
+  font-size: 16px
+  color: black
   img
     width: 80%
     height: auto
 
+.user-options-element
+  display: flex
+  &:first-child
+    &:hover
+      cursor: pointer
+      background-color: #e0e0e0
+  *
+    margin-left: 4px
     
+.expand-icon
+  height: 10px
+  width: 10px
+  background: url('./icon-expand-arrow.png') no-repeat
+  background-size: cover
+
+.collapse-icon
+  height: 10px
+  width: 10px
+  background: url('./icon-collapse-arrow.png') no-repeat
+  background-size: cover
+
+.comments-icon
+  height: 12px
+  width: 12px
+  background: url('./icons-comments.png') no-repeat
+  background-size: cover
+
+.subzeddit-sidebar
+  button
+    width: 80%
+    height: 35px
+    font-size: 1em
+    font-variant: all-small-caps
+    color: white
+    background-color: blue
+    &:hover
+      color: blue
+      background-color: white

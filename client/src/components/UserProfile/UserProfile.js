@@ -1,9 +1,12 @@
 import React from 'react';
-import { Link, Switch, Route } from 'react-router-dom';
+import { NavLink, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import SubscriptionsList from '../SubscriptionsList/SubscriptionsList';
 import UserUpvotedPosts from '../UserUpvotedPosts/UserUpvotedPosts';
 import UserDownvotedPosts from '../UserDownvotedPosts/UserDonwvotedPosts';
+import UserProfilePage from '../UserProfilePage/UserProfilePage';
+import UserSubmittedPosts from '../UserSubmittedPosts/UserSubmittedPosts';
+import '../../styles/user-profile.sass';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
@@ -15,36 +18,43 @@ class UserProfile extends React.Component {
     const { url, path } = this.props.match;
     return (
       <div className='user-profile'>
-        <ul>
+        <ul className='user-profile-nav'>
           <li>
-            <Link to={`${url}/`}>
+            <NavLink to={`${url}/settings`} activeClassName='nav-selected'>
               Profile page
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to={`${url}/subscriptions`}>
+            <NavLink to={`${url}/subscriptions`} activeClassName='nav-selected'>
               Subscriptions
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to={`${url}/upvoted`}>
+            <NavLink to={`${url}/submitted`} activeClassName='nav-selected'>
+              Submitted
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={`${url}/upvoted`} activeClassName='nav-selected'>
               Upvoted
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to={`${url}/downvoted`}>
+            <NavLink to={`${url}/downvoted`} activeClassName='nav-selected'>
               Downvoted
-            </Link>
+            </NavLink>
           </li>
+
         </ul>
         <Switch>
-          <Route exact path={`${path}/`}>
-            <div>
-              <p>Username: {this.props.user.username}</p>
-            </div>
+          <Route exact path={`${path}/settings`}>
+            <UserProfilePage user={this.props.user}/>
           </Route>
           <Route path={`${path}/subscriptions`}>
             <SubscriptionsList />
+          </Route>
+          <Route path={`${path}/submitted`}>
+            <UserSubmittedPosts />
           </Route>
           <Route path={`${path}/upvoted`}>
             <UserUpvotedPosts />

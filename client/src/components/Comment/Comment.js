@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import CommentVoteButtons from '../CommentVoteButtons/CommentVoteButtons';
 import CommentCreateForm from '../CommentCreate/CommentCreate';
+import CreationTime from '../CreationTime/CreationTime';
 import { editComment, deleteComment } from '../../redux/actionCreators';
 
 const mapStateToProps = state => ({
@@ -83,7 +84,7 @@ class Comment extends React.Component {
         <CommentVoteButtons comment={comment} />
         <div className='comment-main'>
           <div className='comment-info'> 
-            <span>{comment.username} - {comment.updated ? 'Updated' : 'Posted'} {comment.creation_time}</span>
+            <span>{comment.username} - {comment.updated ? 'Updated' : 'Posted'} <CreationTime time={comment.creation_time} /></span>
           </div>
           <div className='comment-content'>
             {editFormActive 

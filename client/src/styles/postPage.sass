@@ -1,16 +1,20 @@
 .post-page-wrapper
   display: flex
   align-items: flex-start
+  width: 73%
+  min-height: 100vh
+  margin-left: 10px
+  background-color: white
+  border: 1px solid #c5c5c5
+  border-radius: 10px
   .post-vote-wrapper
     margin: 0
     margin-right: 10px
 
 .post-general-wrapper
-  width: 80%
   display: flex
   flex-direction: column
   text-align: left
-  border-right: 1px solid grey
   h3
     height: 50px
     border-bottom: 1px solid grey
@@ -22,14 +26,9 @@
         
 
 .post-content
-  margin-bottom: 10px
-  border: 2px solid grey
-  border-radius: 10px
-  background-color: #c7c7c7
   img 
     width: 80%
     height: auto
-    padding: 10px 0 10px 10px
 
 .comment-info
   font-size: 0.7em
@@ -41,18 +40,36 @@
   padding-bottom: 10px
   border-bottom: 1px solid grey
 
+.comment-content
+  p 
+    margin: 10px 0
+
 .comment-form
+  height: 150px
   margin: 0
+  margin-top: 10px
+  box-shadow: none
+  border: none
   textarea
-    width: 90%
     height: 90%
-    max-width: 90%
+    min-width: 100%
+    max-width: 100%
     max-height: 90%
     font-size: 1em
   button
-    margin-top: 15px
+    margin: 10px 0 5px 5px
     width: 30%
     height: 15%
     color: white
     background-color: green
     border-color: green
+
+.comment-buttons
+  button
+    margin-right: 10px
+    color: grey
+    background-color: transparent
+    border: none
+    border-radius: 5px
+    &:hover
+      background-color: #c5c5c5

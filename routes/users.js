@@ -18,6 +18,12 @@ router.get('/:id/downvoted', user_controller.get_downvoted_posts);
 
 router.get('/:user/created_posts', user_controller.get_created_posts);
 
+router.put('/update_username', user_controller.edit_name);
+
+router.put('/update_password', user_controller.edit_password);
+
+router.delete('/delete_user', user_controller.delete_account);
+
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });

@@ -36,16 +36,25 @@ class PostMinified extends React.Component {
               {post.updated 
                 ? 'Updated '
                 : 'Posted '
-              } by u/{post.username} 
-              <CreationTime time={post.creation_date} /> to <Link
+              } by u/
+              {post.username} <CreationTime time={post.creation_date} /> to <Link
                 to={`/sz/${post.subzeddit_title}`}>
                   z/{post.subzeddit_title}
                 </Link>
             </p>
             <div className='post-mini-user-options'>
-              <button type='button' onClick={this.handleClick}>Details</button>
-              <p>{post.comments} comments</p> 
-            </div>  
+              <div className='user-options-element' onClick={this.handleClick}>
+                <div
+                  className={`user-options-icon 
+                  ${this.state.contentActive 
+                    ? 'collapse-icon'
+                    : 'expand-icon'}`}></div>
+                <div>Details</div>
+              </div>
+              <div className='user-options-element'>
+                <div className='user-options-icon comments-icon'></div>
+                <div>{post.comments} comments</div> 
+              </div>  
           </div>
           {this.state.contentActive
             ? <div className='post-mini-content'>
@@ -56,6 +65,7 @@ class PostMinified extends React.Component {
             : ''}
         </div>
       </div>
+    </div>
     )
   }
 }

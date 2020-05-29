@@ -6,7 +6,8 @@ export const initialState = {
   subzeddit: {},
   mostPopularGlobal: [],
   mostPopularSpecific: [],
-  creationSuccess: false
+  creationSuccess: false,
+  formErrors: undefined
 }
 
 export const reducer = (state=initialState, action) => {
@@ -17,8 +18,7 @@ export const reducer = (state=initialState, action) => {
       if (action.payload.result === 'success') {
         return {...state, creationSuccess: true};
       } else {
-        return {...state}; // + errors
-      }
+        return {...state, formErrors: action.payload.errors};      }
     case types.SUBZEDDIT_DETAIL:
       return {...state, subzeddit: action.payload.data}
     case types.GET_MOST_POPULAR_DEFAULT:
@@ -27,6 +27,8 @@ export const reducer = (state=initialState, action) => {
       return {...state, subzedditsTitles: action.payload.data}
     case types.RESET_CREATION_SUCCESS:
       return {...state, creationSuccess: false};
+    case types.RESET_SUBZEDDIT_FORM_ERRORS:
+      return {...state, formErrors: undefined}
     default: 
       return state;
   }
