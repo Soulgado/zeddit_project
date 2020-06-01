@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import './App.css';
 import './styles/navigation.sass';
 import './styles/form.sass';
 import SignInPage from './components/SignInPage/SignInPage';
@@ -14,6 +13,7 @@ import UserProfile from './components/UserProfile/UserProfile';
 import PostCreatePage from './components/PostCreatePage/PostCreatePage';
 import MainPage from './components/MainPage/MainPage';
 import PostEditPage from './components/PostEditPage/PostEditPage';
+import UserDeleteForm from './components/UserDeleteForm/UserDeleteForm';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
@@ -37,7 +37,8 @@ class App extends React.Component {
               <Route path='/register' component={SignUpPage} />
               <Route path='/profile/:username' component={UserProfile} />
               <Route path='/edit_post' component={PostEditPage} />
-              <Route page='/submit_post' component={PostCreatePage} />
+              <Route path='/submit_post' component={PostCreatePage} />
+              <Route path='/delete_account' component={UserDeleteForm} />
             </Switch> 
         </main>
         <footer>

@@ -49,11 +49,11 @@ class PostMinified extends React.Component {
                   ${this.state.contentActive 
                     ? 'collapse-icon'
                     : 'expand-icon'}`}></div>
-                <div>Details</div>
+                <div className='user-options-name'>Details</div>
               </div>
               <div className='user-options-element'>
                 <div className='user-options-icon comments-icon'></div>
-                <div>{post.comments} comments</div> 
+                <div className='user-options-name'>{post.comments} comments</div> 
               </div>  
           </div>
           {this.state.contentActive

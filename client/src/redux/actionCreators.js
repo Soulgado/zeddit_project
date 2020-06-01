@@ -82,6 +82,7 @@ export const getSubzeddit = (title, user) => ({
   type: types.SUBZEDDIT_DETAIL,
   meta: {
     type: 'api',
+    loading: true,
     url: `/api/sz/subzeddit/${title}?user=${user ? user.id : ''}`
   }
 });
@@ -91,6 +92,7 @@ export const createNewPost = (user, formData) => ({
   meta: {
     type: 'api',
     url: '/api/sz/post/create',
+    loading: true,
     method: 'POST',
     body: JSON.stringify({...formData, user}),
     headers: {
@@ -103,6 +105,7 @@ export const createNewImagePost = formData => ({
   type: types.CREATE_POST,
   meta: {
     type: 'api',
+    loading: true,
     url: '/api/sz/post/create_img',
     method: 'POST',
     body: formData
@@ -143,7 +146,7 @@ export const postComment = (user, content, post, parent_comment) => ({
 
 export const resetCommentCreationFlag = () => ({
   type: types.RESET_COMMENT_CREATION_FLAG
-})
+});
 
 export const editComment = (user, comment, content) => ({
   type: types.EDIT_COMMENT,
@@ -224,6 +227,7 @@ export const getUpvotedPosts = user => ({
   type: types.GET_USER_UPVOTED_POSTS,
   meta: {
     type: 'api',
+    loading: true,
     url: `/api/users/${user.id}/upvoted`
   }
 }); 
@@ -232,6 +236,7 @@ export const getDownvotedPosts = user => ({
   type: types.GET_USER_DOWNVOTED_POSTS,
   meta: {
     type: 'api',
+    loading: true,
     url: `/api/users/${user.id}/downvoted`
   }
 });
@@ -305,13 +310,13 @@ export const editUsername = (formData) => ({
   }
 });
 
-export const editPassword = (username, password, new_password) => ({
+export const editPassword = (formData) => ({
   type: types.UPDATE_PASSWORD,
   meta: {
     type: 'api',
     url: '/api/users/update_password',
     method: 'PUT',
-    body: JSON.stringify({ username, password, new_password }),
+    body: JSON.stringify(formData),
     headers: {
       'Content-Type': 'application/json'
     }
@@ -335,7 +340,21 @@ export const getSubmittedPosts = user => ({
   type: types.GET_SUBMITTED_POSTS,
   meta: {
     type: 'api',
+    loading: true,
     url: `/api/users/${user.id}/created_posts`
+  }
+});
+
+export const editEmail = (formData) => ({
+  type: types.UPDATE_EMAIL,
+  meta: {
+    type: 'api',
+    url: '/api/users/update_email',
+    method: 'POST',
+    body: JSON.stringify(formData),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   }
 })
 

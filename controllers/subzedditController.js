@@ -7,6 +7,9 @@ exports.subzeddit_create = [
   body('title')
     .trim()
     .notEmpty().withMessage('Title field should not be empty'),
+  body('description')
+    .trim()
+    .notEmpty().withMessage('Description field should not be empty'),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -18,8 +21,8 @@ exports.subzeddit_create = [
     // first get User and then create subzeddit
     // check for user auth
     db.one(
-      'INSERT INTO subzeddits(title, creator, creation_date) VALUES($1, $2, $3) RETURNING id, title, creator, creation_date',
-      [req.body.title, req.body.user, new Date()]
+      'INSERT INTO subzeddits(title, creator, creation_date, description) VALUES($1, $2, $3, $4) RETURNING id, title, creator, creation_date',
+      [req.body.title, req.body.user, new Date(), req.body.description]
     )
       .then(subzeddit => {
         res.json({
@@ -102,10 +105,14 @@ exports.get_subzeddit = [
       user = 0
     }
     db.task(async t => {
-      await t.none(`UPDATE subzeddits SET online = online + 1 WHERE title = $1`,
-        req.params.title);
-      const subzeddit = await t.one('SELECT * FROM subzeddits WHERE title = $1',
-        req.params.title);
+      const subzeddit = await t.one(
+        `SELECT 
+        subzeddit.*,
+        subscription.id subscription_status
+        FROM subzeddits subzeddit
+        LEFT JOIN subzeddit_subscriptions subscription ON subscription.subzeddit = subzeddit.id AND subscription.subscriber = $1
+        WHERE title = $2`,
+        [user, req.params.title]);
       const posts = await t.any(
         `SELECT 
         post.*,

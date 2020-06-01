@@ -52,7 +52,7 @@ class SubscriptionsListNav extends React.Component {
     return (
       <li className='navigation-element'>
         <button type='button' onClick={this.handleClick}>
-          My Subzeddits
+          My Communities
         </button>
         {this.state.dropdownActive
           ? this.renderSubscriptions()

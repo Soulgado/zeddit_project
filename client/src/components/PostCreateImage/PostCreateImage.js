@@ -4,6 +4,7 @@ import {
   createNewImagePost,
   resetPostFormErrors
 } from '../../redux/actionCreators';
+import Dropdown from '../PostFormDropdown/PostFormDropdown';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
@@ -26,14 +27,8 @@ class PostCreateImageForm extends React.Component {
       dropdownActive: false,
       titlesList: []
     }
-  }
 
-  handleDropdownClick = event => {
-    console.log('click');
-    event.stopPropagation();  // avoid submitting form
-    this.setState({
-      subzeddit: event.target.key
-    })
+    this.handleDropdownClick = this.handleDropdownClick.bind(this);
   }
 
   onFileChange = event => {
@@ -73,9 +68,12 @@ class PostCreateImageForm extends React.Component {
   }
 
   handleSubzedditBlur = () => {
-    this.setState({
-      dropdownActive: false
-    })
+    // timeout required to catch dropdown before its unmounting
+    setTimeout(() => {
+      this.setState({
+        dropdownActive: false
+      });
+    }, 100);
   }
 
   matchedSubzeddits = (title) => {
@@ -89,25 +87,16 @@ class PostCreateImageForm extends React.Component {
     this.props.resetErrors();
   }
 
-  renderMatches = () => {
-    // specific component is required
-    return (
-      <ul className='form-subzeddits-dropdown'>
-        {this.state.titlesList.map(subzeddit => {
-          return (
-            <li key={subzeddit.title} onClick={this.handleDropdownClick}>
-              {subzeddit.title}
-            </li>
-          )
-        })}
-      </ul>
-    )
+  handleDropdownClick = event => {
+    this.setState({
+      subzeddit: event.target.textContent
+    });
   }
 
   render() {
     return (
       <form
-        action='/api/sz/post/create_img'
+        className='post-form'
         method='post'
         encType='multipart/form-data'
         onSubmit={this.onSubmitHandler}
@@ -141,7 +130,9 @@ class PostCreateImageForm extends React.Component {
             onFocus={this.handleSubzedditFocus}
             onBlur={this.handleSubzedditBlur}/>
           {this.state.dropdownActive
-            ? this.renderMatches()
+            ? <Dropdown
+                titlesList={this.state.titlesList}
+                handleClick={this.handleDropdownClick} />
             : null}
         </div>
         <div className='form-errors'>

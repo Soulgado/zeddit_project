@@ -2,21 +2,25 @@ import React from 'react';
 import { connect } from 'react-redux'; 
 import { getSubmittedPosts } from '../../redux/actionCreators';
 import PostMinified from '../PostMinified/PostMinified';
+import {withLoading} from '../withLoading';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
   loggedIn: state.currentUser.loggedIn,
-  postsList: state.userAction.userSubmittedPosts
+  postsList: state.userAction.userSubmittedPosts,
+  loading: state.loading.loading
 });
 
 const mapDispatchToProps = dispatch => ({
-  getSubmittedPosts: (user) => dispatch(getSubmittedPosts(user))
+  fetchData: (user) => dispatch(getSubmittedPosts(user))
 });
 
 class UserSubmittedPosts extends React.Component {
+  /*
   componentDidMount() {
     this.props.getSubmittedPosts(this.props.user);
   }
+  */
 
   render() {
     let { postsList } = this.props; 
@@ -39,7 +43,9 @@ class UserSubmittedPosts extends React.Component {
   }
 }
 
+const UserSubmittedPostsLoaded = withLoading(UserSubmittedPosts);
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UserSubmittedPosts);
+)(UserSubmittedPostsLoaded);

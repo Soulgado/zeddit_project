@@ -43,7 +43,6 @@ class MainPage extends React.Component {
   render() {
     return (
       <div className='main-page-wrapper'>
-        <p className='main-page-title' style={{fontSize: '30px'}}>Zeddit</p>
         <div className='main-content'>
           <div className='posts-list-wrapper'>
             <p>Most popular posts:</p>

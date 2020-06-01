@@ -22,13 +22,14 @@ class SubzedditCreatePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: ''
+      title: '',
+      description: ''
     }
   }
 
   handleChange = e => {
     this.setState({
-      title: e.target.value
+      [e.target.id]: e.target.value
     });
     this.props.resetErrors();
   }

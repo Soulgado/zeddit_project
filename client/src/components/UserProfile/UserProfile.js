@@ -10,14 +10,16 @@ import '../../styles/user-profile.sass';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
-  loggedIn: state.currentUser.loggedIn
+  loggedIn: state.currentUser.loggedIn,
+  loading: state.loading.loading
 });
 
 class UserProfile extends React.Component {
   render() {
     const { url, path } = this.props.match;
     return (
-      <div className='user-profile'>
+      <div className='user-profile-wrapper'>
+        <div className='user-profile'>
         <ul className='user-profile-nav'>
           <li>
             <NavLink to={`${url}/settings`} activeClassName='nav-selected'>
@@ -46,6 +48,7 @@ class UserProfile extends React.Component {
           </li>
 
         </ul>
+        <div className='profile-content-wrapper'>   
         <Switch>
           <Route exact path={`${path}/settings`}>
             <UserProfilePage user={this.props.user}/>
@@ -63,6 +66,8 @@ class UserProfile extends React.Component {
             <UserDownvotedPosts />
           </Route>
         </Switch>
+        </div>
+        </div>
       </div>
     )
   }

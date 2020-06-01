@@ -7,12 +7,14 @@ import {
 import PostPage from '../PostPage/PostPage';
 import PostMinified from '../PostMinified/PostMinified';
 import SubscribeButton from '../SubscribeButton/SubscribeButton';
+import Placeholder from '../fetchingPlaceholder';
 import '../../styles/subzedditPage.sass';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
   loggedIn: state.currentUser.loggedIn,
-  subzeddit: state.subzeddit.subzeddit    
+  subzeddit: state.subzeddit.subzeddit,
+  loading: state.loading.loading    
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -26,30 +28,38 @@ class SubzedditPage extends React.Component {
   }
 
   render() {
-    const { subzeddit, loggedIn } = this.props;
+    const { subzeddit, loggedIn, loading } = this.props;
     const {title} = this.props.match.params;
     const { url, path } = this.props.match;
     return (
       <div className='subzeddit-page-wrapper'>
         <div className='subzeddit-header'>
-          <h1>z/{subzeddit.title}</h1>
-          {loggedIn
-            ? <SubscribeButton subzeddit={title} />
-            : null}
-          </div>
+        {loading
+          ? null
+          : <div className='subzeddit-header-content'>
+              <h1>z/{subzeddit.title}</h1>
+              {loggedIn
+                ? <SubscribeButton subzeddit={subzeddit} />
+                : null
+              }
+            </div> 
+          }
+        </div>
         <div className='main-content'>
           <Switch>
             <Route exact path={`${url}/`}>
-              <div className='posts-list-wrapper'>
-                <div className='posts-list'>
-                  {!subzeddit.posts
-                    ? <p>No posts yet, want to add the first?</p>
-                    : subzeddit.posts.map(post => {
-                      return <PostMinified key={post.id} post={post} />
-                    })
-                  }
-                </div>
-              </div>
+              {loading 
+                ? <Placeholder />
+                : <div className='posts-list-wrapper'>
+                    <div className='posts-list'>
+                      {!subzeddit.posts
+                        ? <p>No posts yet, want to add the first?</p>
+                        : subzeddit.posts.map(post => {
+                            return <PostMinified key={post.id} post={post} />
+                          })
+                      }
+                    </div>
+                  </div>}
             </Route>
             <Route
               path={`${path}/:post_id/:post_title`}

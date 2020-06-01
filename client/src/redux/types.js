@@ -30,6 +30,7 @@ export const UPDATE_USERNAME = 'UPDATE_USERNAME';
 export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
 export const GET_SUBMITTED_POSTS = 'GET_SUBMITTED_POSTS';
+export const UPDATE_EMAIL = 'UPDATE_EMAIL';
 
 // loading types
 export const LOADING = 'LOADING';

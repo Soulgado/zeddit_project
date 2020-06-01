@@ -62,7 +62,7 @@ class MainNavigation extends React.Component {
           <li className='navigation-element'>
             <Link to='/'>
               <button type='button'>
-                Main Page
+                ZEDDIT
               </button>
             </Link>
           </li>

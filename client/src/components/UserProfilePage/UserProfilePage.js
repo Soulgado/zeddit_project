@@ -1,29 +1,38 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import UsernameEditForm from '../UsernameEditForm/UsernameEditForm';
 import PasswordEditForm from '../PasswordEditForm/PasswordEditForm';
+import EmailEditForm from '../EmailEditForm/EmailEditForm';
 
 class UserProfilePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       usernameFormActive: false,
-      passwordFormActive: false
+      passwordFormActive: false,
+      emailFormActive: false
     }
 
     this.toggleUsernameForm = this.toggleUsernameForm.bind(this);
     this.togglePasswordForm = this.togglePasswordForm.bind(this);
+    this.toggleEmailForm = this.toggleEmailForm.bind(this);
   }
 
   toggleUsernameForm() {
     this.setState({
       usernameFormActive: !this.state.usernameFormActive
     });
-
   }
 
   togglePasswordForm() {
     this.setState({
       passwordFormActive: !this.state.passwordFormActive
+    });
+  }
+
+  toggleEmailForm() {
+    this.setState({
+      emailFormActive: !this.state.emailFormActive
     });
   }
 
@@ -38,7 +47,8 @@ class UserProfilePage extends React.Component {
       </div>
       <div className='user-settings-elem'>
         <p>Currrent email address: {this.props.user.email}</p>
-        <button type='button'>Change</button>
+        <button type='button' onClick={this.toggleEmailForm}>Change</button>
+        {this.state.emailFormActive && <EmailEditForm />}
       </div>
       <div className='user-settings-elem'>
         <p>Password</p>
@@ -46,7 +56,9 @@ class UserProfilePage extends React.Component {
         {this.state.passwordFormActive && <PasswordEditForm />}
       </div>
       <div>
-        <button type='button'>Delete account</button>
+        <Link to={`/delete_account`}>
+          <button className='delete-button' type='button'>Delete account</button>
+        </Link>
       </div>
       </>
   

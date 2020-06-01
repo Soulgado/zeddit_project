@@ -17,7 +17,8 @@ class SubzedditCreateForm extends React.Component {
     e.preventDefault();
     const title = this.props.title;
     const user = this.props.user.id;
-    this.props.createSubzeddit({ title, user });
+    const description = this.props.description;
+    this.props.createSubzeddit({ title, user, description });
   }
 
   componentWillUnmount() {
@@ -26,7 +27,7 @@ class SubzedditCreateForm extends React.Component {
 
   render() {
     // ToDo: front-end errors handler
-    const { handleChange, title } = this.props;
+    const { handleChange, title, description } = this.props;
 
     return (
       <form onSubmit={this.handleSubmit}>
@@ -38,6 +39,13 @@ class SubzedditCreateForm extends React.Component {
             type='text'
             value={title}
             onChange={handleChange}></input>
+        </div>
+        <div className='form-element'>
+          <label htmlFor='description'>Description:</label>
+          <textarea
+            id='description'
+            value={description}
+            onChange={handleChange}></textarea>
         </div>
         <div className='form-errors'>
           {this.props.errors &&

@@ -16,7 +16,7 @@ body {
 
 main {
   min-height: 85vh;
-  background-color: white
+  background-color: #dae0e6;
 }
 
 #root {
@@ -47,15 +47,16 @@ ul {
 }
 
 button {
-  color: blue;
+  color: white;
   font-weight: bold;
-  border: 2px solid blue;
+  background-color: #0079d3;
+  border: 2px solid #0079d3;
   border-radius: 5px
 }
 
 button:hover {
   color: white;
-  background-color: blue;
+  background-color: #7fbce9;
   cursor: pointer;
 }
 

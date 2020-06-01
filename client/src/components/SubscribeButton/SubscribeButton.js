@@ -27,7 +27,7 @@ class SubscribeButton extends React.Component {
     let sub = this.props.subzeddit.subscription_status ? true : false;
     this.setState({
       isSubscribed: sub
-    })
+    });
   }
 
   handleClick() {
@@ -38,7 +38,7 @@ class SubscribeButton extends React.Component {
       )
     this.setState({
       isSubscribed: !this.state.isSubscribed
-    })
+    });
   }
 
   render() {
@@ -46,8 +46,8 @@ class SubscribeButton extends React.Component {
       <div className='subscribe-button-wrapper'>
         <button type='button' onClick={this.handleClick}>
         {this.state.isSubscribed
-          ? 'Unsubscribe'
-          : 'Subscribe'}
+          ? 'LEAVE'
+          : 'JOIN'}
         </button>
       </div>
     )

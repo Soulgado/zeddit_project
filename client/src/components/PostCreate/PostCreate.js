@@ -5,6 +5,7 @@ import {
   createNewPost,
   resetPostFormErrors
 } from '../../redux/actionCreators';
+import Dropdown from '../PostFormDropdown/PostFormDropdown';
 
 const mapStateToProps = state => ({
   user: state.currentUser.user,
@@ -31,10 +32,15 @@ function PostCreateForm(props) {
   }
 
   function matchedSubzeddits(title) {
-    return props.subzeddits.filter(subzeddit => {
-      const regex = new RegExp(title, 'gi')
-      return subzeddit.title.match(regex);
-    })
+    if (title !== '') {
+      return props.subzeddits.filter(subzeddit => {
+        const regex = new RegExp(title, 'gi')
+        return subzeddit.title.match(regex);
+      })
+    } else {
+      return [];
+    }
+    
   }
 
   const handleSubzedditChange = event => {
@@ -43,31 +49,26 @@ function PostCreateForm(props) {
     setSubzeddit(event.target.value);
   }
 
-  const handleSubzedditFocus = () => {
+  const handleSubzedditFocus = (event) => {
+    event.preventDefault();
     setDropdown(true);
   }
 
   const handleSubzedditBlur = () => {
-    setDropdown(false);
+    setTimeout(() => {
+      setDropdown(false);
+    }, 100);
+    
   }
 
-  function renderMatches() {
-    // specific component is required
-    return (
-      <ul className='form-subzeddits-dropdown'>
-        {subzedditsTitles.map(subzeddit => {
-          return (
-            <li key={subzeddit.title}>
-              {subzeddit.title}
-            </li>
-          )
-        })}
-      </ul>
-    )
+  const handleDropdownClick = event => {
+    setSubzeddit(event.target.textContent);
   }
 
   return (
-  <form onSubmit={handleSubmit}>
+  <form 
+    className='post-form'
+    onSubmit={handleSubmit}>
     <p className='form-title'>Create new Post</p>
     <div className='form-element'>
       <label htmlFor='title'>Post title:</label>
@@ -79,9 +80,8 @@ function PostCreateForm(props) {
     </div>
     <div className='form-element'>
       <label htmlFor='content'>Post content:</label>
-      <input
+      <textarea
         id='content'
-        type='text'
         value={content}
         onChange={e => setContent(e.target.value)} />
     </div>
@@ -95,7 +95,9 @@ function PostCreateForm(props) {
         onFocus={handleSubzedditFocus}
         onBlur={handleSubzedditBlur}/>
       {dropdownActive
-      ? renderMatches()
+      ? <Dropdown
+        titlesList={subzedditsTitles}
+        handleClick={handleDropdownClick} />
       : null}
     </div>
     <button className='form-button' type='submit'>Create Post</button> 

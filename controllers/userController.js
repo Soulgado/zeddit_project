@@ -412,7 +412,7 @@ exports.edit_name = [
           errors: error.message
         })
       })
-  }]
+  }];
 
 exports.edit_password = [
   body('username')
@@ -550,3 +550,76 @@ exports.delete_account = [
       })
     })
 }];
+
+exports.edit_name = [
+  body('username')
+    .trim()
+    .notEmpty().withMessage('Username field must not be empty')
+    .isAscii(),
+  body('password')
+    .trim()
+    .notEmpty().withMessage('Password field must not be empty')
+    .isLength({ min: 5, max: 60 }),
+  body('new_email')
+    .trim()
+    .notEmpty().withMessage('New email field must not be empty')
+    .isEmail().withMessage('Email field should contain valid email')
+    .normalizeEmail(),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        result: 'error',
+        errors: errors.array()[0].msg
+      })
+    }
+    db.oneOrNone(
+      `SELECT * FROM users WHERE username=$1`,
+      req.body.username)
+      .then(user => {
+        if (user) {
+          bcrypt.compare(req.body.password, user.password, function (err, result) {
+            if (result) {
+              db.oneOrNone(`UPDATE users
+              SET email = $1
+              WHERE username = $2`,
+                [req.body.new_email, req.body.username])
+                .then(user => {
+                  res.json({
+                    result: 'success',
+                    user
+                  })
+                })
+                .catch(error => {
+                  let msg = 'Unknown errors happened, please fill the form fields again';
+                  res.status(400).json({
+                    result: 'error',
+                    errors: msg
+                  });
+                  console.log(error);
+                })
+            } else {
+              res
+                .status(400)
+                .json({
+                  result: 'error',
+                  errors: 'Wrong username or password'
+                });
+            }
+          });
+        } else {
+          // if user has not been found
+          return res.status(400).json({
+            result: 'error',
+            errors: 'Wrong username or password'
+          })
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(400).json({
+          result: 'error',
+          errors: error.message
+        })
+      })
+  }];
