@@ -1,5 +1,5 @@
-import React from 'react';
-import Placeholder from './fetchingPlaceholder';
+import React from "react";
+import Placeholder from "./fetchingPlaceholder";
 
 export function withLoading(WrappedComponent) {
   return class extends React.Component {
@@ -10,11 +10,13 @@ export function withLoading(WrappedComponent) {
     render() {
       return (
         <>
-        {this.props.loading
-          ? <Placeholder />
-          : <WrappedComponent {...this.props} />}
+          {this.props.loading ? (
+            <Placeholder />
+          ) : (
+            <WrappedComponent {...this.props} />
+          )}
         </>
-      )
+      );
     }
-  }
+  };
 }

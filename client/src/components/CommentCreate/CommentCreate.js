@@ -1,60 +1,53 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { 
-  postComment,
-  resetPostFormErrors
-} from '../../redux/actionCreators';
+import React from "react";
+import { connect } from "react-redux";
+import { postComment, resetPostFormErrors } from "../../redux/actionCreators";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.currentUser.user,
-  errors: state.post.formErrors
+  errors: state.post.formErrors,
 });
 
-const mapDispatchToProps = dispatch => ({
-  postComment: (user, comment, post, parent) => dispatch(
-    postComment(user, comment, post, parent)
-  ),
-  resetErrors: () => dispatch(resetPostFormErrors())
+const mapDispatchToProps = (dispatch) => ({
+  postComment: (user, comment, post, parent) =>
+    dispatch(postComment(user, comment, post, parent)),
+  resetErrors: () => dispatch(resetPostFormErrors()),
 });
 
 class CommentCreateForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      comment: '',
-      errors: undefined
-    }
+      comment: "",
+      errors: undefined,
+    };
   }
 
   handleSubmit = (e) => {
     const { user, post, parent, postComment } = this.props;
-    const {comment} = this.state;
+    const { comment } = this.state;
     e.preventDefault();
-    if (comment === '') {
+    if (comment === "") {
       this.setState({
-        errors: 'The body of the comment should not be empty'
+        errors: "The body of the comment should not be empty",
       });
-      return; 
+      return;
     }
-    postComment(
-      user.id,
-      comment,
-      post,
-      parent ? parent.id : null);
+    postComment(user.id, comment, post, parent ? parent.id : null);
     this.setState({
-      comment: ''
+      comment: "",
     });
     if (this.props.handleClick) {
       this.props.handleClick();
     }
-  }
+  };
 
   handleChange = (e) => {
     this.setState({
       comment: e.target.value,
-      errors: undefined
+      errors: undefined,
     });
-  }
+    this.props.resetErrors();
+  };
 
   componentWillUnmount() {
     this.props.resetErrors();
@@ -62,27 +55,23 @@ class CommentCreateForm extends React.Component {
 
   render() {
     return (
-      <form className='comment-form' onSubmit={this.handleSubmit}>
+      <form className="comment-form" onSubmit={this.handleSubmit}>
         <textarea
-          id='comment'
+          id="comment"
           value={this.state.comment}
-          placeholder='Write your comment here'
-          onChange={this.handleChange} />
-        <div className='form-errors'>
-          {this.state.errors && 
-            <p>{this.state.errors}</p>}
-          {this.props.errors &&
-            <p>{this.props.errors}</p>}
-        </div> 
-        <button type='submit' className='comment-create-button'>COMMENT</button>
+          placeholder="Write your comment here"
+          onChange={this.handleChange}
+        />
+        <div className="form-errors">
+          {this.state.errors && <p>{this.state.errors}</p>}
+          {this.props.errors && <p>{this.props.errors}</p>}
+        </div>
+        <button type="submit" className="comment-create-button">
+          COMMENT
+        </button>
       </form>
-    )
+    );
   }
-
-  
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CommentCreateForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentCreateForm);

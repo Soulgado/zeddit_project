@@ -1,16 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { resetRegistrationSuccess } from '../../redux/actionCreators';
-import Placeholder from '../fetchingPlaceholder';
-import EmailEditFormTemplate from './EmailEditFormTemplate';
+import React from "react";
+import { connect } from "react-redux";
+import { resetRegistrationSuccess } from "../../redux/actionCreators";
+import Placeholder from "../fetchingPlaceholder";
+import EmailEditFormTemplate from "./EmailEditFormTemplate";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   successFlag: state.currentUser.successFlag,
-  loading: state.loading.loading
+  loading: state.loading.loading,
 });
 
-const mapDispatchToProps = dispatch => ({
-  resetSuccess: () => dispatch(resetRegistrationSuccess())
+const mapDispatchToProps = (dispatch) => ({
+  resetSuccess: () => dispatch(resetRegistrationSuccess()),
 });
 
 class EmailEditForm extends React.Component {
@@ -22,22 +22,19 @@ class EmailEditForm extends React.Component {
     if (this.props.loading) {
       return <Placeholder />;
     } else if (this.props.successFlag) {
-      return (<div>
-        <p>Your email has been successfully changed!</p>
-      </div>);
+      return (
+        <div>
+          <p>Your email has been successfully changed!</p>
+        </div>
+      );
     } else {
-      return <EmailEditFormTemplate />; 
+      return <EmailEditFormTemplate />;
     }
   }
 
   render() {
-    return (
-      this.renderingOptions()
-    )
+    return this.renderingOptions();
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EmailEditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(EmailEditForm);

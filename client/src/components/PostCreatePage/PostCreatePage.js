@@ -1,21 +1,23 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PostCreatePageTemplate from './PostCreatePageTemplate';
-import Placeholder from '../fetchingPlaceholder';
-import { 
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import PostCreatePageTemplate from "./PostCreatePageTemplate";
+import Placeholder from "../fetchingPlaceholder";
+import {
   getSubzedditTitles,
-  resetCommentCreationFlag
-} from '../../redux/actionCreators';
-import '../../styles/postCreatePage.sass';
+  resetCommentCreationFlag,
+} from "../../redux/actionCreators";
+import "../../styles/postCreatePage.sass";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loading: state.loading.loading,
-  creationFlag: state.post.creationFlag
+  creationFlag: state.post.creationFlag,
+  post: state.post.post,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getSubzeddits: () => dispatch(getSubzedditTitles()),
-  resetCreationFlag: () => dispatch(resetCommentCreationFlag())
+  resetCreationFlag: () => dispatch(resetCommentCreationFlag()),
 });
 
 class PostCreatePage extends React.Component {
@@ -30,33 +32,33 @@ class PostCreatePage extends React.Component {
   }
 
   renderingOptions() {
-    const { loading, creationFlag } = this.props;
+    const { loading, creationFlag, post } = this.props;
     if (loading) {
-      return <Placeholder />
+      return <Placeholder />;
     } else if (creationFlag) {
       return (
-        <div>
+        <div className="success-message">
           <p>The post has been successfully created!</p>
-          <p>Go to created post.</p>
+          <p>
+            Go to{" "}
+            <Link to={`/sz/${post.subzeddit}/${post.id}/${post.title}`}>
+              created post
+            </Link>
+          </p>
         </div>
-      )
+      );
     } else {
-      return <PostCreatePageTemplate />
+      return <PostCreatePageTemplate />;
     }
   }
 
   render() {
     return (
-      <div className='create-post-page'>
-        <div className='create-post-wrapper'>
-          {this.renderingOptions()}
-        </div>
+      <div className="create-page">
+        <div className="create-wrapper">{this.renderingOptions()}</div>
       </div>
-    )
+    );
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PostCreatePage);
+export default connect(mapStateToProps, mapDispatchToProps)(PostCreatePage);

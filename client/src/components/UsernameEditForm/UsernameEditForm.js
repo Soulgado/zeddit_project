@@ -1,16 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { resetRegistrationSuccess } from '../../redux/actionCreators';
-import Placeholder from '../fetchingPlaceholder';
-import UsernameEditFormTemplate from './UsernameEditFormTemplate';
+import React from "react";
+import { connect } from "react-redux";
+import { resetRegistrationSuccess } from "../../redux/actionCreators";
+import Placeholder from "../fetchingPlaceholder";
+import UsernameEditFormTemplate from "./UsernameEditFormTemplate";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   successFlag: state.currentUser.successFlag,
-  loading: state.loading.loading
+  loading: state.loading.loading,
 });
 
-const mapDispatchToProps = dispatch => ({
-  resetSuccess: () => dispatch(resetRegistrationSuccess())
+const mapDispatchToProps = (dispatch) => ({
+  resetSuccess: () => dispatch(resetRegistrationSuccess()),
 });
 
 class UsernameEditForm extends React.Component {
@@ -22,22 +22,19 @@ class UsernameEditForm extends React.Component {
     if (this.props.loading) {
       return <Placeholder />;
     } else if (this.props.successFlag) {
-      return (<div>
-        <p>Your username has been successfully changed!</p>
-      </div>);
+      return (
+        <div>
+          <p>Your username has been successfully changed!</p>
+        </div>
+      );
     } else {
-      return <UsernameEditFormTemplate />; 
+      return <UsernameEditFormTemplate />;
     }
   }
 
   render() {
-    return (
-      this.renderingOptions()
-    )
+    return this.renderingOptions();
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UsernameEditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(UsernameEditForm);

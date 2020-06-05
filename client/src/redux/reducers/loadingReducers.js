@@ -1,16 +1,16 @@
-import * as types from '../types';
+import * as types from "../types";
 
 export const initialState = {
-  loading: false
-}
+  loading: false,
+};
 
-export const reducer = (state=initialState, action) => {
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.LOADING:
-      return {...state, loading: true}
+      return { ...state, loading: true };
     case types.END_LOADING:
-      return {...state, loading: false}
+      return { ...state, loading: false };
     default:
       return state;
   }
-}
+};

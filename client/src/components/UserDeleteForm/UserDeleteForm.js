@@ -1,16 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { resetRegistrationSuccess } from '../../redux/actionCreators';
-import Placeholder from '../fetchingPlaceholder';
-import UserDeleteFormTemplate from './UserDeleteFormTemplate';
+import React from "react";
+import { connect } from "react-redux";
+import { resetRegistrationSuccess } from "../../redux/actionCreators";
+import Placeholder from "../fetchingPlaceholder";
+import UserDeleteFormTemplate from "./UserDeleteFormTemplate";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   successFlag: state.currentUser.successFlag,
-  loading: state.loading.loading
+  loading: state.loading.loading,
 });
 
-const mapDispatchToProps = dispatch => ({
-  resetSuccess: () => dispatch(resetRegistrationSuccess())
+const mapDispatchToProps = (dispatch) => ({
+  resetSuccess: () => dispatch(resetRegistrationSuccess()),
 });
 
 class UserDeleteForm extends React.Component {
@@ -22,22 +22,19 @@ class UserDeleteForm extends React.Component {
     if (this.props.loading) {
       return <Placeholder />;
     } else if (this.props.successFlag) {
-      return (<div>
-        <p>Your account has been successfully deleted!</p>
-      </div>);
+      return (
+        <div>
+          <p>Your account has been successfully deleted!</p>
+        </div>
+      );
     } else {
-      return <UserDeleteFormTemplate />; 
+      return <UserDeleteFormTemplate />;
     }
   }
 
   render() {
-    return (
-      this.renderingOptions()
-    )
+    return this.renderingOptions();
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserDeleteForm);
+export default connect(mapStateToProps, mapDispatchToProps)(UserDeleteForm);

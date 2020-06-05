@@ -1,10 +1,10 @@
-import React from 'react';
-import Comment from '../Comment/Comment';
+import React from "react";
+import Comment from "../Comment/Comment";
 
-const CommentsList = props => {
+const CommentsList = (props) => {
   return (
     <ul>
-      {props.comments.map(comment => {
+      {props.comments.map((comment) => {
         if (comment.child_comments.length !== 0) {
           return (
             <li key={comment.id}>
@@ -13,14 +13,14 @@ const CommentsList = props => {
             </li>
           );
         }
-      return (
-        <li key={comment.id}>
-          <Comment comment={comment} />
-        </li>
-      )
-    })}
+        return (
+          <li key={comment.id}>
+            <Comment comment={comment} />
+          </li>
+        );
+      })}
     </ul>
-  )
-}
+  );
+};
 
 export default CommentsList;

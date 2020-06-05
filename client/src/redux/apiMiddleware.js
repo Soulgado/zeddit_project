@@ -1,7 +1,7 @@
-import * as types from './types';
+import * as types from "./types";
 
-const apiMiddleware = store => next => action => {
-  if (!action.meta || action.meta.type !== 'api') {
+const apiMiddleware = (store) => (next) => (action) => {
+  if (!action.meta || action.meta.type !== "api") {
     return next(action);
   }
 
@@ -12,23 +12,22 @@ const apiMiddleware = store => next => action => {
       type: types.LOADING,
     });
   }
-  
-  const {url} = action.meta;
+
+  const { url } = action.meta;
   const fetchOptions = Object.assign({}, action.meta);
 
   fetch(url, fetchOptions)
-    .then(resp => resp.json())
-    .then(json => {
+    .then((resp) => resp.json())
+    .then((json) => {
       let newAction = Object.assign({}, action, {
-        payload: json
+        payload: json,
       });
       delete newAction.meta;
       store.dispatch(newAction);
       store.dispatch({
         type: types.END_LOADING,
-      })
-    })
-  
-}
+      });
+    });
+};
 
 export default apiMiddleware;

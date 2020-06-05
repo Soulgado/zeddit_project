@@ -1,149 +1,151 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { 
+import React from "react";
+import { connect } from "react-redux";
+import {
   createNewImagePost,
-  resetPostFormErrors
-} from '../../redux/actionCreators';
-import Dropdown from '../PostFormDropdown/PostFormDropdown';
+  resetPostFormErrors,
+} from "../../redux/actionCreators";
+import Dropdown from "../PostFormDropdown/PostFormDropdown";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.currentUser.user,
   loggedIn: state.currentUser.loggedIn,
-  errors: state.post.formErrors
+  errors: state.post.formErrors,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   createImgPost: (formData) => dispatch(createNewImagePost(formData)),
-  resetErrors: () => dispatch(resetPostFormErrors())
-})
+  resetErrors: () => dispatch(resetPostFormErrors()),
+});
 
 class PostCreateImageForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedFile: null,
-      title: '',
-      subzeddit: '',
+      title: "",
+      subzeddit: "",
       dropdownActive: false,
-      titlesList: []
-    }
+      titlesList: [],
+    };
 
     this.handleDropdownClick = this.handleDropdownClick.bind(this);
   }
 
-  onFileChange = event => {
+  onFileChange = (event) => {
     this.setState({
-      selectedFile: event.target.files[0]
-    })
-  }
+      selectedFile: event.target.files[0],
+    });
+  };
 
-  onTitleChange = event => {
+  onTitleChange = (event) => {
     this.setState({
-      title: event.target.value
-    })
-  }
+      title: event.target.value,
+    });
+  };
 
-  onSubmitHandler = event => {
+  onSubmitHandler = (event) => {
     event.preventDefault();
     const data = new FormData();
-    data.append('file', this.state.selectedFile);
-    data.append('user', this.props.user.id);
-    data.append('subzeddit', this.state.subzeddit);
-    data.append('title', this.state.title);
+    data.append("file", this.state.selectedFile);
+    data.append("user", this.props.user.id);
+    data.append("subzeddit", this.state.subzeddit);
+    data.append("title", this.state.title);
     this.props.createImgPost(data);
-  }
+  };
 
-  handleSubzedditChange = event => {
+  handleSubzedditChange = (event) => {
     let matchedTitles = this.matchedSubzeddits(event.target.value);
     this.setState({
       subzeddit: event.target.value,
-      titlesList: matchedTitles
-    })
-  }
+      titlesList: matchedTitles,
+    });
+  };
 
   handleSubzedditFocus = () => {
     this.setState({
-      dropdownActive: true
-    })
-  }
+      dropdownActive: true,
+    });
+  };
 
   handleSubzedditBlur = () => {
     // timeout required to catch dropdown before its unmounting
     setTimeout(() => {
       this.setState({
-        dropdownActive: false
+        dropdownActive: false,
       });
     }, 100);
-  }
+  };
 
   matchedSubzeddits = (title) => {
-    return this.props.subzeddits.filter(subzeddit => {
-      const regex = new RegExp(title, 'gi')
+    return this.props.subzeddits.filter((subzeddit) => {
+      const regex = new RegExp(title, "gi");
       return subzeddit.title.match(regex);
-    })
-  }
+    });
+  };
 
-  componentWillUnmount()  {
+  componentWillUnmount() {
     this.props.resetErrors();
   }
 
-  handleDropdownClick = event => {
+  handleDropdownClick = (event) => {
     this.setState({
-      subzeddit: event.target.textContent
+      subzeddit: event.target.textContent,
     });
-  }
+  };
 
   render() {
     return (
       <form
-        className='post-form'
-        method='post'
-        encType='multipart/form-data'
+        className="post-form"
+        method="post"
+        encType="multipart/form-data"
         onSubmit={this.onSubmitHandler}
       >
-        <p className='form-title'>Create new Post</p>
-        <div className='form-element'>
-          <label htmlFor='title'>Post title:</label>
+        <p className="form-title">Create new Post</p>
+        <div className="form-element">
+          <label htmlFor="title">Post title:</label>
           <input
-            id='title'
-            type='text'
-            name='title'
+            id="title"
+            type="text"
+            name="title"
             onChange={this.onTitleChange}
           />
         </div>
-        <div className='form-element'>
-          <label htmlFor='image'>Add image:</label>
+        <div className="form-element">
+          <label htmlFor="image">Add image:</label>
           <input
-            id='image'
-            type='file'
-            name='file'
+            id="image"
+            type="file"
+            name="file"
             onChange={this.onFileChange}
           />
         </div>
-        <div className='form-element'>
-          <label htmlFor='subzeddit'>Submit post to subzeddit:</label>
+        <div className="form-element">
+          <label htmlFor="subzeddit">Submit post to subzeddit:</label>
           <input
-            id='subzeddit'
-            type='text'
+            id="subzeddit"
+            type="text"
             value={this.state.subzeddit}
-            onChange={this.handleSubzedditChange} 
+            onChange={this.handleSubzedditChange}
             onFocus={this.handleSubzedditFocus}
-            onBlur={this.handleSubzedditBlur}/>
-          {this.state.dropdownActive
-            ? <Dropdown
-                titlesList={this.state.titlesList}
-                handleClick={this.handleDropdownClick} />
-            : null}
+            onBlur={this.handleSubzedditBlur}
+          />
+          {this.state.dropdownActive ? (
+            <Dropdown
+              titlesList={this.state.titlesList}
+              handleClick={this.handleDropdownClick}
+            />
+          ) : null}
         </div>
-        <div className='form-errors'>
-          {this.props.errors &&
-            <p>{this.props.errors}</p>}
+        <div className="form-errors">
+          {this.props.errors && <p>{this.props.errors}</p>}
         </div>
-        <button className='form-button' type='submit'>Create Post</button>
+        <button className="form-button" type="submit">
+          Create Post
+        </button>
       </form>
-    )
+    );
   }
-  
 }
 
 export default connect(

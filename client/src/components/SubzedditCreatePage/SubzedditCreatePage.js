@@ -1,65 +1,68 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { 
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import {
   resetCreationSuccess,
-  resetSubzedditFormErrors
-} from '../../redux/actionCreators';
-import Placeholder from '../fetchingPlaceholder';
-import SubzedditCreateForm from '../SubzedditCreate/SubzedditCreate';
+  resetSubzedditFormErrors,
+} from "../../redux/actionCreators";
+import Placeholder from "../fetchingPlaceholder";
+import SubzedditCreateForm from "../SubzedditCreate/SubzedditCreate";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loading: state.loading.loading,
-  creationSuccess: state.subzeddit.creationSuccess
-})
+  creationSuccess: state.subzeddit.creationSuccess,
+});
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   resetCreationSuccess: () => dispatch(resetCreationSuccess()),
-  resetErrors: () => dispatch(resetSubzedditFormErrors())
-})
+  resetErrors: () => dispatch(resetSubzedditFormErrors()),
+});
 
 class SubzedditCreatePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
-      description: ''
-    }
+      title: "",
+      description: "",
+    };
   }
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.setState({
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     });
     this.props.resetErrors();
-  }
+  };
 
   componentWillUnmount() {
     this.props.resetCreationSuccess();
   }
 
   render() {
-    // ToDo: simplify
     const { title } = this.state;
-    const { creationSuccess, loading} = this.props;
+    const { creationSuccess, loading } = this.props;
     const { handleChange } = this;
 
     return (
       // show message if created subzeddit
       // if not, show form or loading placeholder if request is pending
-      <div>
-        {creationSuccess   
-          ? <div>
+      <div className="create-page">
+        <div className="create-wrapper">
+          {creationSuccess ? (
+            <div>
               <p>The subzeddit was successfully created!</p>
-              <p>Go to <Link to={`/sz/${title}`}>
-                {title}
-                </Link></p>
+              <p>
+                Go to <Link to={`/sz/${title}`}>{title}</Link>
+              </p>
             </div>
-          : loading 
-            ? <Placeholder />
-            : <SubzedditCreateForm handleChange={handleChange} title={title} />}
+          ) : loading ? (
+            <Placeholder />
+          ) : (
+            <SubzedditCreateForm handleChange={handleChange} title={title} />
+          )}
+        </div>
       </div>
-    )
+    );
   }
 }
 

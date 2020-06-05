@@ -1,8 +1,8 @@
-import { Provider } from 'react-redux';
-import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import App from '../App.js';
-import configureStore from '../redux/configureStore';
+import { Provider } from "react-redux";
+import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import App from "../App.js";
+import configureStore from "../redux/configureStore";
 
 function Root(props) {
   const store = configureStore();
@@ -13,8 +13,7 @@ function Root(props) {
         <App />
       </Router>
     </Provider>
-  )
+  );
 }
 
 export default Root;
-

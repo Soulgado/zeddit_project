@@ -1,23 +1,23 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
-import './styles/navigation.sass';
-import './styles/form.sass';
-import SignInPage from './components/SignInPage/SignInPage';
-import SignUpPage from './components/SignUpPage/SignUpPage';
-import SubzedditCreatePage from './components/SubzedditCreatePage/SubzedditCreatePage';
-import SubzedditList from './components/SubzedditList/SubzedditList';
-import SubzedditPage from './components/SubzedditPage/SubzedditPage';
-import MainNavigation from './components/MainNavigation/MainNavigation';
-import UserProfile from './components/UserProfile/UserProfile';
-import PostCreatePage from './components/PostCreatePage/PostCreatePage';
-import MainPage from './components/MainPage/MainPage';
-import PostEditPage from './components/PostEditPage/PostEditPage';
-import UserDeleteForm from './components/UserDeleteForm/UserDeleteForm';
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
+import "./styles/navigation.sass";
+import "./styles/form.sass";
+import SignInPage from "./components/SignInPage/SignInPage";
+import SignUpPage from "./components/SignUpPage/SignUpPage";
+import SubzedditCreatePage from "./components/SubzedditCreatePage/SubzedditCreatePage";
+import SubzedditList from "./components/SubzedditList/SubzedditList";
+import SubzedditPage from "./components/SubzedditPage/SubzedditPage";
+import MainNavigation from "./components/MainNavigation/MainNavigation";
+import UserProfile from "./components/UserProfile/UserProfile";
+import PostCreatePage from "./components/PostCreatePage/PostCreatePage";
+import MainPage from "./components/MainPage/MainPage";
+import PostEditPage from "./components/PostEditPage/PostEditPage";
+import UserDeleteForm from "./components/UserDeleteForm/UserDeleteForm";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.currentUser.user,
-  loggedIn: state.currentUser.loggedIn
+  loggedIn: state.currentUser.loggedIn,
 });
 
 class App extends React.Component {
@@ -28,27 +28,25 @@ class App extends React.Component {
           <MainNavigation />
         </header>
         <main>
-            <Switch>
-              <Route exact path='/' component={MainPage} />
-              <Route path='/create_subzeddit' component={SubzedditCreatePage} />
-              <Route path='/sz/:title' component={SubzedditPage} />
-              <Route path='/sz' component={SubzedditList} />
-              <Route path='/login' component={SignInPage} />}
-              <Route path='/register' component={SignUpPage} />
-              <Route path='/profile/:username' component={UserProfile} />
-              <Route path='/edit_post' component={PostEditPage} />
-              <Route path='/submit_post' component={PostCreatePage} />
-              <Route path='/delete_account' component={UserDeleteForm} />
-            </Switch> 
+          <Switch>
+            <Route exact path="/" component={MainPage} />
+            <Route path="/create_subzeddit" component={SubzedditCreatePage} />
+            <Route path="/sz/:title" component={SubzedditPage} />
+            <Route path="/sz" component={SubzedditList} />
+            <Route path="/login" component={SignInPage} />}
+            <Route path="/register" component={SignUpPage} />
+            <Route path="/profile/:username" component={UserProfile} />
+            <Route path="/edit_post" component={PostEditPage} />
+            <Route path="/submit_post" component={PostCreatePage} />
+            <Route path="/delete_account" component={UserDeleteForm} />
+          </Switch>
         </main>
         <footer>
           2020, Created with Node.js, Express, React and PostgreSQL.
         </footer>
       </div>
-    )
+    );
   }
 }
 
-export default connect(
-  mapStateToProps
-)(App);
+export default connect(mapStateToProps)(App);

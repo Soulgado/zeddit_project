@@ -1,65 +1,60 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { getUserSubscriptions } from '../../redux/actionCreators';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { getUserSubscriptions } from "../../redux/actionCreators";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.currentUser.user,
-  subscriptions: state.userAction.userSubscriptions
+  subscriptions: state.userAction.userSubscriptions,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getSubscriptions: user => dispatch(getUserSubscriptions(user))
-})
+const mapDispatchToProps = (dispatch) => ({
+  getSubscriptions: (user) => dispatch(getUserSubscriptions(user)),
+});
 
 class SubscriptionsListNav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dropdownActive: false
-    }
+      dropdownActive: false,
+    };
 
     this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
-    this.props.getSubscriptions(this.props.user.id);
+    this.props.getSubscriptions(this.props.user);
   }
 
   handleClick() {
     this.setState({
-      dropdownActive: !this.state.dropdownActive
-    })
+      dropdownActive: !this.state.dropdownActive,
+    });
   }
 
   renderSubscriptions() {
     return (
-      <ul className='subscriptions-dropdown'>
-        {this.props.subscriptions.map(subzeddit => {
+      <ul className="subscriptions-dropdown">
+        {this.props.subscriptions.map((subzeddit) => {
           return (
             <li key={subzeddit.title}>
-              <Link to={`/sz/${subzeddit.title}`}>
-                {subzeddit.title}
-              </Link>
+              <Link to={`/sz/${subzeddit.title}`}>{subzeddit.title}</Link>
             </li>
-          )
+          );
         })}
       </ul>
-    )
+    );
   }
 
   render() {
     return (
-      <li className='navigation-element'>
-        <button type='button' onClick={this.handleClick}>
+      <li className="navigation-element">
+        <button type="button" onClick={this.handleClick}>
           My Communities
         </button>
-        {this.state.dropdownActive
-          ? this.renderSubscriptions()
-          : null
-        }
-      </li>  
-    )
+        {this.state.dropdownActive ? this.renderSubscriptions() : null}
+      </li>
+    );
   }
 }
 

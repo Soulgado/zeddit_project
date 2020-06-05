@@ -1,91 +1,77 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { 
-  editUsername,
-  resetUserFormErrors
-} from '../../redux/actionCreators';
+import React from "react";
+import { connect } from "react-redux";
+import { editUsername, resetUserFormErrors } from "../../redux/actionCreators";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   errors: state.currentUser.formErrors,
   user: state.currentUser.user,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   editUsername: (formData) => dispatch(editUsername(formData)),
-  resetErrors: () => dispatch(resetUserFormErrors())
+  resetErrors: () => dispatch(resetUserFormErrors()),
 });
 
 class UsernameEditFormTemplate extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      password: '',
-      confPassword: '',
-      newUsername: ''
-    }
+    this.state = {
+      password: "",
+      newUsername: "",
+    };
   }
 
   handleChange = (e) => {
     this.setState({
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     });
     this.props.resetErrors();
-  }
+  };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
-    const { password, confPassword, newUsername } = this.state;
-    if (password !== confPassword) return;
+    const { password, newUsername } = this.state;
     this.props.editUsername({
       username: this.props.user.username,
       password,
-      new_username: newUsername
+      new_username: newUsername,
     });
     this.props.resetErrors();
-  }
+  };
 
   render() {
-    const { password, confPassword, newUsername } = this.state;
+    const { password, newUsername } = this.state;
     const { handleChange, handleSubmit } = this;
     return (
       <form onSubmit={handleSubmit}>
-        <div className='form-element'>
-          <label htmlFor='password'>Password:</label>
+        <div className="form-element">
+          <label htmlFor="password">Password:</label>
           <input
-            id='password'
-            type='password'
+            id="password"
+            type="password"
             value={password}
             onChange={handleChange}
             required
           />
         </div>
-        <div className='form-element'>
-          <label htmlFor='confPassword'>Confirm Password:</label>
+        <div className="form-element">
+          <label htmlFor="newUsername">New Username:</label>
           <input
-            id='confPassword'
-            type='password' 
-            value={confPassword}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className='form-element'>
-          <label htmlFor='newUsername'>New Username:</label>
-          <input
-            id='newUsername'
-            type='text' 
+            id="newUsername"
+            type="text"
             value={newUsername}
             onChange={handleChange}
             required
           />
         </div>
-        <div className='form-errors'>
-          {this.props.errors &&
-            <p>{this.props.errors}</p>}
-        </div> 
-        <button className='form-button' type='submit'>Change username</button>
+        <div className="form-errors">
+          {this.props.errors && <p>{this.props.errors}</p>}
+        </div>
+        <button className="form-button" type="submit">
+          Change username
+        </button>
       </form>
-    )
+    );
   }
 }
 

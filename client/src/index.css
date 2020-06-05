@@ -6,7 +6,7 @@ body {
   margin: 0;
   /* font-family: 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif; */
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #dae0e6;
@@ -29,7 +29,7 @@ main {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -42,16 +42,24 @@ code {
   margin: 0 auto;
 }
 
+.loading-text {
+  margin-top: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
 ul {
-  padding-left: 10px
+  padding-left: 10px;
 }
 
 button {
   color: white;
   font-weight: bold;
   background-color: #0079d3;
-  border: 2px solid #0079d3;
-  border-radius: 5px
+  /*border: 2px solid  #0079d3;*/
+  border-radius: 5px;
+  border: none;
 }
 
 button:hover {
@@ -62,6 +70,5 @@ button:hover {
 
 footer {
   margin-top: 20px;
-  margin-bottom: 10px
+  margin-bottom: 10px;
 }
-  

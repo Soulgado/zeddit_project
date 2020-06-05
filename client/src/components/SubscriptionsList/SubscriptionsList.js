@@ -1,44 +1,48 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { getUserSubscriptions } from '../../redux/actionCreators';
-import SubzedditMinified from '../SubzedditMinified/SubzedditMinified';
+import React from "react";
+import { connect } from "react-redux";
+import { getUserSubscriptions } from "../../redux/actionCreators";
+import SubzedditMinified from "../SubzedditMinified/SubzedditMinified";
+import { withLoading } from "../withLoading";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.currentUser.user,
   loggedIn: state.currentUser.loggedIn,
-  subscriptionsList: state.userAction.userSubscriptions
+  subscriptionsList: state.userAction.userSubscriptions,
+  loading: state.loading.loading,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getUserSubscriptions: (user) => dispatch(getUserSubscriptions(user))
+const mapDispatchToProps = (dispatch) => ({
+  fetchData: (user) => dispatch(getUserSubscriptions(user)),
 });
 
 class SubscriptionsList extends React.Component {
-  componentDidMount() {
-    // get subscriptions
-    this.props.getUserSubscriptions(this.props.user.id);
-  }
-
   render() {
-    let { subscriptionsList } = this.props; 
+    let { subscriptionsList } = this.props;
     return (
-      <div className='subzeddits-list-wrapper'>
-        <h1 className='subzeddits-list-title'>List of subscribed subzeddits:</h1>
-        <div className='subzeddits-list'>
-          <ul id='subzeddits-list'>
-            {subscriptionsList.map(subzeddit => {
-            return <SubzedditMinified
-                key={subzeddit.title}
-                subzeddit={subzeddit} />
+      <div className="subzeddits-list-wrapper user-list">
+        <h1 className="subzeddits-list-title">
+          List of subscribed subzeddits:
+        </h1>
+        <div className="subzeddits-list">
+          <ul id="subzeddits-list">
+            {subscriptionsList.map((subzeddit) => {
+              return (
+                <SubzedditMinified
+                  key={subzeddit.title}
+                  subzeddit={subzeddit}
+                />
+              );
             })}
           </ul>
         </div>
       </div>
-    )
+    );
   }
 }
+
+const SubscriptionsListLoaded = withLoading(SubscriptionsList);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SubscriptionsList);
+)(SubscriptionsListLoaded);
