@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { login, resetUserFormErrors } from "../../redux/actionCreators";
 import { withLogging } from "../withLogging";
@@ -13,48 +13,85 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetUserFormErrors()),
 });
 
-function SignInForm(props) {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (name === "" || password === "") return;
-    let formData = {
-      username: name,
-      password: password,
+class SignInForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: "",
+      errors: undefined,
     };
-    props.signIn(formData);
   }
 
-  return (
-    <form onSubmit={(e) => handleSubmit(e)}>
-      <p className="form-title">Sign In</p>
-      <div className="form-element">
-        <label htmlFor="username">Username:</label>
-        <input
-          id="username"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-      <div className="form-element">
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <div className="form-errors">{props.errors && <p>{props.errors}</p>}</div>
-      <button className="form-button sign-in-button" type="submit">
-        Sign In
-      </button>
-    </form>
-  );
+  handleChange = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value,
+      errors: undefined,
+    });
+  };
+
+  formErrorsCheck(state) {
+    if (state.username === "") {
+      return "Username field must not be empty";
+    } else if (state.password === "") {
+      return "Password field must not be empty";
+    } else {
+      return;
+    }
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const errors = this.formErrorsCheck(this.state);
+    if (errors) {
+      this.setState({
+        errors: errors,
+      });
+      return;
+    }
+    const { username, password } = this.state;
+    let formData = {
+      username,
+      password,
+    };
+    this.props.signIn(formData);
+  };
+
+  render() {
+    const { username, password, errors } = this.state;
+    const { handleSubmit, handleChange } = this;
+    return (
+      <form onSubmit={handleSubmit}>
+        <p className="form-title">Sign In</p>
+        <div className="form-element">
+          <label htmlFor="username">Username:</label>
+          <input
+            id="username"
+            type="text"
+            value={username}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-element">
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-errors">
+          {errors && <p>{errors}</p>}
+          {this.props.errors && <p>{this.props.errors}</p>}
+        </div>
+        <button className="form-button sign-in-button" type="submit">
+          Sign In
+        </button>
+      </form>
+    );
+  }
 }
 
 // check for logged in state

@@ -18,18 +18,41 @@ class UsernameEditFormTemplate extends React.Component {
     this.state = {
       password: "",
       newUsername: "",
+      errors: undefined,
     };
+  }
+
+  formErrorsCheck(state) {
+    if (state.newUsername === "") {
+      return "Username field must not be empty";
+    } else if (state.newUsername.length < 3) {
+      return "Username must not be less than 3 characters long";
+    } else if (state.newUsername.length > 60) {
+      return "Username must not be more than 60 characters long";
+    } else if (state.password === "") {
+      return "Password field must not be empty";
+    } else {
+      return;
+    }
   }
 
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
+      errors: undefined,
     });
     this.props.resetErrors();
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const errors = this.formErrorsCheck(this.state);
+    if (errors) {
+      this.setState({
+        errors: errors,
+      });
+      return;
+    }
     const { password, newUsername } = this.state;
     this.props.editUsername({
       username: this.props.user.username,
@@ -40,7 +63,7 @@ class UsernameEditFormTemplate extends React.Component {
   };
 
   render() {
-    const { password, newUsername } = this.state;
+    const { password, newUsername, errors } = this.state;
     const { handleChange, handleSubmit } = this;
     return (
       <form onSubmit={handleSubmit}>
@@ -65,6 +88,7 @@ class UsernameEditFormTemplate extends React.Component {
           />
         </div>
         <div className="form-errors">
+          {errors && <p>{errors}</p>}
           {this.props.errors && <p>{this.props.errors}</p>}
         </div>
         <button className="form-button" type="submit">

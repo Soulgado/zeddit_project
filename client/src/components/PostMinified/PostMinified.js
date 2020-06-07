@@ -4,7 +4,7 @@ import VoteButtons from "../VoteButtons/VoteButtons";
 import PostPreview from "../PostPreview/PostPreview";
 import CreationTime from "../CreationTime/CreationTime";
 
-class PostMinified extends React.Component {
+export class PostMinified extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,15 +32,18 @@ class PostMinified extends React.Component {
             </Link>
           </div>
           <div className="post-mini-info">
-            <p>
-              {post.updated ? "Updated " : "Posted "} by u/
+            <p className="post-general-info">
+              {post.updated ? "Updated" : "Posted"} by u/
               {post.username} <CreationTime time={post.creation_date} /> to{" "}
               <Link to={`/sz/${post.subzeddit_title}`}>
                 z/{post.subzeddit_title}
               </Link>
             </p>
             <div className="post-mini-user-options">
-              <div className="user-options-element" onClick={this.handleClick}>
+              <div
+                className="user-options-element content-element"
+                onClick={this.handleClick}
+              >
                 <div
                   className={`user-options-icon 
                   ${
@@ -49,10 +52,10 @@ class PostMinified extends React.Component {
                 ></div>
                 <div className="user-options-name">Details</div>
               </div>
-              <div className="user-options-element">
+              <div className="user-options-element comments-element">
                 <div className="user-options-icon comments-icon"></div>
                 <div className="user-options-name">
-                  {post.comments} comments
+                  {post.comments_num} comments
                 </div>
               </div>
             </div>

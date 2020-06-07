@@ -12,7 +12,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetUserFormErrors()),
 });
 
-class PasswordEditFormTemplate extends React.Component {
+class EmailEditFormTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,14 +22,32 @@ class PasswordEditFormTemplate extends React.Component {
     };
   }
 
+  formErrorsCheck(state) {
+    if (state.newEmail === "") {
+      return "Email field must not be empty";
+    } else if (state.password === "") {
+      return "Password field must not be empty";
+    } else {
+      return;
+    }
+  }
+
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
+      errors: undefined,
     });
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const errors = this.formErrorsCheck(this.state);
+    if (errors) {
+      this.setState({
+        errors: errors,
+      });
+      return;
+    }
     const { password, newEmail } = this.state;
     this.props.editEmail({
       username: this.props.user.username,
@@ -40,7 +58,7 @@ class PasswordEditFormTemplate extends React.Component {
   };
 
   render() {
-    const { password, newEmail } = this.state;
+    const { password, newEmail, errors } = this.state;
     const { handleChange, handleSubmit } = this;
     return (
       <form onSubmit={handleSubmit}>
@@ -65,6 +83,7 @@ class PasswordEditFormTemplate extends React.Component {
           />
         </div>
         <div className="form-errors">
+          {errors && <p>{errors}</p>}
           {this.props.errors && <p>{this.props.errors}</p>}
         </div>
         <button className="form-button" type="submit">
@@ -78,4 +97,4 @@ class PasswordEditFormTemplate extends React.Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PasswordEditFormTemplate);
+)(EmailEditFormTemplate);

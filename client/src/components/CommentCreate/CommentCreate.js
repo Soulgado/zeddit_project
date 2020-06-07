@@ -23,7 +23,6 @@ class CommentCreateForm extends React.Component {
   }
 
   handleSubmit = (e) => {
-    const { user, post, parent, postComment } = this.props;
     const { comment } = this.state;
     e.preventDefault();
     if (comment === "") {
@@ -32,6 +31,7 @@ class CommentCreateForm extends React.Component {
       });
       return;
     }
+    const { user, post, parent, postComment } = this.props;
     postComment(user.id, comment, post, parent ? parent.id : null);
     this.setState({
       comment: "",

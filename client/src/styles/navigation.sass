@@ -46,14 +46,22 @@ nav
   background-color: #dedede
   border: 1px solid
   border-radius: 10px
+  animation-name: nav-dropdown-ani
+  animation-duration: 300ms
+  animation-timing-function: ease-in-out
+  transform-origin: top center
   li
     &:hover
       background-color: #9191fd
   a
     color: black
       
+@keyframes nav-dropdown-ani
+  0%
+    transform: scaleY(0)
 
-    
+  100%
+    transform: scaleY(1)
     
 .button-prev
   padding: 10px 20px

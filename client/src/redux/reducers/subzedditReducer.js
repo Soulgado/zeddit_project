@@ -16,7 +16,11 @@ export const reducer = (state = initialState, action) => {
       return { ...state, subzedditsList: action.payload.data };
     case types.CREATE_SUBZEDDIT:
       if (action.payload.result === "success") {
-        return { ...state, creationSuccess: true };
+        return {
+          ...state,
+          creationSuccess: true,
+          subzeddit: action.payload.data,
+        };
       } else {
         return { ...state, formErrors: action.payload.errors };
       }

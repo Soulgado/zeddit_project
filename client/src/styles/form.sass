@@ -50,12 +50,22 @@ form
     background-color: white
 
 .form-errors
-    background-color: red
-    width: 80%
-    margin: 0 auto
-    border-radius: 15px
-    p
-      margin: 15px
+  background-color: red
+  width: 80%
+  margin: 0 auto
+  border-radius: 15px
+  p
+    margin: 15px
+    animation-name: form-errors-ani
+    animation-duration: 300ms
+    animation-timing-function: ease
+  
+@keyframes form-errors-ani
+  0%
+    transform: scale(0)
+  100%
+    transform: scale(1)
+    
 
 @media (max-width: 500px)
   form

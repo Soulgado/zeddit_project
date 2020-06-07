@@ -19,17 +19,42 @@ class PasswordEditFormTemplate extends React.Component {
       password: "",
       confPassword: "",
       newPassword: "",
+      errors: undefined,
     };
   }
 
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
+      errors: undefined,
     });
   };
 
+  formErrorsCheck(state) {
+    if (state.password === "") {
+      return "Old password field must not be empty";
+    } else if (state.newPassword === "") {
+      return "New password field must not be empty";
+    } else if (state.newPassword.length < 5) {
+      return "New password must not be less than 5 characters long";
+    } else if (state.newPassword.length > 60) {
+      return "New password must not be more than 60 characters long";
+    } else if (state.newPassword !== state.confPassword) {
+      return "Passwords does not match";
+    } else {
+      return;
+    }
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
+    const errors = this.formErrorsCheck(this.state);
+    if (errors) {
+      this.setState({
+        errors: errors,
+      });
+      return;
+    }
     const { password, confPassword, newPassword } = this.state;
     if (newPassword !== confPassword) return;
     this.props.editPassword({
@@ -41,7 +66,7 @@ class PasswordEditFormTemplate extends React.Component {
   };
 
   render() {
-    const { password, confPassword, newPassword } = this.state;
+    const { password, confPassword, newPassword, errors } = this.state;
     const { handleChange, handleSubmit } = this;
     return (
       <form onSubmit={handleSubmit}>
@@ -76,6 +101,7 @@ class PasswordEditFormTemplate extends React.Component {
           />
         </div>
         <div className="form-errors">
+          {errors && <p>{errors}</p>}
           {this.props.errors && <p>{this.props.errors}</p>}
         </div>
         <button className="form-button" type="submit">

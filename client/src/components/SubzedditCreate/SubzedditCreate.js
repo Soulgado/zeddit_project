@@ -16,11 +16,46 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class SubzedditCreateForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: "",
+      description: "",
+      errors: undefined,
+    };
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value,
+      errors: undefined,
+    });
+    this.props.resetErrors();
+  };
+
+  formErrorsCheck(state) {
+    if (state.title === "") {
+      return "Title field must not be empty";
+    } else if (state.title.length < 3) {
+      return "Title must be no less than 3 characters long";
+    } else if (state.description === "") {
+      return "Description field must not be empty";
+    } else {
+      return;
+    }
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
-    const title = this.props.title;
+    const errors = this.formErrorsCheck();
+    if (errors) {
+      this.setState({
+        errors: errors,
+      });
+      return;
+    }
+    const { title, description } = this.state;
     const user = this.props.user.id;
-    const description = this.props.description;
     this.props.createSubzeddit({ title, user, description });
   };
 
@@ -30,7 +65,8 @@ class SubzedditCreateForm extends React.Component {
 
   render() {
     // ToDo: front-end errors handler
-    const { handleChange, title, description } = this.props;
+    const { title, description } = this.state;
+    const { handleChange } = this;
 
     return (
       <form onSubmit={this.handleSubmit}>
@@ -53,6 +89,7 @@ class SubzedditCreateForm extends React.Component {
           ></textarea>
         </div>
         <div className="form-errors">
+          {this.state.errors && <p>{this.state.errors}</p>}
           {this.props.errors && <p>{this.props.errors}</p>}
         </div>
         <button className="form-button" type="submit">

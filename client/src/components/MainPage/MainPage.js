@@ -19,12 +19,11 @@ const mapDispatchToProps = (dispatch) => ({
   // getMostPopularSpecific: (user) => dispatch(getMostPopularSpecific(user))
 });
 
-class MainPage extends React.Component {
+export class MainPage extends React.Component {
   // if user is logged in - return most popular posts for the last day from subscribed
   // if user is not logged in - return most popular posts from 'global' list of subzeddits
 
   renderPosts(posts) {
-    // create component for minified post
     return (
       <div className="posts-list">
         {posts.map((post) => {

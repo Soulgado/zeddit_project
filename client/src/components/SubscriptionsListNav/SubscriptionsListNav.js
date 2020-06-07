@@ -12,23 +12,30 @@ const mapDispatchToProps = (dispatch) => ({
   getSubscriptions: (user) => dispatch(getUserSubscriptions(user)),
 });
 
-class SubscriptionsListNav extends React.Component {
+export class SubscriptionsListNav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       dropdownActive: false,
     };
 
-    this.handleClick = this.handleClick.bind(this);
+    this.handleMouseEnter = this.handleMouseEnter.bind(this);
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
 
   componentDidMount() {
     this.props.getSubscriptions(this.props.user);
   }
 
-  handleClick() {
+  handleMouseEnter() {
     this.setState({
-      dropdownActive: !this.state.dropdownActive,
+      dropdownActive: true,
+    });
+  }
+
+  handleMouseLeave() {
+    this.setState({
+      dropdownActive: false,
     });
   }
 
@@ -48,10 +55,12 @@ class SubscriptionsListNav extends React.Component {
 
   render() {
     return (
-      <li className="navigation-element">
-        <button type="button" onClick={this.handleClick}>
-          My Communities
-        </button>
+      <li
+        className="navigation-element"
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+      >
+        <button type="button">My Communities</button>
         {this.state.dropdownActive ? this.renderSubscriptions() : null}
       </li>
     );

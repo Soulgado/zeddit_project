@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { voteComment } from "../../redux/actionCreators";
 
 // higher-order component for vote buttons
-// but how combine with redux??
 
 const mapStateToProps = (state) => ({
   user: state.currentUser.user,
@@ -15,7 +14,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(voteComment(comment.id, user.id, rating)),
 });
 
-function CommentVoteButtons(props) {
+export function CommentVoteButtons(props) {
   const [user_rating, setRating] = useState(props.comment.rating);
   const [upvotes, setUpvotes] = useState(props.comment.upvotes);
   const [downvotes, setDownvotes] = useState(props.comment.downvotes);

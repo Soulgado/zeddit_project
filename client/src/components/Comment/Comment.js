@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
   deleteComment: (user, comment) => dispatch(deleteComment(user, comment)),
 });
 
-class Comment extends React.Component {
+export class Comment extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -72,7 +72,7 @@ class Comment extends React.Component {
   };
 
   render() {
-    // ToDo: specific component for buttons
+    // ToDo: divide in several components?
     const { comment, loggedIn, post, user } = this.props;
     let { createFormActive, editFormActive, commentText } = this.state;
     return (
@@ -84,7 +84,7 @@ class Comment extends React.Component {
         <div className="comment-main">
           <div className="comment-info">
             <span>
-              {comment.username} - {comment.updated ? "Updated" : "Posted"}{" "}
+              {comment.username} - {comment.updated ? "updated " : "posted "}
               <CreationTime time={comment.creation_time} />
             </span>
           </div>
@@ -100,15 +100,21 @@ class Comment extends React.Component {
           </div>
           <div className="comment-buttons">
             {loggedIn ? (
-              <button type="button" onClick={this.handleClick}>
+              <button
+                className="comment-create-button"
+                type="button"
+                onClick={this.handleClick}
+              >
                 {createFormActive ? "Hide" : "Reply"}
               </button>
-            ) : (
-              ""
-            )}
+            ) : null}
             {loggedIn && Number(comment.author) === user.id ? (
               <>
-                <button type="button" onClick={this.handleEditClick}>
+                <button
+                  className="comment-edit-button"
+                  type="button"
+                  onClick={this.handleEditClick}
+                >
                   {editFormActive ? "Apply changes" : "Edit"}
                 </button>
                 <button type="button" onClick={this.handleDeleteClick}>

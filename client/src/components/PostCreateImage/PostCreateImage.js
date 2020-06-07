@@ -21,11 +21,12 @@ class PostCreateImageForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedFile: null,
+      selectedFile: undefined,
       title: "",
       subzeddit: "",
       dropdownActive: false,
       titlesList: [],
+      errors: undefined,
     };
 
     this.handleDropdownClick = this.handleDropdownClick.bind(this);
@@ -34,18 +35,42 @@ class PostCreateImageForm extends React.Component {
   onFileChange = (event) => {
     this.setState({
       selectedFile: event.target.files[0],
+      errors: undefined,
     });
   };
 
   onTitleChange = (event) => {
     this.setState({
       title: event.target.value,
+      errors: undefined,
     });
   };
 
+  formErrorsCheck(state) {
+    if (state.title === "") {
+      return "Title field must not be empty";
+    } else if (state.title.length < 3) {
+      return "Title must be no less than 3 characters long";
+    } else if (!state.selectedFile) {
+      return "File field must not be empty";
+    } else if (state.subzeddit === "") {
+      return "Subzeddit field must not be empty";
+    } else {
+      return;
+    }
+  }
+
   onSubmitHandler = (event) => {
     event.preventDefault();
+    const errors = this.formErrorsCheck(this.state);
+    if (errors) {
+      this.setState({
+        errors: errors,
+      });
+      return;
+    }
     const data = new FormData();
+    console.log(this.state.selectedFile);
     data.append("file", this.state.selectedFile);
     data.append("user", this.props.user.id);
     data.append("subzeddit", this.state.subzeddit);
@@ -58,6 +83,7 @@ class PostCreateImageForm extends React.Component {
     this.setState({
       subzeddit: event.target.value,
       titlesList: matchedTitles,
+      errors: undefined,
     });
   };
 
@@ -138,6 +164,7 @@ class PostCreateImageForm extends React.Component {
           ) : null}
         </div>
         <div className="form-errors">
+          {this.state.errors && <p>{this.state.errors}</p>}
           {this.props.errors && <p>{this.props.errors}</p>}
         </div>
         <button className="form-button" type="submit">

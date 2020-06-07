@@ -11,27 +11,57 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetUserFormErrors()),
 });
 
-// use Formik for forms
+// use Formik for forms?
 
 class SignUpForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
+      username: "",
       email: "",
       password: "",
       confPassword: "",
+      errors: undefined,
     };
   }
 
+  formErrorsCheck(state) {
+    if (state.username === "") {
+      return "Username field must not be empty";
+    } else if (state.username.length < 3) {
+      return "Username must not be less than 3 characters long";
+    } else if (state.username.length > 60) {
+      return "Username must not be more than 60 characters long";
+    } else if (state.email === "") {
+      return "Email field must not be empty";
+    } else if (state.password === "") {
+      return "Password field must not be empty";
+    } else if (state.password.length < 5) {
+      return "Password must not be less than 5 characters long";
+    } else if (state.password.length > 60) {
+      return "Password must not be more than 60 characters long";
+    } else if (state.password !== state.confPassword) {
+      return "Passwords does not match";
+    } else {
+      return;
+    }
+  }
+
   handleSubmit = (e) => {
-    const { name, password, email, confPassword } = this.state;
     e.preventDefault();
-    if (name === "" || password === "" || password !== confPassword) return;
+    const errors = this.formErrorsCheck(this.state);
+    if (errors) {
+      this.setState({
+        errors: errors,
+      });
+      return;
+    }
+    const { username, password, email } = this.state;
+
     let formData = {
-      username: name,
-      password: password,
-      email: email,
+      username,
+      password,
+      email,
     };
     this.props.signUp(formData);
   };
@@ -39,6 +69,7 @@ class SignUpForm extends React.Component {
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
+      errors: undefined,
     });
   };
 
@@ -47,7 +78,7 @@ class SignUpForm extends React.Component {
   }
 
   render() {
-    const { name, password, email, confPassword } = this.state;
+    const { username, password, email, confPassword, errors } = this.state;
     const { handleSubmit, handleChange } = this;
     return (
       <form onSubmit={handleSubmit}>
@@ -55,9 +86,9 @@ class SignUpForm extends React.Component {
         <div className="form-element">
           <label htmlFor="username">Username:</label>
           <input
-            id="name"
+            id="username"
             type="text"
-            value={name}
+            value={username}
             onChange={handleChange}
             required
           />
@@ -93,6 +124,7 @@ class SignUpForm extends React.Component {
           />
         </div>
         <div className="form-errors">
+          {errors && <p>{errors}</p>}
           {this.props.errors && <p>{this.props.errors}</p>}
         </div>
         <button className="form-button sign-up-button" type="submit">

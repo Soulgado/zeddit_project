@@ -130,10 +130,20 @@
   width: 80%
   font-size: 16px
   color: black
+  animation-name: post-min-content-ani
+  animation-duration: 300ms
+  animation-timing-function: ease
+  transform-origin: top center
   img
     width: 80%
     height: auto
 
+@keyframes post-min-content-ani
+  0%
+    transform: scaleY(0)
+  100%
+    transform: scaleY(1)
+    
 .user-options-element
   display: flex
   margin-right: 10px
