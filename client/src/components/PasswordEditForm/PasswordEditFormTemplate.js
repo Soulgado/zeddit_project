@@ -12,7 +12,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetUserFormErrors()),
 });
 
-class PasswordEditFormTemplate extends React.Component {
+export class PasswordEditFormTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,6 +21,9 @@ class PasswordEditFormTemplate extends React.Component {
       newPassword: "",
       errors: undefined,
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange = (e) => {
@@ -28,6 +31,9 @@ class PasswordEditFormTemplate extends React.Component {
       [e.target.id]: e.target.value,
       errors: undefined,
     });
+    if(this.props.errors) {
+      this.props.resetErrors();
+    }
   };
 
   formErrorsCheck(state) {
@@ -55,10 +61,9 @@ class PasswordEditFormTemplate extends React.Component {
       });
       return;
     }
-    const { password, confPassword, newPassword } = this.state;
-    if (newPassword !== confPassword) return;
+    const { password, newPassword } = this.state;
     this.props.editPassword({
-      username: this.props.user.username,
+      username: this.props.user.username,   // change to id
       password,
       new_password: newPassword,
     });
@@ -71,7 +76,7 @@ class PasswordEditFormTemplate extends React.Component {
     return (
       <form onSubmit={handleSubmit}>
         <div className="form-element">
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Current Password:</label>
           <input
             id="password"
             type="password"
@@ -84,7 +89,7 @@ class PasswordEditFormTemplate extends React.Component {
           <label htmlFor="newPassword">New Password:</label>
           <input
             id="newPassword"
-            type="text"
+            type="password"
             value={newPassword}
             onChange={handleChange}
             required

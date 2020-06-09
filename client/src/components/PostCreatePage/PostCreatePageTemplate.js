@@ -57,9 +57,9 @@ class PostCreatePageTemplate extends React.Component {
           </div>
         </div>
         {formState === "text" ? (
-          <PostCreateForm subzeddits={this.props.subzeddits} />
+          <PostCreateForm subzeddits={this.props.subzeddits} currentSubzeddit={this.props.currentSubzeddit}/>
         ) : (
-          <PostCreateImageForm subzeddits={this.props.subzeddits} />
+          <PostCreateImageForm subzeddits={this.props.subzeddits} currentSubzeddit={this.props.currentSubzeddit}/>
         )}
       </>
     );

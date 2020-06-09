@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { format } from "date-fns";
 import SubscribeButton from "../SubscribeButton/SubscribeButton";
 
 const mapStateToProps = (state) => ({
@@ -16,7 +17,7 @@ const SubzedditMinified = ({ loggedIn, subzeddit }) => {
         <div className="subzeddit-metadata">
           <Link to={`/sz/${subzeddit.title}`}>{subzeddit.title}</Link>
           <p>
-            Created {subzeddit.creation_date} by u/{subzeddit.username}
+            Created {format(subzeddit.creation_date, "dd MMMM yyyy")} by u/{subzeddit.username}
           </p>
           <p className="subscribers-num">
             {subzeddit.subscriptions} subscribers

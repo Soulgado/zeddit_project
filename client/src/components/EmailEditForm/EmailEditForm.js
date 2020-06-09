@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetSuccess: () => dispatch(resetRegistrationSuccess()),
 });
 
-class EmailEditForm extends React.Component {
+export class EmailEditForm extends React.Component {
   componentWillUnmount() {
     this.props.resetSuccess();
   }
@@ -23,7 +23,7 @@ class EmailEditForm extends React.Component {
       return <Placeholder />;
     } else if (this.props.successFlag) {
       return (
-        <div>
+        <div className="success-message">
           <p>Your email has been successfully changed!</p>
         </div>
       );
@@ -33,7 +33,7 @@ class EmailEditForm extends React.Component {
   }
 
   render() {
-    return this.renderingOptions();
+    return <div>{this.renderingOptions()}</div>;
   }
 }
 

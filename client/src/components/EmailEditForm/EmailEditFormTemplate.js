@@ -12,14 +12,17 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetUserFormErrors()),
 });
 
-class EmailEditFormTemplate extends React.Component {
+export class EmailEditFormTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       password: "",
       newEmail: "",
-      errors: "",
+      errors: undefined,
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   formErrorsCheck(state) {
@@ -37,6 +40,9 @@ class EmailEditFormTemplate extends React.Component {
       [e.target.id]: e.target.value,
       errors: undefined,
     });
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
   };
 
   handleSubmit = (e) => {
@@ -50,7 +56,7 @@ class EmailEditFormTemplate extends React.Component {
     }
     const { password, newEmail } = this.state;
     this.props.editEmail({
-      username: this.props.user.username,
+      username: this.props.user.username,   // change to id
       password,
       new_password: newEmail,
     });
@@ -66,6 +72,7 @@ class EmailEditFormTemplate extends React.Component {
           <label htmlFor="password">Password:</label>
           <input
             id="password"
+            name="password"
             type="password"
             value={password}
             onChange={handleChange}
@@ -76,6 +83,7 @@ class EmailEditFormTemplate extends React.Component {
           <label htmlFor="newEmail">New Email:</label>
           <input
             id="newEmail"
+            name="newEmail"
             type="email"
             value={newEmail}
             onChange={handleChange}

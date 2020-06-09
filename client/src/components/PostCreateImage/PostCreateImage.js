@@ -70,7 +70,6 @@ class PostCreateImageForm extends React.Component {
       return;
     }
     const data = new FormData();
-    console.log(this.state.selectedFile);
     data.append("file", this.state.selectedFile);
     data.append("user", this.props.user.id);
     data.append("subzeddit", this.state.subzeddit);

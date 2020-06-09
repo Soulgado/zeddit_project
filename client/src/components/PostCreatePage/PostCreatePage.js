@@ -21,10 +21,21 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class PostCreatePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentSubzeddit: undefined
+    };
+  }
   // get list of subzeddits on mounting
   // unnecessary ???
   componentDidMount() {
     this.props.getSubzeddits();
+    if (this.props.location.state.subzeddit) {
+      this.setState({
+        currentSubzeddit: this.props.location.state.subzeddit
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -48,7 +59,7 @@ class PostCreatePage extends React.Component {
         </div>
       );
     } else {
-      return <PostCreatePageTemplate />;
+      return <PostCreatePageTemplate currentSubzeddit={this.state.currentSubzeddit}/>;
     }
   }
 

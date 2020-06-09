@@ -11,7 +11,6 @@ import "../../styles/postPage.sass";
 const mapStateToProps = (state) => ({
   user: state.currentUser.user,
   post: state.post.post,
-
   loggedIn: state.currentUser.loggedIn,
 });
 
@@ -26,7 +25,6 @@ class PostPage extends React.Component {
   };
 
   render() {
-    console.log(this.props.post);
     const { post, loggedIn, user } = this.props;
     return (
       <>

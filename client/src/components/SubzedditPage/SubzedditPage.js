@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { format } from 'date-fns';
 import { getSubzeddit } from "../../redux/actionCreators";
 import PostPageWrapper from "../PostPage/PostPageWrapper";
 import PostMinified from "../PostMinified/PostMinified";
@@ -69,7 +70,7 @@ class SubzedditPage extends React.Component {
             <div className="users-count">
               <p>{subzeddit.subscriptions} subscribers</p>
             </div>
-            <p>Created {subzeddit.creation_date}</p>
+            <p>Created {format(subzeddit.creation_date, "dd MMMM yyyy")}</p>
             {loggedIn ? (
               <Link
                 to={{

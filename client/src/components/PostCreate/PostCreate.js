@@ -14,23 +14,39 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetPostFormErrors()),
 });
 
-function PostCreateForm(props) {
-  const { state } = useLocation();
+class PostCreateForm extends React.Component() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: "",
+      content: "",
+      subzeddit: "",
+      subzedditsTitles: [],
+      dropdownActive: false,
+      errors: undefined
+    }
+  }
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [subzeddit, setSubzeddit] = useState(state ? state.subzeddit : "");
-  const [subzedditsTitles, setTitles] = useState(props.subzeddits);
-  const [dropdownActive, setDropdown] = useState(false);
+  componentDidMount() {
+    if (this.props.currentSubzeddit) {
+      this.setState({
+        subzeddit: this.props.currentSubzeddit
+      });
+    }
+    this.setState({
+      subzedditsTitles: this.props.subzeddits
+    });
+  }
 
-  const handleSubmit = (event) => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    props.createPost(props.user.id, { title, content, subzeddit });
-  };
+    const { title, content, subzeddit } = this.state;
+    this.props.createPost(this.props.user.id, { title, content, subzeddit });
+  }; 
 
-  function matchedSubzeddits(title) {
+  matchedSubzeddits(title) {
     if (title !== "") {
-      return props.subzeddits.filter((subzeddit) => {
+      return this.props.subzeddits.filter((subzeddit) => {
         const regex = new RegExp(title, "gi");
         return subzeddit.title.match(regex);
       });
@@ -39,69 +55,95 @@ function PostCreateForm(props) {
     }
   }
 
-  const handleSubzedditChange = (event) => {
-    const matchedTitles = matchedSubzeddits(event.target.value);
-    setTitles(matchedTitles);
-    setSubzeddit(event.target.value);
+  handleSubzedditChange = (event) => {
+    const matchedTitles = this.matchedSubzeddits(event.target.value);
+    this.setState({
+      subzedditsTitles: matchedTitles,
+      subzeddit: event.target.value
+    });
   };
 
-  const handleSubzedditFocus = (event) => {
+  handleChange = (event) => {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  }
+
+  handleSubzedditFocus = (event) => {
     event.preventDefault();
-    setDropdown(true);
+    this.setState({
+      dropdownActive: true
+    })
   };
 
-  const handleSubzedditBlur = () => {
+  handleSubzedditBlur = () => {
+    // timeout is required to catch dropdown as event target
     setTimeout(() => {
-      setDropdown(false);
+      this.setState({
+        dropdownActive: false
+      })
     }, 100);
   };
 
-  const handleDropdownClick = (event) => {
-    setSubzeddit(event.target.textContent);
+  handleDropdownClick = (event) => {
+    this.setState({
+      subzeddit: event.target.textContent
+    });
   };
 
-  return (
-    <form className="post-form" onSubmit={handleSubmit}>
-      <p className="form-title">Create new Post</p>
-      <div className="form-element">
-        <label htmlFor="title">Post title:</label>
-        <input
-          id="title"
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-      <div className="form-element">
-        <label htmlFor="content">Post content:</label>
-        <textarea
-          id="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-      </div>
-      <div className="form-element">
-        <label htmlFor="subzeddit">Submit post to subzeddit:</label>
-        <input
-          id="subzeddit"
-          type="text"
-          value={subzeddit}
-          onChange={handleSubzedditChange}
-          onFocus={handleSubzedditFocus}
-          onBlur={handleSubzedditBlur}
-        />
-        {dropdownActive ? (
-          <Dropdown
-            titlesList={subzedditsTitles}
-            handleClick={handleDropdownClick}
+  render() {
+    const { title, content, subzeddit, subzedditsTitles } = this.state;
+    const { 
+      handleSubmit,
+      handleChange,
+      handleSubzedditBlur,
+      handleSubzedditChange,
+      handleSubzedditFocus,
+      handleDropdownClick
+    } = this;
+    return (
+      <form className="post-form" onSubmit={handleSubmit}>
+        <p className="form-title">Create new Post</p>
+        <div className="form-element">
+          <label htmlFor="title">Post title:</label>
+          <input
+            id="title"
+            type="text"
+            value={title}
+            onChange={handleChange}
           />
-        ) : null}
-      </div>
-      <button className="form-button" type="submit">
-        Create Post
-      </button>
-    </form>
-  );
+        </div>
+        <div className="form-element">
+          <label htmlFor="content">Post content:</label>
+          <textarea
+            id="content"
+            value={content}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-element">
+          <label htmlFor="subzeddit">Submit post to subzeddit:</label>
+          <input
+            id="subzeddit"
+            type="text"
+            value={subzeddit}
+            onChange={handleSubzedditChange}
+            onFocus={handleSubzedditFocus}
+            onBlur={handleSubzedditBlur}
+          />
+          {this.state.dropdownActive ? (
+            <Dropdown
+              titlesList={subzedditsTitles}
+              handleClick={handleDropdownClick}
+            />
+          ) : null}
+        </div>
+        <button className="form-button" type="submit">
+          Create Post
+        </button>
+      </form>
+    );
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostCreateForm);
