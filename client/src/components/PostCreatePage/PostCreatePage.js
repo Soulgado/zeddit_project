@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import PostCreatePageTemplate from "./PostCreatePageTemplate";
 import Placeholder from "../fetchingPlaceholder";
 import {
@@ -70,6 +71,14 @@ class PostCreatePage extends React.Component {
       </div>
     );
   }
+}
+
+PostCreatePage.propTypes = {
+  post: PropTypes.object,
+  loading: PropTypes.bool,
+  creationFlag: PropTypes.bool,
+  getSubzeddits: PropTypes.func,
+  resetCreationFlag: PropTypes.func,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostCreatePage);

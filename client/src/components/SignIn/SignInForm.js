@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { login, resetUserFormErrors } from "../../redux/actionCreators";
 import { withLogging } from "../withLogging";
 
@@ -94,7 +95,14 @@ class SignInForm extends React.Component {
   }
 }
 
-// check for logged in state
-const connectedComp = withLogging(SignInForm, "/");
+SignInForm.propTypes = {
+  loggedIn: PropTypes.bool,
+  errors: PropTypes.string,
+  signIn: PropTypes.func,
+  resetErrors: PropTypes.func,
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(connectedComp);
+// check for logged in state
+const ConnectedSignInForm = withLogging(SignInForm, "/");
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectedSignInForm);

@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { deleteAccount, resetUserFormErrors } from "../../redux/actionCreators";
 
 const mapStateToProps = (state) => ({
@@ -11,6 +12,8 @@ const mapDispatchToProps = (dispatch) => ({
   deleteAccount: (formData) => dispatch(deleteAccount(formData)),
   resetErrors: () => dispatch(resetUserFormErrors()),
 });
+
+// ToDo: front-end errors handlers
 
 class UserDeleteFormTemplate extends React.Component {
   constructor(props) {
@@ -83,6 +86,14 @@ class UserDeleteFormTemplate extends React.Component {
       </form>
     );
   }
+}
+
+UserDeleteFormTemplate.propTypes = {
+  errors: PropTypes.string,
+  user: PropTypes.object,
+  deleteAccount: PropTypes.func,
+  resetErrors: PropTypes.func,
+  
 }
 
 export default connect(

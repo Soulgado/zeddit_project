@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { resetRegistrationSuccess } from "../../redux/actionCreators";
 import Placeholder from "../fetchingPlaceholder";
 import PasswordEditFormTemplate from "./PasswordEditFormTemplate";
@@ -35,6 +36,12 @@ class PasswordEditForm extends React.Component {
   render() {
     return this.renderingOptions();
   }
+}
+
+PasswordEditForm.propTypes = {
+  loading: PropTypes.bool,
+  successFlag: PropTypes.bool,
+  resetSuccess: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PasswordEditForm);

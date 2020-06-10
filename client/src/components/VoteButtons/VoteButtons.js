@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { votePost } from "../../redux/actionCreators";
 
 const mapStateToProps = (state) => ({
@@ -65,6 +66,12 @@ function VoteButtons(props) {
       </div>
     </div>
   );
+}
+
+VoteButtons.propTypes = {
+  user: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  votePost: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(VoteButtons);

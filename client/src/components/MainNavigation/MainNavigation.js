@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { logout } from "../../redux/actionCreators";
 import SubscriptionsListNav from "../SubscriptionsListNav/SubscriptionsListNav";
 
@@ -72,6 +73,12 @@ export class MainNavigation extends React.Component {
       </nav>
     );
   }
+}
+
+MainNavigation.propTypes = {
+  user: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  logout: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainNavigation);

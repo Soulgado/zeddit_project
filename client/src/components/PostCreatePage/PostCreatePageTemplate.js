@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import PostCreateForm from "../PostCreate/PostCreate";
 import PostCreateImageForm from "../PostCreateImage/PostCreateImage";
 
@@ -64,6 +65,11 @@ class PostCreatePageTemplate extends React.Component {
       </>
     );
   }
+}
+
+PostCreatePageTemplate.propTypes = {
+  subzeddits: PropTypes.array,
+  currentSubzeddit: PropTypes.object
 }
 
 export default connect(mapStateToProps)(PostCreatePageTemplate);

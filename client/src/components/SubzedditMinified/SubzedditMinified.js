@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { format } from "date-fns";
 import SubscribeButton from "../SubscribeButton/SubscribeButton";
 
 const mapStateToProps = (state) => ({
-  user: state.currentUser.user,
   loggedIn: state.currentUser.loggedIn,
 });
 
@@ -28,5 +28,10 @@ const SubzedditMinified = ({ loggedIn, subzeddit }) => {
     </li>
   );
 };
+
+SubzedditMinified.propTypes = {
+  loggedIn: PropTypes.bool,
+  subzeddit: PropTypes.object
+}
 
 export default connect(mapStateToProps)(SubzedditMinified);

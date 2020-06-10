@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { editPassword, resetUserFormErrors } from "../../redux/actionCreators";
 
 const mapStateToProps = (state) => ({
@@ -115,6 +116,13 @@ export class PasswordEditFormTemplate extends React.Component {
       </form>
     );
   }
+}
+
+PasswordEditFormTemplate.propTypes = {
+  user: PropTypes.object,
+  errors: PropTypes.string,
+  editPassword: PropTypes.func,
+  resetErrors: PropTypes.func
 }
 
 export default connect(

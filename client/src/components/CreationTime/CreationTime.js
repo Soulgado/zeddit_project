@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const CreationTime = (props) => {
   function CalcTime(time) {
@@ -19,5 +20,10 @@ const CreationTime = (props) => {
 
   return <>{CalcTime(props.time)}</>;
 };
+
+CreationTime.propTypes = {
+  time: PropTypes.string
+}
+
 
 export default CreationTime;

@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import { getSubzedditsList } from "../../redux/actionCreators";
 import "../../styles/subzedditList.sass";
 import SubzedditMinified from "../SubzedditMinified/SubzedditMinified";
@@ -55,6 +56,13 @@ class SubzedditList extends React.Component {
       </div>
     );
   }
+}
+
+SubzedditList.propTypes = {
+  user: PropTypes.object,
+  subzedditsList: PropTypes.array,
+  loading: PropTypes.bool,
+  getSubzeddits: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubzedditList);

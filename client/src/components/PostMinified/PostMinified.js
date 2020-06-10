@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import VoteButtons from "../VoteButtons/VoteButtons";
 import PostPreview from "../PostPreview/PostPreview";
 import CreationTime from "../CreationTime/CreationTime";
@@ -78,6 +79,10 @@ export class PostMinified extends React.Component {
       </div>
     );
   }
+}
+
+PostMinified.propTypes = {
+  post: PropTypes.object
 }
 
 export default PostMinified;

@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { resetRegistrationSuccess } from "../../redux/actionCreators";
 import Placeholder from "../fetchingPlaceholder";
 import EmailEditFormTemplate from "./EmailEditFormTemplate";
@@ -35,6 +36,12 @@ export class EmailEditForm extends React.Component {
   render() {
     return <div>{this.renderingOptions()}</div>;
   }
+}
+
+EmailEditForm.propTypes = {
+  successFlag: PropTypes.bool,
+  loading: PropTypes.bool,
+  resetSuccess: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmailEditForm);

@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import Placeholder from "../fetchingPlaceholder";
 import PostPage from "./PostPage";
 import { getPost, resetCommentCreationFlag } from "../../redux/actionCreators";
@@ -36,6 +37,14 @@ class PostPageWrapper extends React.Component {
       </div>
     );
   }
+}
+
+PostPageWrapper.propTypes = {
+  user: PropTypes.object,
+  loading: PropTypes.bool,
+  commentCreated: PropTypes.bool,
+  getPost: PropTypes.func,
+  resetFlag: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostPageWrapper);

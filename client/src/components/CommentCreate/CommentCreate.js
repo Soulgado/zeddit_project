@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { postComment, resetPostFormErrors } from "../../redux/actionCreators";
 
 const mapStateToProps = (state) => ({
@@ -72,6 +73,15 @@ class CommentCreateForm extends React.Component {
       </form>
     );
   }
+}
+
+CommentCreateForm.propTypes = {
+  user: PropTypes.object,
+  errors: PropTypes.string,
+  postComment: PropTypes.func,
+  resetErrors: PropTypes.func,
+  post: PropTypes.string,
+  parent: PropTypes.object
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentCreateForm);

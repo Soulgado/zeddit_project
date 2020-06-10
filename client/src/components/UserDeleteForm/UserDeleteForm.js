@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { resetRegistrationSuccess } from "../../redux/actionCreators";
 import Placeholder from "../fetchingPlaceholder";
 import UserDeleteFormTemplate from "./UserDeleteFormTemplate";
@@ -35,6 +36,12 @@ class UserDeleteForm extends React.Component {
   render() {
     return this.renderingOptions();
   }
+}
+
+UserDeleteForm.propTypes = {
+  successFlag: PropTypes.bool,
+  loading: PropTypes.bool,
+  resetSuccess: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserDeleteForm);

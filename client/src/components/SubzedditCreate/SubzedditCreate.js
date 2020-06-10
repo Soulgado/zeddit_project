@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import {
   createSubzeddit,
   resetSubzedditFormErrors,
@@ -98,6 +99,13 @@ class SubzedditCreateForm extends React.Component {
       </form>
     );
   }
+}
+
+SubzedditCreateForm.propTypes = {
+  user: PropTypes.object,
+  errors: PropTypes.string,
+  createSubzeddit: PropTypes.func,
+  resetErrors: PropTypes.func,
 }
 
 export default connect(

@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { editTextPost, resetPostFormErrors } from "../../redux/actionCreators";
 
 const mapStateToProps = (state) => ({
@@ -82,6 +83,14 @@ class TextPostEditPage extends React.Component {
       </form>
     );
   }
+}
+
+TextPostEditPage.propTypes = {
+  user: PropTypes.object,
+  errors: PropTypes.string,
+  editPost: PropTypes.func,
+  resetErrors: PropTypes.func,
+  post: PropTypes.object
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TextPostEditPage);

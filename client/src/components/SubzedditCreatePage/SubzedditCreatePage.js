@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import { resetCreationSuccess } from "../../redux/actionCreators";
 import Placeholder from "../fetchingPlaceholder";
 import SubzedditCreateForm from "../SubzedditCreate/SubzedditCreate";
@@ -8,7 +9,7 @@ import SubzedditCreateForm from "../SubzedditCreate/SubzedditCreate";
 const mapStateToProps = (state) => ({
   loading: state.loading.loading,
   creationSuccess: state.subzeddit.creationSuccess,
-  subzeddit: state.subzeddit.subzeddit,
+  subzeddit: state.subzeddit.subzeddit, // to create link to the new subzeddit
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -45,6 +46,13 @@ class SubzedditCreatePage extends React.Component {
       </div>
     );
   }
+}
+
+SubzedditCreatePage.propTypes = {
+  loading: PropTypes.bool,
+  creationSuccess: PropTypes.bool,
+  subzeddit: PropTypes.object,
+  resetCreationSuccess: PropTypes.func
 }
 
 export default connect(

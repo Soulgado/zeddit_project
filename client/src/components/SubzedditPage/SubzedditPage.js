@@ -1,7 +1,8 @@
 import React from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { format } from 'date-fns';
+import PropTypes from "prop-types"
+import { format } from "date-fns";
 import { getSubzeddit } from "../../redux/actionCreators";
 import PostPageWrapper from "../PostPage/PostPageWrapper";
 import PostMinified from "../PostMinified/PostMinified";
@@ -88,6 +89,14 @@ class SubzedditPage extends React.Component {
       </div>
     );
   }
+}
+
+SubzedditPage.propTypes = {
+  user: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  subzeddit: PropTypes.object,
+  loading: PropTypes.bool,
+  getSubzeddit: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubzedditPage);

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const PostPreview = (props) => {
   function choosePreview() {
@@ -24,5 +25,9 @@ const PostPreview = (props) => {
 
   return <div className="post-preview">{choosePreview()}</div>;
 };
+
+PostPreview.propTypes = {
+  type: PropTypes.string
+}
 
 export default PostPreview;

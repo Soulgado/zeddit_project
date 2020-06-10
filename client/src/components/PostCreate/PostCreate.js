@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { useLocation } from "react-router-dom";
 import { createNewPost, resetPostFormErrors } from "../../redux/actionCreators";
 import Dropdown from "../PostFormDropdown/PostFormDropdown";
 
@@ -14,7 +13,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetPostFormErrors()),
 });
 
-class PostCreateForm extends React.Component() {
+export class PostCreateForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,8 +39,10 @@ class PostCreateForm extends React.Component() {
 
   handleSubmit = (event) => {
     event.preventDefault();
+    // ToDo: create frontend errors handler
     const { title, content, subzeddit } = this.state;
     this.props.createPost(this.props.user.id, { title, content, subzeddit });
+    this.props.resetErrors();
   }; 
 
   matchedSubzeddits(title) {
@@ -59,21 +60,35 @@ class PostCreateForm extends React.Component() {
     const matchedTitles = this.matchedSubzeddits(event.target.value);
     this.setState({
       subzedditsTitles: matchedTitles,
-      subzeddit: event.target.value
+      subzeddit: event.target.value,
+      errors: undefined
     });
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
   };
 
   handleChange = (event) => {
     this.setState({
-      [event.target.id]: event.target.value
+      [event.target.id]: event.target.value,
+      errors: undefined
     });
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
   }
 
   handleSubzedditFocus = (event) => {
     event.preventDefault();
+    if (this.state.subzeddit !== "") {
+      const matchedTitles = this.matchedSubzeddits(this.state.subzeddit);
+      this.setState({
+        subzedditsTitles: matchedTitles
+      });
+    }
     this.setState({
       dropdownActive: true
-    })
+    });
   };
 
   handleSubzedditBlur = () => {
@@ -137,6 +152,10 @@ class PostCreateForm extends React.Component() {
               handleClick={handleDropdownClick}
             />
           ) : null}
+        </div>
+        <div className="form-errors">
+          {this.state.errors && <p>{this.state.errors}</p>}
+          {this.props.errors && <p>{this.props.errors}</p>}
         </div>
         <button className="form-button" type="submit">
           Create Post

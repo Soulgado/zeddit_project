@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { changeSubscriptionStatus } from "../../redux/actionCreators";
 
 const mapStateToProps = (state) => ({
@@ -49,6 +50,13 @@ class SubscribeButton extends React.Component {
       </div>
     );
   }
+}
+
+SubscribeButton.propTypes = {
+  user: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  changeSubscriptionStatus: PropTypes.func,
+  subzeddit: PropTypes.object
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubscribeButton);

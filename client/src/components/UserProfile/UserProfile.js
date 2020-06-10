@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink, Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import SubscriptionsList from "../SubscriptionsList/SubscriptionsList";
 import UserUpvotedPosts from "../UserUpvotedPosts/UserUpvotedPosts";
 import UserDownvotedPosts from "../UserDownvotedPosts/UserDonwvotedPosts";
@@ -73,6 +74,12 @@ class UserProfile extends React.Component {
       </div>
     );
   }
+}
+
+UserProfile.propTypes = {
+  user: PropTypes.object,
+  loggedIn: PropTypes.object,
+  loading: PropTypes.object
 }
 
 export default connect(mapStateToProps)(UserProfile);

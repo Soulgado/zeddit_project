@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import { getUserSubscriptions } from "../../redux/actionCreators";
 
 const mapStateToProps = (state) => ({
@@ -65,6 +66,12 @@ export class SubscriptionsListNav extends React.Component {
       </li>
     );
   }
+}
+
+SubscriptionsListNav.propTypes = {
+  user: PropTypes.object,
+  subscriptions: PropTypes.arrayOf(PropTypes.object),
+  getSubscriptions: PropTypes.func
 }
 
 export default connect(

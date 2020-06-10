@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { createAccount, resetUserFormErrors } from "../../redux/actionCreators";
 
 const mapStateToProps = (state) => ({
@@ -133,6 +134,12 @@ class SignUpForm extends React.Component {
       </form>
     );
   }
+}
+
+SignUpForm.propTypes = {
+  errors: PropTypes.string,
+  signUp: PropTypes.func,
+  resetErrors: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);

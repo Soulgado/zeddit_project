@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { voteComment } from "../../redux/actionCreators";
 
 // higher-order component for vote buttons
@@ -68,6 +69,13 @@ export function CommentVoteButtons(props) {
       </div>
     </div>
   );
+}
+
+CommentVoteButtons.propTypes = {
+  user: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  voteComment: PropTypes.func,
+  comment: PropTypes.object
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentVoteButtons);

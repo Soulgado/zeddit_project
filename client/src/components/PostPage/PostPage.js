@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import CommentCreateForm from "../CommentCreate/CommentCreate";
 import VoteButtons from "../VoteButtons/VoteButtons";
 import CommentsList from "../CommentsList/CommentsList";
@@ -87,6 +88,13 @@ class PostPage extends React.Component {
       </>
     );
   }
+}
+
+PostPage.propTypes = {
+  user: PropTypes.object,
+  post: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  deletePost: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostPage);

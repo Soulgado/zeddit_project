@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import { resetRegistrationSuccess } from "../../redux/actionCreators";
 import Placeholder from "../fetchingPlaceholder";
 import SignUpForm from "../SignUp/SignUpForm";
@@ -14,7 +15,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetRegistrationSuccess: () => dispatch(resetRegistrationSuccess()),
 });
 
-class SubzedditCreatePage extends React.Component {
+class SignUpPage extends React.Component {
   componentWillUnmount() {
     this.props.resetRegistrationSuccess();
   }
@@ -41,7 +42,13 @@ class SubzedditCreatePage extends React.Component {
   }
 }
 
+SignUpPage.propTypes = {
+  loading: PropTypes.bool,
+  successFlag: PropTypes.bool,
+  resetRegistrationSuccess: PropTypes.func
+}
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SubzedditCreatePage);
+)(SignUpPage);

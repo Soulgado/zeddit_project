@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import UsernameEditForm from "../UsernameEditForm/UsernameEditForm";
 import PasswordEditForm from "../PasswordEditForm/PasswordEditForm";
 import EmailEditForm from "../EmailEditForm/EmailEditForm";
@@ -77,6 +78,10 @@ class UserProfilePage extends React.Component {
       </>
     );
   }
+}
+
+UserProfilePage.propTypes = {
+  user: PropTypes.object
 }
 
 export default UserProfilePage;

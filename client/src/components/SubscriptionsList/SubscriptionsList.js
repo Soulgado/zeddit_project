@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { getUserSubscriptions } from "../../redux/actionCreators";
 import SubzedditMinified from "../SubzedditMinified/SubzedditMinified";
 import { withLoading } from "../withLoading";
@@ -38,6 +39,13 @@ class SubscriptionsList extends React.Component {
       </div>
     );
   }
+}
+
+SubscriptionsList.propTypes = {
+  user: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  subscriptionsList: PropTypes.arrayOf(PropTypes.object),
+  loading: PropTypes.bool
 }
 
 const SubscriptionsListLoaded = withLoading(SubscriptionsList);

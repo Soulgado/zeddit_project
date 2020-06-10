@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import CommentVoteButtons from "../CommentVoteButtons/CommentVoteButtons";
 import CommentCreateForm from "../CommentCreate/CommentCreate";
 import CreationTime from "../CreationTime/CreationTime";
@@ -136,6 +137,15 @@ export class Comment extends React.Component {
       </div>
     );
   }
+}
+
+Comment.propTypes = {
+  user: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  post: PropTypes.object,
+  editComment: PropTypes.func,
+  deleteComment: PropTypes.func,
+  comment: PropTypes.object
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comment);

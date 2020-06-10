@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
 import TextPostEditPage from "./TextPostEditPage";
 import ImagePostEditPage from "./ImagePostEditPage";
 import Placeholder from "../fetchingPlaceholder";
@@ -54,6 +55,13 @@ class PostEditPage extends React.Component {
       </div>
     );
   }
+}
+
+PostEditPage.propTypes = {
+  loading: PropTypes.bool,
+  creationFlag: PropTypes.bool,
+  post: PropTypes.object,
+  resetCreationFlag: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostEditPage);

@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { getUpvotedPosts } from "../../redux/actionCreators";
 import PostMinified from "../PostMinified/PostMinified";
 import { withLoading } from "../withLoading";
@@ -35,6 +36,14 @@ class UserUpvotedPosts extends React.Component {
       </div>
     );
   }
+}
+
+UserUpvotedPosts.propTypes = {
+  user: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  postsList: PropTypes.array,
+  loading: PropTypes.bool,
+  fetchData: PropTypes.func
 }
 
 const UserUpvotedPostsLoaded = withLoading(UserUpvotedPosts);

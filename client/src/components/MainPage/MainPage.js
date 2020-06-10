@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import { getMostPopularDefault } from "../../redux/actionCreators";
 import PostMinified from "../PostMinified/PostMinified";
 import Placeholder from "../fetchingPlaceholder";
@@ -61,6 +62,15 @@ export class MainPage extends React.Component {
       </div>
     );
   }
+}
+
+MainPage.propTypes = {
+  user: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  loading: PropTypes.bool,
+  mostPopularGlobal: PropTypes.array,
+  mostPopularUser: PropTypes.array,
+  getMostPopularGlobal: PropTypes.array
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

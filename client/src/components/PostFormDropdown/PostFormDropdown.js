@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Dropdown = (props) => {
   return (
@@ -13,5 +14,10 @@ const Dropdown = (props) => {
     </ul>
   );
 };
+
+Dropdown.propTypes = {
+  titlesList: PropTypes.array,
+  handleClick: PropTypes.func
+}
 
 export default Dropdown;

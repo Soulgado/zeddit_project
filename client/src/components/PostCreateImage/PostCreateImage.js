@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import {
   createNewImagePost,
   resetPostFormErrors,
@@ -172,6 +173,14 @@ class PostCreateImageForm extends React.Component {
       </form>
     );
   }
+}
+
+PostCreateImageForm.propTypes = {
+  user: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  errors: PropTypes.string,
+  createImgPost: PropTypes.func,
+  resetErrors: PropTypes.func,
 }
 
 export default connect(
