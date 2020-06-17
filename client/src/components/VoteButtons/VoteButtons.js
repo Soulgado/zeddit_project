@@ -30,7 +30,7 @@ function VoteButtons(props) {
     }
     setRating(1);
     setUpvotes(upvotes + 1);
-    props.votePost(props.post, props.user.id, 1);
+    props.votePost(props.post, props.user.id, 1);   // send post.id
   }
 
   function onDownvote() {

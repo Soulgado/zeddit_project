@@ -15,13 +15,14 @@ const mapDispatchToProps = (dispatch) => ({
 
 // ToDo: front-end errors handlers
 
-class UserDeleteFormTemplate extends React.Component {
+export class UserDeleteFormTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: "",
       password: "",
       confPassword: "",
+      // + errors state
     };
   }
 
@@ -29,18 +30,25 @@ class UserDeleteFormTemplate extends React.Component {
     this.setState({
       [e.target.id]: e.target.value,
     });
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
     const { password, confPassword, username } = this.state;
-    if (password !== confPassword) return;
-    this.props.deleteAccount({
+    if (password !== confPassword) return;   // other error handler
+    this.props.deleteAccount({   // add current user to arguments?
       username,
       password,
     });
     this.props.resetErrors();
   };
+
+  componentWillUnmount() {
+    this.props.resetErrors();
+  }
 
   render() {
     const { username, password, confPassword } = this.state;

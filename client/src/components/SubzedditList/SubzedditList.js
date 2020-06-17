@@ -17,9 +17,9 @@ const mapDispatchToProps = (dispatch) => ({
   getSubzeddits: (user) => dispatch(getSubzedditsList(user)),
 });
 
-class SubzedditList extends React.Component {
+export class SubzedditList extends React.Component {
   componentDidMount() {
-    this.props.getSubzeddits(this.props.user);
+    this.props.getSubzeddits(this.props.user);  // to id
   }
 
   render() {

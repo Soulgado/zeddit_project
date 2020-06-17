@@ -48,6 +48,8 @@ class PostEditPage extends React.Component {
     }
   }
 
+  // ToDo: check for user === post.creator => Redirect to main page
+
   render() {
     return (
       <div className="create-page">

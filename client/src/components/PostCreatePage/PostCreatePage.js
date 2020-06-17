@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetCreationFlag: () => dispatch(resetCommentCreationFlag()),
 });
 
-class PostCreatePage extends React.Component {
+export class PostCreatePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,7 +32,8 @@ class PostCreatePage extends React.Component {
   // unnecessary ???
   componentDidMount() {
     this.props.getSubzeddits();
-    if (this.props.location.state.subzeddit) {
+    console.log(this.props);
+    if (this.props.location.state) {
       this.setState({
         currentSubzeddit: this.props.location.state.subzeddit
       });

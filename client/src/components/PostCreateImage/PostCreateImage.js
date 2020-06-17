@@ -18,7 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetPostFormErrors()),
 });
 
-class PostCreateImageForm extends React.Component {
+export class PostCreateImageForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,6 +31,21 @@ class PostCreateImageForm extends React.Component {
     };
 
     this.handleDropdownClick = this.handleDropdownClick.bind(this);
+    this.onFileChange = this.onFileChange.bind(this);
+    this.onTitleChange = this.onTitleChange.bind(this);
+    this.onSubmitHandler = this.onSubmitHandler.bind(this);
+    this.handleSubzedditChange = this.handleSubzedditChange.bind(this);
+    this.handleSubzedditFocus = this.handleSubzedditFocus.bind(this);
+    this.handleSubzedditBlur = this.handleSubzedditBlur.bind(this);
+    this.matchedSubzeddits = this.matchedSubzeddits.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.currentSubzeddit) {
+      this.setState({
+        subzeddit: this.props.currentSubzeddit
+      });
+    }
   }
 
   onFileChange = (event) => {
@@ -38,6 +53,9 @@ class PostCreateImageForm extends React.Component {
       selectedFile: event.target.files[0],
       errors: undefined,
     });
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
   };
 
   onTitleChange = (event) => {
@@ -45,6 +63,9 @@ class PostCreateImageForm extends React.Component {
       title: event.target.value,
       errors: undefined,
     });
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
   };
 
   formErrorsCheck(state) {
@@ -70,12 +91,15 @@ class PostCreateImageForm extends React.Component {
       });
       return;
     }
+    // use Form API to send request with content-type = multipart/form-data
+    // required to send the file
     const data = new FormData();
     data.append("file", this.state.selectedFile);
     data.append("user", this.props.user.id);
     data.append("subzeddit", this.state.subzeddit);
     data.append("title", this.state.title);
     this.props.createImgPost(data);
+    this.props.resetErrors();
   };
 
   handleSubzedditChange = (event) => {
@@ -85,9 +109,19 @@ class PostCreateImageForm extends React.Component {
       titlesList: matchedTitles,
       errors: undefined,
     });
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
   };
 
-  handleSubzedditFocus = () => {
+  handleSubzedditFocus = event => {
+    event.preventDefault();
+    if (this.state.subzeddit !== "") {
+      const matchedTitles = this.matchedSubzeddits(this.state.subzeddit);
+      this.setState({
+        titlesList: matchedTitles
+      });
+    }
     this.setState({
       dropdownActive: true,
     });
@@ -103,10 +137,14 @@ class PostCreateImageForm extends React.Component {
   };
 
   matchedSubzeddits = (title) => {
-    return this.props.subzeddits.filter((subzeddit) => {
-      const regex = new RegExp(title, "gi");
-      return subzeddit.title.match(regex);
-    });
+    if (title !== "") {
+      return this.props.subzeddits.filter((subzeddit) => {
+        const regex = new RegExp(title, "gi");
+        return subzeddit.title.match(regex);
+      });
+    } else {
+      return [];
+    }
   };
 
   componentWillUnmount() {
@@ -122,6 +160,7 @@ class PostCreateImageForm extends React.Component {
   render() {
     return (
       <form
+        id="post-image-form"
         className="post-form"
         method="post"
         encType="multipart/form-data"

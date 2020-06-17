@@ -32,9 +32,6 @@ export class PostCreateForm extends React.Component {
         subzeddit: this.props.currentSubzeddit
       });
     }
-    this.setState({
-      subzedditsTitles: this.props.subzeddits
-    });
   }
 
   handleSubmit = (event) => {
@@ -117,7 +114,7 @@ export class PostCreateForm extends React.Component {
       handleDropdownClick
     } = this;
     return (
-      <form className="post-form" onSubmit={handleSubmit}>
+      <form id="post-text-form" className="post-form" onSubmit={handleSubmit}>
         <p className="form-title">Create new Post</p>
         <div className="form-element">
           <label htmlFor="title">Post title:</label>

@@ -9,7 +9,7 @@ const mapStateToProps = (state) => ({
   loggedIn: state.currentUser.loggedIn,
 });
 
-const SubzedditMinified = ({ loggedIn, subzeddit }) => {
+export const SubzedditMinified = ({ loggedIn, subzeddit }) => {
   // subscribe button doesn't receive change text
   return (
     <li>
@@ -17,13 +17,13 @@ const SubzedditMinified = ({ loggedIn, subzeddit }) => {
         <div className="subzeddit-metadata">
           <Link to={`/sz/${subzeddit.title}`}>{subzeddit.title}</Link>
           <p>
-            Created {format(subzeddit.creation_date, "dd MMMM yyyy")} by u/{subzeddit.username}
+            Created {format(Date.parse(subzeddit.creation_date), "dd MMMM yyyy")} by u/{subzeddit.username}
           </p>
           <p className="subscribers-num">
             {subzeddit.subscriptions} subscribers
           </p>
         </div>
-        {loggedIn ? <SubscribeButton subzeddit={subzeddit} /> : ""}
+        {loggedIn ? <SubscribeButton subzeddit={subzeddit} /> : null}
       </div>
     </li>
   );

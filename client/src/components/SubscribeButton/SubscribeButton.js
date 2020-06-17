@@ -5,7 +5,6 @@ import { changeSubscriptionStatus } from "../../redux/actionCreators";
 
 const mapStateToProps = (state) => ({
   user: state.currentUser.user,
-  loggedIn: state.currentUser.loggedIn,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -13,18 +12,19 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changeSubscriptionStatus(user, subzeddit, status)),
 });
 
-class SubscribeButton extends React.Component {
+export class SubscribeButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSubscribed: false,
+      isSubscribed: false, // change default?
     };
 
     this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
-    let sub = this.props.subzeddit.subscription_status ? true : false;
+    // to change, status doesn't changes on first render
+    let sub = this.props.subzeddit.subscription_status ? true : false; 
     this.setState({
       isSubscribed: sub,
     });
@@ -32,7 +32,7 @@ class SubscribeButton extends React.Component {
 
   handleClick() {
     this.props.changeSubscriptionStatus(
-      this.props.user,
+      this.props.user,  // to id
       this.props.subzeddit.title,
       this.state.isSubscribed
     );
@@ -54,7 +54,6 @@ class SubscribeButton extends React.Component {
 
 SubscribeButton.propTypes = {
   user: PropTypes.object,
-  loggedIn: PropTypes.bool,
   changeSubscriptionStatus: PropTypes.func,
   subzeddit: PropTypes.object
 }

@@ -17,12 +17,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class UserSubmittedPosts extends React.Component {
-  /*
-  componentDidMount() {
-    this.props.getSubmittedPosts(this.props.user);
-  }
-  */
-
   render() {
     let { postsList } = this.props;
     return (

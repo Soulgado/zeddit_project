@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetUserFormErrors()),
 });
 
-class SignInForm extends React.Component {
+export class SignInForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,6 +29,9 @@ class SignInForm extends React.Component {
       [e.target.id]: e.target.value,
       errors: undefined,
     });
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
   };
 
   formErrorsCheck(state) {
@@ -56,7 +59,12 @@ class SignInForm extends React.Component {
       password,
     };
     this.props.signIn(formData);
+    this.props.resetErrors();
   };
+
+  componentWillUnmount() {
+    this.props.resetErrors();
+  }
 
   render() {
     const { username, password, errors } = this.state;
@@ -102,7 +110,7 @@ SignInForm.propTypes = {
   resetErrors: PropTypes.func,
 }
 
-// check for logged in state
+// if already logged in - redirect to main page
 const ConnectedSignInForm = withLogging(SignInForm, "/");
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConnectedSignInForm);

@@ -11,6 +11,7 @@ const mapStateToProps = (state) => ({
 
 // ToDo: extend for success message
 class SubzedditCreatePage extends React.Component {
+  // redirect to main page or previous page on successful signing
   render() {
     const { loading } = this.props;
 

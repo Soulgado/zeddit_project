@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetPostFormErrors()),
 });
 
-class TextPostEditPage extends React.Component {
+export class TextPostEditPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +38,10 @@ class TextPostEditPage extends React.Component {
     this.setState({
       [event.target.id]: event.target.value,
     });
-    this.props.resetErrors();
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
+    
   };
 
   handleSubmit = (event) => {

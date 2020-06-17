@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetPostFormErrors()),
 });
 
-class CommentCreateForm extends React.Component {
+export class CommentCreateForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

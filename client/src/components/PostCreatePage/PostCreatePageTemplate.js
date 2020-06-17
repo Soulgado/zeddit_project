@@ -8,7 +8,7 @@ const mapStateToProps = (state) => ({
   subzeddits: state.subzeddit.subzedditsTitles,
 });
 
-class PostCreatePageTemplate extends React.Component {
+export class PostCreatePageTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,7 +47,7 @@ class PostCreatePageTemplate extends React.Component {
               Submit text post
             </button>
           </div>
-          <div className="create-post-choose" onClick={this.changeToImage}>
+          <div className="create-post-choose">
             <button
               className={`${formState !== "text" ? "button-active" : ""}`}
               type="button"

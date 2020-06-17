@@ -16,7 +16,8 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetSubzedditFormErrors()),
 });
 
-class SubzedditCreateForm extends React.Component {
+// ToDo: title should not contains spaces/special characters
+export class SubzedditCreateForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +25,9 @@ class SubzedditCreateForm extends React.Component {
       description: "",
       errors: undefined,
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange = (e) => {
@@ -31,7 +35,9 @@ class SubzedditCreateForm extends React.Component {
       [e.target.id]: e.target.value,
       errors: undefined,
     });
-    this.props.resetErrors();
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
   };
 
   formErrorsCheck(state) {
@@ -48,7 +54,7 @@ class SubzedditCreateForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const errors = this.formErrorsCheck();
+    const errors = this.formErrorsCheck(this.state);
     if (errors) {
       this.setState({
         errors: errors,
@@ -58,6 +64,7 @@ class SubzedditCreateForm extends React.Component {
     const { title, description } = this.state;
     const user = this.props.user.id;
     this.props.createSubzeddit({ title, user, description });
+    this.props.resetErrors();
   };
 
   componentWillUnmount() {
@@ -65,7 +72,6 @@ class SubzedditCreateForm extends React.Component {
   }
 
   render() {
-    // ToDo: front-end errors handler
     const { title, description } = this.state;
     const { handleChange } = this;
 

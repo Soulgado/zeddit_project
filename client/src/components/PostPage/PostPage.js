@@ -19,7 +19,7 @@ const mapDispatchToProps = (dispatch) => ({
   deletePost: (user, post) => dispatch(deletePost(user, post)),
 });
 
-class PostPage extends React.Component {
+export class PostPage extends React.Component {
   handleDeleteClick = () => {
     this.props.deletePost(this.props.user.id, this.props.post.id);
     // redirect to the main page?
@@ -69,12 +69,9 @@ class PostPage extends React.Component {
               </button>
             </div>
           ) : null}
-          {post.deleted && (
-            <p>This post has been deleted, you cannot post any comments here</p>
-          )}
           <p>{post.comments_num} comments</p>
           <div className="post-comments">
-            {loggedIn && !post.deleted ? (
+            {loggedIn ? (
               <CommentCreateForm post={post.id} />
             ) : null}
             <p>Comments:</p>

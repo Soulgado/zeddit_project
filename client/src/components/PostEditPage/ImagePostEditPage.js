@@ -14,7 +14,8 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetPostFormErrors()),
 });
 
-class ImagePostEditPage extends React.Component {
+// ToDo: add form errors on frontend
+export class ImagePostEditPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,7 +37,9 @@ class ImagePostEditPage extends React.Component {
     this.setState({
       [event.target.id]: event.target.value,
     });
-    this.props.resetErrors();
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
   };
 
   handleSubmit = (event) => {

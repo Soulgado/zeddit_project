@@ -28,6 +28,7 @@ class SubzedditPage extends React.Component {
   }
 
   render() {
+    console.log(this.props.subzeddit.creation_date);
     const { subzeddit, loggedIn, loading } = this.props;
     const { title } = this.props.match.params;
     const { url, path } = this.props.match;
@@ -36,7 +37,7 @@ class SubzedditPage extends React.Component {
         <div className="subzeddit-header">
           {loading ? null : (
             <div className="subzeddit-header-content">
-              <h1>z/{subzeddit.title}</h1>
+              <h1>{subzeddit.title}</h1>
               {loggedIn ? <SubscribeButton subzeddit={subzeddit} /> : null}
             </div>
           )}
@@ -49,7 +50,7 @@ class SubzedditPage extends React.Component {
               ) : (
                 <div className="posts-list-wrapper">
                   <div className="posts-list">
-                    {!subzeddit.posts ? (
+                    {!subzeddit.posts || subzeddit.posts.length === 0 ? (
                       <p>No posts yet, want to add the first?</p>
                     ) : (
                       subzeddit.posts.map((post) => {
@@ -71,7 +72,7 @@ class SubzedditPage extends React.Component {
             <div className="users-count">
               <p>{subzeddit.subscriptions} subscribers</p>
             </div>
-            <p>Created {format(subzeddit.creation_date, "dd MMMM yyyy")}</p>
+            <p>Created {subzeddit.creation_date ? format(Date.parse(subzeddit.creation_date), "dd MMMM yyyy") : ""}</p>
             {loggedIn ? (
               <Link
                 to={{

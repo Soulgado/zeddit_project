@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetUserFormErrors()),
 });
 
-class UsernameEditFormTemplate extends React.Component {
+export class UsernameEditFormTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,7 +42,9 @@ class UsernameEditFormTemplate extends React.Component {
       [e.target.id]: e.target.value,
       errors: undefined,
     });
-    this.props.resetErrors();
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
   };
 
   handleSubmit = (e) => {
@@ -56,12 +58,16 @@ class UsernameEditFormTemplate extends React.Component {
     }
     const { password, newUsername } = this.state;
     this.props.editUsername({
-      username: this.props.user.username,
+      username: this.props.user.username,  // change to id
       password,
       new_username: newUsername,
     });
     this.props.resetErrors();
   };
+
+  componentWillUnmount() {
+    this.props.resetErrors();
+  }
 
   render() {
     const { password, newUsername, errors } = this.state;

@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 // use Formik for forms?
 
-class SignUpForm extends React.Component {
+export class SignUpForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -58,13 +58,13 @@ class SignUpForm extends React.Component {
       return;
     }
     const { username, password, email } = this.state;
-
     let formData = {
       username,
       password,
       email,
     };
     this.props.signUp(formData);
+    this.props.resetErrors();
   };
 
   handleChange = (e) => {
@@ -72,6 +72,9 @@ class SignUpForm extends React.Component {
       [e.target.id]: e.target.value,
       errors: undefined,
     });
+    if (this.props.errors) {
+      this.props.resetErrors();
+    }
   };
 
   componentWillUnmount() {

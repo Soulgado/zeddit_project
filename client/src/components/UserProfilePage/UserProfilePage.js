@@ -5,7 +5,9 @@ import UsernameEditForm from "../UsernameEditForm/UsernameEditForm";
 import PasswordEditForm from "../PasswordEditForm/PasswordEditForm";
 import EmailEditForm from "../EmailEditForm/EmailEditForm";
 
-class UserProfilePage extends React.Component {
+// take user from redux store?
+
+export class UserProfilePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,22 +22,54 @@ class UserProfilePage extends React.Component {
   }
 
   toggleUsernameForm() {
+    if (this.state.emailFormActive) {
+      this.setState({
+        emailFormActive: false
+      });
+    }
+    if (this.state.passwordFormActive) {
+      this.setState({
+        passwordFormActive: false
+      });
+    }
     this.setState({
       usernameFormActive: !this.state.usernameFormActive,
     });
   }
 
   togglePasswordForm() {
+    if (this.state.usernameFormActive) {
+      this.setState({
+        usernameFormActive: false
+      });
+    }
+    if (this.state.emailFormActive) {
+      this.setState({
+        emailFormActive: false
+      });
+    }
     this.setState({
       passwordFormActive: !this.state.passwordFormActive,
     });
   }
 
   toggleEmailForm() {
+    if (this.state.usernameFormActive) {
+      this.setState({
+        usernameFormActive: false
+      });
+    }
+    if (this.state.passwordFormACtive) {
+      this.setState({
+        passwordFormActive: false
+      });
+    }
     this.setState({
       emailFormActive: !this.state.emailFormActive,
     });
   }
+
+  // ToDo: close all other forms when one form is opened
 
   render() {
     return (
