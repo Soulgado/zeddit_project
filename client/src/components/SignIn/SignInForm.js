@@ -72,6 +72,7 @@ export class SignInForm extends React.Component {
     return (
       <form onSubmit={handleSubmit}>
         <p className="form-title">Sign In</p>
+        <p className="redirect-message">{this.props.location.state.message ? this.props.location.state.message : ""}</p>
         <div className="form-element">
           <label htmlFor="username">Username:</label>
           <input

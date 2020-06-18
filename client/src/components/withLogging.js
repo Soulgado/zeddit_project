@@ -19,8 +19,8 @@ export function withLogging(WrappedComponent, redirectTo) {
   };
 }
 
-// user should be logged
-export function withoutLogging(WrappedComponent, redirectTo) {
+// user must be logged
+export function withoutLogging(WrappedComponent, redirectTo, message) {
   return class extends React.Component {
     render() {
       const { loggedIn, ...otherProps } = this.props;
@@ -29,7 +29,13 @@ export function withoutLogging(WrappedComponent, redirectTo) {
           {loggedIn ? (
             <WrappedComponent {...otherProps} />
           ) : (
-            <Redirect to={redirectTo} />
+            <Redirect to={{
+              pathname: redirectTo,
+              state: {
+                message
+              },
+              }}
+            />
           )}
         </div>
       );
