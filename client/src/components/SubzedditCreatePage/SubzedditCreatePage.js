@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { resetCreationSuccess } from "../../redux/actionCreators";
 import Placeholder from "../fetchingPlaceholder";
-import withoutLogging from "../withLogging";
+import { withoutLogging } from "../withLogging";
 import SubzedditCreateForm from "../SubzedditCreate/SubzedditCreate";
 
 const mapStateToProps = (state) => ({
@@ -58,7 +58,7 @@ SubzedditCreatePage.propTypes = {
   resetCreationSuccess: PropTypes.func
 }
 
-const wrappedSubzedditCreatePage = withoutLogging(<SubzedditCreatePage />, "/login", "You must sign in to create new subzeddits");
+const wrappedSubzedditCreatePage = withoutLogging(SubzedditCreatePage, "/login", "You must sign in to create new subzeddits");
 
 export default connect(
   mapStateToProps,

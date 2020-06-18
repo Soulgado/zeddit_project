@@ -28,7 +28,6 @@ class SubzedditPage extends React.Component {
   }
 
   render() {
-    console.log(this.props.subzeddit.creation_date);
     const { subzeddit, loggedIn, loading } = this.props;
     const { title } = this.props.match.params;
     const { url, path } = this.props.match;
@@ -68,11 +67,19 @@ class SubzedditPage extends React.Component {
           </Switch>
           <aside className="sidebar-wrapper subzeddit-sidebar">
             <p className="sidebar-title">About community</p>
-            <p>{subzeddit.description}</p>
-            <div className="users-count">
-              <p>{subzeddit.subscriptions} subscribers</p>
+            <div className="subzeddit-sidebar__title">
+              <span>z/{subzeddit.title}</span>
             </div>
-            <p>Created {subzeddit.creation_date ? format(Date.parse(subzeddit.creation_date), "dd MMMM yyyy") : ""}</p>
+            <div className="subzeddit-sidebar__description">
+              <p>{subzeddit.description}</p>
+            </div>
+            <div className="users-count">
+              <span className="users-count__count">{subzeddit.subscriptions}</span>
+              <span>subscribers</span>
+            </div>
+            <div className="subzeddit-sidebar__creation">
+              <p>Created {subzeddit.creation_date ? format(Date.parse(subzeddit.creation_date), "dd MMMM yyyy") : ""}</p>
+            </div>
             {loggedIn ? (
               <Link
                 to={{

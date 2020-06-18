@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import PostCreatePageTemplate from "./PostCreatePageTemplate";
 import Placeholder from "../fetchingPlaceholder";
-import withoutLogging from "../withLogging";
+import { withoutLogging } from "../withLogging";
 import {
   getSubzedditTitles,
   resetCommentCreationFlag,
@@ -85,6 +85,6 @@ PostCreatePage.propTypes = {
   resetCreationFlag: PropTypes.func,
 }
 
-const wrappedPostCreatePage = withoutLogging(<PostCreatePage />, "/login", "You must sign in to create new posts");
+const wrappedPostCreatePage = withoutLogging(PostCreatePage, "/login", "You must sign in to create new posts");
 
 export default connect(mapStateToProps, mapDispatchToProps)(wrappedPostCreatePage);

@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login, resetUserFormErrors } from "../../redux/actionCreators";
-import { withLogging } from "../withLogging";
 
 const mapStateToProps = (state) => ({
   loggedIn: state.currentUser.loggedIn,
@@ -67,12 +66,13 @@ export class SignInForm extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     const { username, password, errors } = this.state;
     const { handleSubmit, handleChange } = this;
     return (
       <form onSubmit={handleSubmit}>
         <p className="form-title">Sign In</p>
-        <p className="redirect-message">{this.props.location.state.message ? this.props.location.state.message : ""}</p>
+        <p className="redirect-message">{this.props.location.state ? this.props.location.state.message : ""}</p>
         <div className="form-element">
           <label htmlFor="username">Username:</label>
           <input
@@ -87,6 +87,7 @@ export class SignInForm extends React.Component {
           <label htmlFor="password">Password:</label>
           <input
             type="password"
+            id="password"
             value={password}
             onChange={handleChange}
             required
@@ -111,7 +112,4 @@ SignInForm.propTypes = {
   resetErrors: PropTypes.func,
 }
 
-// if already logged in - redirect to main page
-const ConnectedSignInForm = withLogging(SignInForm, "/");
-
-export default connect(mapStateToProps, mapDispatchToProps)(ConnectedSignInForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);

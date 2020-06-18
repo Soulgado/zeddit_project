@@ -70,7 +70,7 @@ MainPage.propTypes = {
   loading: PropTypes.bool,
   mostPopularGlobal: PropTypes.array,
   mostPopularUser: PropTypes.array,
-  getMostPopularGlobal: PropTypes.array
+  getMostPopularGlobal: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Placeholder from "../fetchingPlaceholder";
 import SignInForm from "../SignIn/SignInForm";
+import { withLogging } from "../withLogging";
 
 const mapStateToProps = (state) => ({
   loading: state.loading.loading,
@@ -10,18 +11,20 @@ const mapStateToProps = (state) => ({
 });
 
 // ToDo: extend for success message
-class SubzedditCreatePage extends React.Component {
+class SignInPage extends React.Component {
   // redirect to main page or previous page on successful signing
   render() {
-    const { loading } = this.props;
+    const { loading, ...otherProps } = this.props;
 
-    return <div>{loading ? <Placeholder /> : <SignInForm />}</div>;
+    return <div>{loading ? <Placeholder /> : <SignInForm {...otherProps}/>}</div>;
   }
 }
 
-SubzedditCreatePage.propTypes = {
+SignInPage.propTypes = {
   loading: PropTypes.bool,
   loggedIn: PropTypes.bool
 }
 
-export default connect(mapStateToProps)(SubzedditCreatePage);
+const ConnectedSignInPage = withLogging(SignInPage, "/");
+
+export default connect(mapStateToProps)(ConnectedSignInPage);

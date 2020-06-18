@@ -109,7 +109,7 @@ export class Comment extends React.Component {
                 {createFormActive ? "Hide" : "Reply"}
               </button>
             ) : null}
-            {loggedIn && Number(comment.author) === user.id ? (
+            {loggedIn && Number(comment.author) === user.id ? (  // change for uuid
               <>
                 <button
                   className="comment-edit-button"
@@ -118,7 +118,7 @@ export class Comment extends React.Component {
                 >
                   {editFormActive ? "Apply changes" : "Edit"}
                 </button>
-                <button type="button" onClick={this.handleDeleteClick}>
+                <button className="comment-delete-button" type="button" onClick={this.handleDeleteClick}>
                   Delete Comment
                 </button>
               </>
@@ -130,9 +130,7 @@ export class Comment extends React.Component {
               post={post.id}
               handleClick={this.handleClick}
             />
-          ) : (
-            ""
-          )}
+          ) : null}
         </div>
       </div>
     );
