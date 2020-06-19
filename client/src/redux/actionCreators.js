@@ -294,7 +294,12 @@ export const deletePost = (user, post) => ({
     headers: {
       "Content-Type": "application/json",
     },
+    loading: true
   },
+});
+
+export const resetPostDeleteFlag = () => ({
+  type: types.RESET_POST_DELETE_FLAG
 });
 
 export const voteComment = (comment, user, user_rating) => ({
@@ -363,7 +368,7 @@ export const editEmail = (formData) => ({
   meta: {
     type: "api",
     url: "/api/users/update_email",
-    method: "POST",
+    method: "PUT",
     body: JSON.stringify(formData),
     headers: {
       "Content-Type": "application/json",

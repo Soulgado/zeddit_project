@@ -9,13 +9,15 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  votePost: (post, user, rating) => dispatch(votePost(post.id, user, rating)),
+  votePost: (post, user, rating) => dispatch(votePost(post, user, rating)),
 });
 
-function VoteButtons(props) {
+export function VoteButtons(props) {
   const [user_rating, setRating] = useState(props.post.rating);
   const [upvotes, setUpvotes] = useState(props.post.upvotes);
   const [downvotes, setDownvotes] = useState(props.post.downvotes);
+
+  // ToDo: set rating to default on second click
 
   useEffect(() => {
     setRating(props.post.rating);
@@ -24,7 +26,7 @@ function VoteButtons(props) {
   }, [props]);
 
   function onUpvote() {
-    if (!props.loggedIn || user_rating === 1) return;
+    if (!props.loggedIn || user_rating === 1) return;  // unupvote on user_rating === 1
     if (user_rating === -1) {
       setDownvotes(downvotes - 1);
     }
@@ -40,7 +42,7 @@ function VoteButtons(props) {
     }
     setRating(-1);
     setDownvotes(downvotes + 1);
-    props.votePost(props.post, props.user.id, -1);
+    props.votePost(props.post.id, props.user.id, -1);
   }
 
   return (

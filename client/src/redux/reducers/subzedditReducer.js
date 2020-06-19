@@ -5,7 +5,6 @@ export const initialState = {
   subzedditsTitles: [],
   subzeddit: {},
   mostPopularGlobal: [],
-  mostPopularSpecific: [],
   creationSuccess: false,
   formErrors: undefined,
 };

@@ -1,6 +1,7 @@
 const db = require("../db");
 const { body, param, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
+const uuid = require("uuid");
 const saltRounds = 10;
 
 exports.create_account = [
@@ -37,10 +38,11 @@ exports.create_account = [
       });
     }
     // check for existing username
+    const id = uuid.v4();
     bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
       db.none(
-        "INSERT INTO users(username, password, email) VALUES($1, $2, $3)",
-        [req.body.username, hash, req.body.email]
+        "INSERT INTO users(id, username, password, email) VALUES($1, $2, $3, $4)",
+        [id, req.body.username, hash, req.body.email]
       )
         .then(() => {
           res.json({ result: "success" });
@@ -92,7 +94,7 @@ exports.sign_in = [
             result
           ) {
             if (result) {
-              user.password = req.body.password;
+              user.password = undefined;
               res.json({ result: "success", user });
             } else {
               res.status(400).json({
@@ -142,11 +144,12 @@ exports.subscribe_to_subzeddit = [
         "SELECT id FROM subzeddits WHERE title = $1",
         [req.body.subzeddit]
       );
+      const id = uuid.v4();
       return t.one(
-        `INSERT INTO subzeddit_subscriptions(subscriber, subzeddit)
-          VALUES ($1, $2)
+        `INSERT INTO subzeddit_subscriptions(id, subscriber, subzeddit)
+          VALUES ($1, $2, $3)
           RETURNING id, subscriber, subzeddit`,
-        [req.body.user.id, subzeddit.id]
+        [id, req.body.user.id, subzeddit.id]
       );
     })
       .then((data) => {
@@ -364,7 +367,6 @@ exports.get_created_posts = [
   },
 ];
 
-// factorize this abomination
 exports.edit_name = [
   body("username")
     .trim()
@@ -450,11 +452,10 @@ exports.edit_name = [
 ];
 
 exports.edit_password = [
-  body("username")
+  body("user")
     .trim()
     .notEmpty()
-    .withMessage("Username field must not be empty")
-    .isAscii(),
+    .withMessage("Username field must not be empty"),
   body("password")
     .trim()
     .notEmpty()
@@ -472,7 +473,7 @@ exports.edit_password = [
         errors: errors.array()[0].msg,
       });
     }
-    db.oneOrNone(`SELECT * FROM users WHERE username=$1`, req.body.username)
+    db.oneOrNone(`SELECT * FROM users WHERE id=$1`, req.body.user)
       .then((user) => {
         if (user) {
           bcrypt.compare(req.body.password, user.password, function (
@@ -484,8 +485,8 @@ exports.edit_password = [
                 db.oneOrNone(
                   `UPDATE users
                 SET password = $1
-                WHERE username = $2`,
-                  [hash, req.body.username]
+                WHERE id = $2`,
+                  [hash, req.body.user]
                 )
                   .then((user) => {
                     res.json({
@@ -598,12 +599,11 @@ exports.delete_account = [
   },
 ];
 
-exports.edit_name = [
-  body("username")
+exports.edit_email = [
+  body("user")
     .trim()
     .notEmpty()
-    .withMessage("Username field must not be empty")
-    .isAscii(),
+    .withMessage("User field must not be empty"),
   body("password")
     .trim()
     .notEmpty()
@@ -624,7 +624,7 @@ exports.edit_name = [
         errors: errors.array()[0].msg,
       });
     }
-    db.oneOrNone(`SELECT * FROM users WHERE username=$1`, req.body.username)
+    db.oneOrNone(`SELECT * FROM users WHERE id=$1`, req.body.user)
       .then((user) => {
         if (user) {
           bcrypt.compare(req.body.password, user.password, function (
@@ -635,8 +635,8 @@ exports.edit_name = [
               db.oneOrNone(
                 `UPDATE users
               SET email = $1
-              WHERE username = $2`,
-                [req.body.new_email, req.body.username]
+              WHERE id = $2`,
+                [req.body.new_email, req.body.user]
               )
                 .then((user) => {
                   res.json({
@@ -654,6 +654,7 @@ exports.edit_name = [
                   console.log(error);
                 });
             } else {
+              // if password is wrong
               res.status(400).json({
                 result: "error",
                 errors: "Wrong username or password",

@@ -14,6 +14,7 @@ import PostCreatePage from "./components/PostCreatePage/PostCreatePage";
 import MainPage from "./components/MainPage/MainPage";
 import PostEditPage from "./components/PostEditPage/PostEditPage";
 import UserDeleteForm from "./components/UserDeleteForm/UserDeleteForm";
+import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 
 const mapStateToProps = (state) => ({
   user: state.currentUser.user,
@@ -33,12 +34,13 @@ class App extends React.Component {
             <Route path="/create_subzeddit" component={SubzedditCreatePage} />
             <Route path="/sz/:title" component={SubzedditPage} />
             <Route path="/sz" component={SubzedditList} />
-            <Route path="/login" component={SignInPage} />}
+            <Route path="/login" component={SignInPage} />
             <Route path="/register" component={SignUpPage} />
             <Route path="/profile/:username" component={UserProfile} />
             <Route path="/edit_post" component={PostEditPage} />
             <Route path="/submit_post" component={PostCreatePage} />
             <Route path="/delete_account" component={UserDeleteForm} />
+            <Route path="*" component={NotFoundPage}/>
           </Switch>
         </main>
         <footer>

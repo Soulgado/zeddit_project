@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Placeholder from "../fetchingPlaceholder";
 import PostPage from "./PostPage";
-import { getPost, resetCommentCreationFlag } from "../../redux/actionCreators";
+import { getPost, resetCommentCreationFlag, resetPostDeleteFlag } from "../../redux/actionCreators";
 
 const mapStateToProps = (state) => ({
   user: state.currentUser.user,
@@ -13,7 +14,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getPost: (post, user) => dispatch(getPost(post, user)),
-  resetFlag: () => dispatch(resetCommentCreationFlag()),
+  resetCommentFlag: () => dispatch(resetCommentCreationFlag()),
+  resetDeleteFlag: () => dispatch(resetPostDeleteFlag())
 });
 
 class PostPageWrapper extends React.Component {
@@ -23,17 +25,37 @@ class PostPageWrapper extends React.Component {
   }
 
   componentDidUpdate() {
+    // on comment creation - update post
     if (this.props.commentCreated) {
       const { post_id } = this.props.match.params;
       this.props.getPost(post_id, this.props.user);
-      this.props.resetFlag();
+      this.props.resetCommentFlag();
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.resetDeleteFlag();
+  }
+
+  renderingOptions() {
+    if (this.props.loading) {
+      return <Placeholder />;
+    } else if (this.props.postDeleteFlag) {
+      return (
+        <div className="post-deleted-message">
+          <p>This post has been successfully deleted!</p>
+          <p>Go to the <Link to="/">main page</Link></p>
+        </div>
+      );
+    } else {
+      return <PostPage />
     }
   }
 
   render() {
     return (
       <div className="post-page-wrapper">
-        {this.props.loading ? <Placeholder /> : <PostPage />}
+        {this.renderingOptions()}
       </div>
     );
   }

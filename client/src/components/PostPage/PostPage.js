@@ -22,7 +22,6 @@ const mapDispatchToProps = (dispatch) => ({
 export class PostPage extends React.Component {
   handleDeleteClick = () => {
     this.props.deletePost(this.props.user.id, this.props.post.id);
-    // redirect to the main page?
   };
 
   render() {
@@ -35,7 +34,7 @@ export class PostPage extends React.Component {
           <div className="post-info">
             <p>
               {post.updated ? "Updated " : "Posted "}
-              by {post.username} <CreationTime time={post.creation_date} />
+              by u/{post.username} <CreationTime time={post.creation_date} />
             </p>
           </div>
           <div className="post-content">
@@ -48,7 +47,7 @@ export class PostPage extends React.Component {
               <p>{post.content}</p>
             )}
           </div>
-          {loggedIn && post.username === user.username ? (
+          {loggedIn && post.creator === user.id ? (
             <div className="post-control-buttons">
               <Link
                 to={{

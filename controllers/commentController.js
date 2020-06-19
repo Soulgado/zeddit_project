@@ -24,8 +24,17 @@ exports.rate_comment = [
         [user, comment]
       );
       if (rating) {
-        if (user_rating === rating.rating) return;
-        else {
+        if (user_rating === rating.rating) {
+          // delete database entry if ratings are equal
+          if (user_rating === 1) {
+            await t.none(`UPDATE posts SET upvotes = upvotes - 1 WHERE id = $1`, post);
+          } else {
+            await t.none(`UPDATE posts SET downvotes = downvotes - 1 WHERE id = $1`, post);
+          }
+          return t.none(`DELETE FROM posts_rating WHERE id = $1`, rating.id);
+        } else {
+        // if user_rating is different from rating in database entry
+        // change existing entry
           await t.none(
             `UPDATE comments 
           SET upvotes = upvotes + $1,
@@ -41,6 +50,8 @@ exports.rate_comment = [
           [rating.id, user_rating]
         );
       } else {
+        // if there is no entry in the database
+        // create new entry
         const id = uuid.v4();
         if (user_rating === 1) {
           await t.none(

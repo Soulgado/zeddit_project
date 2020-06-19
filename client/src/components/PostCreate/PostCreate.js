@@ -34,9 +34,25 @@ export class PostCreateForm extends React.Component {
     }
   }
 
+  formErrorsCheck(state) {
+    if (state.title === "") {
+      return "Post title should not be empty";
+    } else if (state.content === "") {
+      return "Post content should not be empty";
+    } else if (state.subzeddit === "") {
+      return "Subzeddit field should not be empty";
+    } 
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
-    // ToDo: create frontend errors handler
+    const errors = this.formErrorsCheck(this.state);
+    if (errors) {
+      this.setState({
+        errors: errors
+      });
+      return;
+    }
     const { title, content, subzeddit } = this.state;
     this.props.createPost(this.props.user.id, { title, content, subzeddit });
     this.props.resetErrors();
@@ -44,6 +60,7 @@ export class PostCreateForm extends React.Component {
 
   matchedSubzeddits(title) {
     if (title !== "") {
+      // return list of subzeddit, which title match entered string
       return this.props.subzeddits.filter((subzeddit) => {
         const regex = new RegExp(title, "gi");
         return subzeddit.title.match(regex);

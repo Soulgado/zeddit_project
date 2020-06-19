@@ -77,7 +77,7 @@ describe("EmailEditFormTemplate component", () => {
       {
         "new_password": "somemail@google.com",
         "password": "123456",
-        "username": "admin"
+        "username": 1
       }
     );
   });

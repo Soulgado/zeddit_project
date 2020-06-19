@@ -25,6 +25,8 @@ router.put("/update_username", user_controller.edit_name);
 
 router.put("/update_password", user_controller.edit_password);
 
+router.put("/update_email", user_controller.edit_email);
+
 router.delete("/delete_user", user_controller.delete_account);
 
 router.get("/", function (req, res, next) {

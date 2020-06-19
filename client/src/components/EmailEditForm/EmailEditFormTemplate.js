@@ -57,7 +57,7 @@ export class EmailEditFormTemplate extends React.Component {
     }
     const { password, newEmail } = this.state;
     this.props.editEmail({
-      username: this.props.user.username,   // change to id
+      username: this.props.user.id,
       password,
       new_password: newEmail,
     });

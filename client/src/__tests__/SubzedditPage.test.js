@@ -5,17 +5,21 @@ import { SubzedditPage } from "../components/SubzedditPage/SubzedditPage";
 describe("SubzedditPage component", () => {
   let wrapper;
   const match = {
-    params: "Title"
+    params: {
+      title: "Title"
+    }
   };
   const user = {
     id: 1,
     username: "admin"
   };
+  const subzeddit = {};
   const getSubzedditMock = jest.fn();
   beforeEach(() => {
     wrapper = shallow(<SubzedditPage
       user={user}
       match={match}
+      subzeddit={subzeddit}
       getSubzeddit={getSubzedditMock}
     />);
   });

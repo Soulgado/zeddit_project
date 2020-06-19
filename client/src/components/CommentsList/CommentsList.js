@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Comment from "../Comment/Comment";
 
+// uses recursive rendering for chain of comments
 const CommentsList = (props) => {
   return (
     <ul>

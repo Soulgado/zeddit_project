@@ -22,7 +22,7 @@ describe("UsernameEditFormTemplate component", () => {
     resetErrorsMock.mockClear();
   });
   it("renders 2 form-elements", () => {
-    expect(wrapper.find(".form-elements").length).toEqual(2);
+    expect(wrapper.find(".form-element").length).toEqual(2);
   });
   it("renders 1 input element of type 'password'", () => {
     expect(wrapper.find("input[type='password']").length).toEqual(1);

@@ -30,11 +30,10 @@ export class PostCreatePage extends React.Component {
       currentSubzeddit: undefined
     };
   }
-  // get list of subzeddits on mounting
-  // unnecessary ???
+
+  // get list of subzeddits on mounting for forms
   componentDidMount() {
     this.props.getSubzeddits();
-    console.log(this.props);
     if (this.props.location.state) {
       this.setState({
         currentSubzeddit: this.props.location.state.subzeddit

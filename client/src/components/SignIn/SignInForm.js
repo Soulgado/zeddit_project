@@ -66,7 +66,6 @@ export class SignInForm extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     const { username, password, errors } = this.state;
     const { handleSubmit, handleChange } = this;
     return (

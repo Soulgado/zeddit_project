@@ -72,32 +72,33 @@ export class UserProfilePage extends React.Component {
   // ToDo: close all other forms when one form is opened
 
   render() {
+    const {usernameFormActive, passwordFormActive, emailFormActive} = this.state;
     return (
       <>
         <h2>Account settings</h2>
         <div className="user-settings-elem-wrapper">
-          <div className="user-settings-elem">
+          <div id="user-settings-username" className="user-settings-elem ">
             <p>Current username: {this.props.user.username}</p>
             <button type="button" onClick={this.toggleUsernameForm}>
-              Change
+              {usernameFormActive ? "Close" : "Change"}
             </button>
           </div>
           {this.state.usernameFormActive && <UsernameEditForm />}
         </div>
         <div className="user-settings-elem-wrapper">
-          <div className="user-settings-elem">
+          <div id="user-settings-email" className="user-settings-elem">
             <p>Currrent email address: {this.props.user.email}</p>
             <button type="button" onClick={this.toggleEmailForm}>
-              Change
+              {emailFormActive ? "Close" : "Change"}
             </button>
           </div>
           {this.state.emailFormActive && <EmailEditForm />}
         </div>
         <div className="user-settings-elem-wrapper">
-          <div className="user-settings-elem">
+          <div id="user-settings-password" className="user-settings-elem">
             <p>Password</p>
             <button type="button" onClick={this.togglePasswordForm}>
-              Change
+              {passwordFormActive ? "Close" : "Change"}
             </button>
           </div>
           {this.state.passwordFormActive && <PasswordEditForm />}

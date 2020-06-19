@@ -58,13 +58,13 @@ export class PasswordEditFormTemplate extends React.Component {
     const errors = this.formErrorsCheck(this.state);
     if (errors) {
       this.setState({
-        errors: errors,
+        errors: errors
       });
       return;
     }
     const { password, newPassword } = this.state;
     this.props.editPassword({
-      username: this.props.user.username,   // change to id
+      user: this.props.user.id,   // change to id
       password,
       new_password: newPassword,
     });

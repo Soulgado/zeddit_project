@@ -3,6 +3,7 @@ import * as types from "../types";
 export const initialState = {
   post: {},
   creationFlag: false,
+  postDeleteFlag: false,
   formErrors: "",
 };
 
@@ -42,7 +43,7 @@ export const reducer = (state = initialState, action) => {
       }
     case types.DELETE_POST:
       if (action.payload.result === "success") {
-        return { ...state, creationFlag: true, post: action.payload.data };
+        return { ...state, postDeleteFlag: true };
       } else {
         return state;
       }
@@ -50,6 +51,8 @@ export const reducer = (state = initialState, action) => {
       return { ...state, creationFlag: false };
     case types.RESET_POST_FORM_ERRORS:
       return { ...state, formErrors: undefined };
+    case types.RESET_POST_DELETE_FLAG:
+      return { ...state, postDeleteFlag: false }
     default:
       return state;
   }

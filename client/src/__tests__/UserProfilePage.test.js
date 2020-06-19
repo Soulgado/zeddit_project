@@ -12,17 +12,17 @@ describe("UserProfilePage component", () => {
   beforeEach(() => {
     wrapper = shallow(<UserProfilePage user={user} />);
   });
-  it("renders 3 containers with 'user-settings-element' class", () => {
-    expect(wrapper.find(".user-settings-element").length).toEqual(3);
+  it("renders 3 containers with 'user-settings-elem' class", () => {
+    expect(wrapper.find(".user-settings-elem").length).toEqual(3);
   });
   it("renders 4 button elements", () => {
     expect(wrapper.find("button").length).toEqual(4);
   });
   it("renders correct username information", () => {
-    expect(wrapper.find(".user-settings-element > p").at(0).text()).toEqual("Current username: admin");
+    expect(wrapper.find("#user-settings-username > p").text()).toEqual("Current username: admin");
   });
   it("renders correct email information", () => {
-    expect(wrapper.find(".user-settings-element > p").at(1).text()).toEqual("Currrent email address: example@google.com");
+    expect(wrapper.find("#user-settings-email > p").text()).toEqual("Currrent email address: example@google.com");
   });
   it("default state values are correct", () => {
     expect(wrapper.state().usernameFormActive).toEqual(false);

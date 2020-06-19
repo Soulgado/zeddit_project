@@ -12,17 +12,18 @@ const mapStateToProps = (state) => ({
   loggedIn: state.currentUser.loggedIn,
   loading: state.loading.loading,
   mostPopularGlobal: state.subzeddit.mostPopularGlobal,
-  mostPopularUser: state.subzeddit.mostPopularSpecific,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getMostPopularGlobal: (user) => dispatch(getMostPopularDefault(user)),
-  // getMostPopularSpecific: (user) => dispatch(getMostPopularSpecific(user))
 });
 
 export class MainPage extends React.Component {
   // if user is logged in - return most popular posts for the last day from subscribed
   // if user is not logged in - return most popular posts from 'global' list of subzeddits
+  componentDidMount() {
+    this.props.getMostPopularGlobal(this.props.user);
+  }
 
   renderPosts(posts) {
     return (
@@ -32,10 +33,6 @@ export class MainPage extends React.Component {
         })}
       </div>
     );
-  }
-
-  componentDidMount() {
-    this.props.getMostPopularGlobal(this.props.user);
   }
 
   render() {

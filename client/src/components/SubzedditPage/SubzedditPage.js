@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSubzeddit: (title, user) => dispatch(getSubzeddit(title, user)),
 });
 
-class SubzedditPage extends React.Component {
+export class SubzedditPage extends React.Component {
   componentDidMount() {
     const { title } = this.props.match.params;
     this.props.getSubzeddit(title, this.props.user);

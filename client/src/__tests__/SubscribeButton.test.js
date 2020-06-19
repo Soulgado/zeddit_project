@@ -27,7 +27,7 @@ describe("SubscribeButton component", () => {
     expect(wrapper.exists("div.subscribe-button-wrapper")).toBeTruthy();
   });
   it("sets correct subscription status state on mount", () => {
-    expect(wrapper.state().subscription_status).toEqual(true);
+    expect(wrapper.state().isSubscribed).toEqual(true);
   });
   it("rendered text is correct", () => {
     expect(wrapper.find("button").text()).toEqual("LEAVE");
@@ -45,6 +45,6 @@ describe("SubscribeButton component", () => {
   });
   it("changes subscription status state to correct value after click", () => {
     wrapper.find("button").simulate("click");
-    expect(wrapper.state().subscription_status).toEqual(false);
+    expect(wrapper.state().isSubscribed).toEqual(false);
   });
 });

@@ -1,9 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import { PostPage } from "../components/PostPage/PostPage";
 import { CommentCreateForm } from "../components/CommentCreate/CommentCreate";
 
-describe("PostPage component", () => {
+describe("PostPage component, current user is not creator", () => {
   let wrapper;
   const user = {
     id: 1,
@@ -15,7 +15,8 @@ describe("PostPage component", () => {
     content: "Post content",
     username: "some_user",
     updated: false,
-    type: "text"
+    type: "text",
+    comments: []
   };
   const deletePostMock = jest.fn();
   beforeEach(() => {
@@ -43,8 +44,33 @@ describe("PostPage component", () => {
   it("doesn't render post control buttons for the wrong user", () => {
     expect(wrapper.exists(".post-control-buttons")).toBeFalsy();
   });
-  it("renders comment create form for logged in user", () => {
-    expect(wrapper.find(CommentCreateForm).dive().exists(".comment-form")).toBetruthy();
+});
+
+describe("PostPage component, current user is creator", () => {
+  let wrapper;
+  const user = {
+    id: 1,
+    username: "admin"
+  };
+  const post = {
+    id: 3, 
+    title: "Post title",
+    content: "Post content",
+    username: "admin",
+    updated: false,
+    type: "text"
+  };
+  const deletePostMock = jest.fn();
+  beforeEach(() => {
+    wrapper = shallow(<PostPage
+      post={post}
+      user={user}
+      deletePost={deletePostMock}
+      loggedIn={true}
+    />);
+  });
+  afterEach(() => {
+    deletePostMock.mockClear();
   });
   it("calls deletePost once on click on delete button", () => {
     wrapper.find(".delete-button").simulate("click");

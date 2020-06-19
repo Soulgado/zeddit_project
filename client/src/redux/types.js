@@ -31,6 +31,7 @@ export const GET_POST = "GET_POST";
 export const VOTE_POST = "UPVOTE_POST";
 export const EDIT_POST = "EDIT_POST";
 export const DELETE_POST = "DELETE_POST";
+export const RESET_POST_DELETE_FLAG = "RESET_POST_DELETE_FLAG";
 export const RESET_POST_FORM_ERRORS = "RESET_POST_FORM_ERRORS";
 
 // comment action types

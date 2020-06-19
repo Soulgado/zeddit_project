@@ -33,7 +33,7 @@ export class CommentCreateForm extends React.Component {
       return;
     }
     const { user, post, parent, postComment } = this.props;
-    postComment(user.id, comment, post, parent ? parent.id : null);
+    postComment(user.id, comment, post, parent ? parent.id : null);  // ToDo: notification on success
     this.setState({
       comment: "",
     });

@@ -1,4 +1,5 @@
 const db = require("../db");
+const uuid = require("uuid");
 const { body, query, param, validationResult } = require("express-validator");
 
 exports.subzeddit_create = [
@@ -21,9 +22,10 @@ exports.subzeddit_create = [
     }
     // first get User and then create subzeddit
     // check for user auth
+    const id = uuid.v4();
     db.one(
-      "INSERT INTO subzeddits(title, creator, creation_date, description) VALUES($1, $2, $3, $4) RETURNING id, title, creator, creation_date",
-      [req.body.title, req.body.user, new Date(), req.body.description]
+      "INSERT INTO subzeddits(id, title, creator, creation_date, description) VALUES($1, $2, $3, $4, $5) RETURNING id, title, creator, creation_date",
+      [id, req.body.title, req.body.user, new Date(), req.body.description]
     )
       .then((subzeddit) => {
         res.json({

@@ -30,16 +30,18 @@ exports.post_create = [
         errors: errors.array()[0].msg,
       });
     }
+    const id = uuid.v4();
     db.tx("insert-post", async (t) => {
       const subzeddit = await t.oneOrNone(
         "SELECT id FROM subzeddits WHERE title = $1",
         [req.body.subzeddit]
       );
       return t.one(
-        `INSERT INTO posts(title, creator, content, creation_date, subzeddit, type)
-          VALUES ($1, $2, $3, $4, $5, $6)
+        `INSERT INTO posts(id, title, creator, content, creation_date, subzeddit, type)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)
           RETURNING id, title, creator, content, creation_date, subzeddit`,
         [
+          id,
           req.body.title,
           req.body.user,
           req.body.content,
@@ -98,16 +100,18 @@ exports.post_create_image = [
     }
     const filename = req.file.filename;
     // save post in database with filename
+    const id = uuid.v4();
     db.tx("insert-image-post", async (t) => {
       const subzeddit = await t.oneOrNone(
         "SELECT id FROM subzeddits WHERE title = $1",
         [req.body.subzeddit]
       );
       return t.one(
-        `INSERT INTO posts(title, creator, filename, creation_date, subzeddit, type)
-          VALUES ($1, $2, $3, $4, $5, $6)
+        `INSERT INTO posts(id, title, creator, filename, creation_date, subzeddit, type)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)
           RETURNING id, title, creator, filename, creation_date, subzeddit`,
         [
+          id,
           req.body.title,
           Number(req.body.user),
           filename,
@@ -162,17 +166,7 @@ exports.post_detail = [
     db.task(async (t) => {
       const post = await t.one(
         `SELECT 
-      post.id,
-      post.title,
-      post.creator,
-      post.content,
-      post.creation_date,
-      post.filename,
-      post.upvotes,
-      post.downvotes,
-      post.type,
-      post.updated,
-      post.comments_num,
+      post.*
       creator.username,
       subzeddit.title subzeddit_title,
       user_rating.rating
@@ -185,15 +179,7 @@ exports.post_detail = [
       );
       const comments = await t.any(
         `SELECT 
-        comment.id,
-        comment.author,
-        comment.content,
-				comment.creation_time,
-				comment.parent_comment,
-        comment.level,
-        comment.upvotes,
-        comment.downvotes,
-        comment.updated,
+        comment.*,
         author.username,
         rating.rating
       FROM comments comment
@@ -275,12 +261,13 @@ exports.post_comment = [
         level = parent_comment_level.level + 1;
       }
       // sent comment_level within body??
+      const id = uuid.v4();
       return t.one(
         `INSERT INTO 
-        comments(author, content, creation_time, parent_post, parent_comment, level)
-        VALUES($1, $2, $3, $4, $5, $6)
+        comments(id, author, content, creation_time, parent_post, parent_comment, level)
+        VALUES($1, $2, $3, $4, $5, $6, $7)
         RETURNING id, author, content, creation_time, parent_post, parent_comment, level`,
-        [req.body.user, req.body.content, new Date(), post.id, parent, level]
+        [id, req.body.user, req.body.content, new Date(), post.id, parent, level]
       );
     })
       .then((comment) => {
@@ -334,8 +321,18 @@ exports.rate_post = [
         [user, post]
       );
       if (rating) {
-        if (user_rating === rating.rating) return;
-        else {
+        if (user_rating === rating.rating) {
+          // if user_rating is the same as the database rating
+          // delete database entry
+          if (user_rating === 1) {
+            await t.none(`UPDATE posts SET upvotes = upvotes - 1 WHERE id = $1`, post);
+          } else {
+            await t.none(`UPDATE posts SET downvotes = downvotes - 1 WHERE id = $1`, post);
+          }
+          return t.none(`DELETE FROM posts_rating WHERE id = $1`, rating.id);
+        } else {
+          // if user_rating is different from rating in database entry
+          // change existing entry
           await t.none(
             `UPDATE posts 
           SET upvotes = upvotes + $1,
@@ -343,14 +340,16 @@ exports.rate_post = [
           WHERE id = $2`,
             [user_rating, post]
           );
+          return t.none(
+            `UPDATE posts_rating
+            SET rating = $2
+            WHERE id = $1`,
+            [rating.id, user_rating]
+          );
         }
-        return t.none(
-          `UPDATE posts_rating
-          SET rating = $2
-          WHERE id = $1`,
-          [rating.id, user_rating]
-        );
       } else {
+        // if database entry was not found
+        // create new posts_rating entry
         const id = uuid.v4();
         if (user_rating === 1) {
           await t.none(
@@ -401,16 +400,7 @@ exports.get_most_popular_default = [
     // check for user first => get most popular with upvotes
     db.any(
       `SELECT 
-    post.id,
-    post.title,
-    post.content,
-    post.creation_date,
-    post.filename,
-    post.upvotes,
-    post.downvotes,
-    post.type,
-    post.updated,
-    post.comments_num,
+    post.*,
     creator.username,
     subzeddit.title subzeddit_title,
     user_rating.rating

@@ -122,7 +122,7 @@ describe("PostCreateForm component with errors and subzedditsTitles", () => {
     expect(wrapper.find(".form-errors").text()).toEqual("This is error message");
   });
   it("subzedditsTitles state is correct", () => {
-    expect(wrapper.state().subzedditsTitles).toEqual(subzeddits);
+    expect(wrapper.state().subzedditsTitles).toEqual([]);
   });
   it("calls resetErrors once on input change", () => {
     wrapper.find("input#title").simulate("change", { target: { id: "title", value: "post title"}});

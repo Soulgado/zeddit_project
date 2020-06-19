@@ -78,8 +78,8 @@ class UserProfile extends React.Component {
 
 UserProfile.propTypes = {
   user: PropTypes.object,
-  loggedIn: PropTypes.object,
-  loading: PropTypes.object
+  loggedIn: PropTypes.bool,
+  loading: PropTypes.bool
 }
 
 export default connect(mapStateToProps)(UserProfile);

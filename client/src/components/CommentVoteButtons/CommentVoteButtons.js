@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { voteComment } from "../../redux/actionCreators";
 
-// higher-order component for vote buttons
-
 const mapStateToProps = (state) => ({
   user: state.currentUser.user,
   loggedIn: state.currentUser.loggedIn,
@@ -41,6 +39,7 @@ export function CommentVoteButtons(props) {
     if (user_rating === 1) {
       setUpvotes(upvotes - 1);
     }
+    // doesn't fetch new rating on click, just changes local state values
     setRating(-1);
     setDownvotes(downvotes + 1);
     props.voteComment(props.comment, props.user, -1);

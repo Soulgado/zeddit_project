@@ -48,7 +48,7 @@ describe("UserDeleteFormTemplate component", () => {
   });
   it("changes 'confPassword' state on input change", () => {
     wrapper.find("input#confPassword").simulate("change", { target: { id: "confPassword", value: "asdfgh" }});
-    expect(wrapper.state().confPasswrord).toEqual("asdfgh");
+    expect(wrapper.state().confPassword).toEqual("asdfgh");
   });
   it("doesn't call resetErrors function on input change by default", () => {
     wrapper.find("input#username").simulate("change", { target: { id: "username", value: "admin" }});

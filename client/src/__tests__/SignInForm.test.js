@@ -6,8 +6,11 @@ describe("SignInForm component", () => {
   let wrapper;
   const signInMock = jest.fn();
   const resetErrorsMock = jest.fn();
+  const location = {
+    state: undefined
+  };
   beforeEach(() => {
-    wrapper = shallow(<SignInForm signIn={signInMock} resetErrors={resetErrorsMock} />);
+    wrapper = shallow(<SignInForm signIn={signInMock} resetErrors={resetErrorsMock} location={location} />);
   });
   afterEach(() => {
     signInMock.mockClear();
@@ -20,7 +23,7 @@ describe("SignInForm component", () => {
     expect(wrapper.find("input[type='text']").length).toEqual(1);
   });
   it("renders 1 input element of type 'password'", () => {
-    expect(wrapper.find("input[type='password'").length).toEqual(1);
+    expect(wrapper.find("input[type='password']").length).toEqual(1);
   });
   it("submit button has sign-in-button class", () => {
     expect(wrapper.exists("button.sign-in-button")).toBeTruthy();
@@ -46,7 +49,7 @@ describe("SignInForm component", () => {
     expect(resetErrorsMock.mock.calls.length).toEqual(0);
   });
   it("sets errors state to correct value if there is error in form", () => {
-    wrapper.find("form").sumulate("submit", { preventDefault: () => {} });
+    wrapper.find("form").simulate("submit", { preventDefault: () => {} });
     expect(wrapper.state().errors).toEqual("Username field must not be empty");
   }); 
   it("doesn't call signIn function if there is an error in the form", () => {
