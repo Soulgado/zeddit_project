@@ -25,24 +25,36 @@ export function CommentVoteButtons(props) {
   }, [props]);
 
   function onUpvote() {
-    if (!props.loggedIn || user_rating === 1) return;
-    if (user_rating === -1) {
+    if (!props.loggedIn) return;  // redirect to log in page?
+    if (user_rating === 1) {
+      setRating(0);
+      setUpvotes(upvotes - 1);
+    } else if (user_rating === -1) {
       setDownvotes(downvotes - 1);
+      setRating(1);
+      setUpvotes(upvotes + 1);
+    } else {
+      setRating(1);
+      setUpvotes(upvotes + 1);
     }
-    setRating(1);
-    setUpvotes(upvotes + 1);
-    props.voteComment(props.comment, props.user, 1);
+    props.voteComment(props.comment.id, props.user.id, 1);
   }
 
   function onDownvote() {
-    if (!props.loggedIn || user_rating === -1) return;
-    if (user_rating === 1) {
+    if (!props.loggedIn) return;
+    if (user_rating === -1) {
+      setRating(0);
+      setDownvotes(downvotes - 1);
+    } else if (user_rating === 1) {
       setUpvotes(upvotes - 1);
+      setRating(-1);
+      setDownvotes(downvotes + 1);
+    } else {
+      setRating(-1);
+      setDownvotes(downvotes + 1);
     }
     // doesn't fetch new rating on click, just changes local state values
-    setRating(-1);
-    setDownvotes(downvotes + 1);
-    props.voteComment(props.comment, props.user, -1);
+    props.voteComment(props.comment.id, props.user.id, -1);
   }
 
   return (
@@ -53,7 +65,8 @@ export function CommentVoteButtons(props) {
             user_rating === 1 ? "upvote-active" : ""
           }`}
           onClick={onUpvote}
-        ></div>
+        >
+        </div>
         <span>{upvotes}</span>
       </div>
       <div className="post-rating">{upvotes - downvotes}</div>

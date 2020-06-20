@@ -4,8 +4,8 @@ const { body, validationResult } = require("express-validator");
 
 exports.rate_comment = [
   body("user").trim().notEmpty(),
-  body("user_rating").trim().notEmpty().isInt().toInt(),
-  body("comment").trim().notEmpty().isInt(),
+  body("user_rating").trim().notEmpty().isInt().toInt(), 
+  body("comment").trim().notEmpty(),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -27,11 +27,11 @@ exports.rate_comment = [
         if (user_rating === rating.rating) {
           // delete database entry if ratings are equal
           if (user_rating === 1) {
-            await t.none(`UPDATE posts SET upvotes = upvotes - 1 WHERE id = $1`, post);
+            await t.none(`UPDATE comments SET upvotes = upvotes - 1 WHERE id = $1`, comment);
           } else {
-            await t.none(`UPDATE posts SET downvotes = downvotes - 1 WHERE id = $1`, post);
+            await t.none(`UPDATE comments SET downvotes = downvotes - 1 WHERE id = $1`, comment);
           }
-          return t.none(`DELETE FROM posts_rating WHERE id = $1`, rating.id);
+          return t.none(`DELETE FROM comments_rating WHERE id = $1`, rating.id);
         } else {
         // if user_rating is different from rating in database entry
         // change existing entry

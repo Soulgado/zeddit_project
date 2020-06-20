@@ -166,7 +166,7 @@ exports.post_detail = [
     db.task(async (t) => {
       const post = await t.one(
         `SELECT 
-      post.*
+      post.*,
       creator.username,
       subzeddit.title subzeddit_title,
       user_rating.rating
@@ -307,6 +307,7 @@ exports.rate_post = [
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log(errors);
       return res.status(422).json({
         result: "error",
         errors: errors.array(),

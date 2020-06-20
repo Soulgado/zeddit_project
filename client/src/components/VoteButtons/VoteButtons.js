@@ -17,8 +17,6 @@ export function VoteButtons(props) {
   const [upvotes, setUpvotes] = useState(props.post.upvotes);
   const [downvotes, setDownvotes] = useState(props.post.downvotes);
 
-  // ToDo: set rating to default on second click
-
   useEffect(() => {
     setRating(props.post.rating);
     setUpvotes(props.post.upvotes);
@@ -26,22 +24,34 @@ export function VoteButtons(props) {
   }, [props]);
 
   function onUpvote() {
-    if (!props.loggedIn || user_rating === 1) return;  // unupvote on user_rating === 1
-    if (user_rating === -1) {
+    if (!props.loggedIn) return;
+    if (user_rating === 1) {
+      setRating(0);
+      setUpvotes(upvotes - 1);
+    } else if (user_rating === -1) {
       setDownvotes(downvotes - 1);
+      setRating(1);
+      setUpvotes(upvotes + 1);
+    } else {
+      setRating(1);
+      setUpvotes(upvotes + 1);
     }
-    setRating(1);
-    setUpvotes(upvotes + 1);
-    props.votePost(props.post, props.user.id, 1);   // send post.id
+    props.votePost(props.post.id, props.user.id, 1);   // send post.id
   }
 
   function onDownvote() {
-    if (!props.loggedIn || user_rating === -1) return;
-    if (user_rating === 1) {
+    if (!props.loggedIn) return;
+    if (user_rating === -1) {
+      setRating(0);
+      setDownvotes(downvotes - 1);
+    } else if (user_rating === 1) {
       setUpvotes(upvotes - 1);
+      setRating(-1);
+      setDownvotes(downvotes + 1);
+    } else {
+      setRating(-1);
+      setDownvotes(downvotes - 1);
     }
-    setRating(-1);
-    setDownvotes(downvotes + 1);
     props.votePost(props.post.id, props.user.id, -1);
   }
 
@@ -53,7 +63,8 @@ export function VoteButtons(props) {
             user_rating === 1 ? "upvote-active" : ""
           }`}
           onClick={onUpvote}
-        ></div>
+        >
+        </div>
         <span>{upvotes}</span>
       </div>
       <div className="post-rating">{upvotes - downvotes}</div>
