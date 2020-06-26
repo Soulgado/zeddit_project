@@ -64,7 +64,7 @@ export class PasswordEditFormTemplate extends React.Component {
     }
     const { password, newPassword } = this.state;
     this.props.editPassword({
-      user: this.props.user.id,   // change to id
+      user: this.props.user.id, 
       password,
       new_password: newPassword,
     });

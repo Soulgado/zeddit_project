@@ -36,7 +36,7 @@ export function VoteButtons(props) {
       setRating(1);
       setUpvotes(upvotes + 1);
     }
-    props.votePost(props.post.id, props.user.id, 1);   // send post.id
+    props.votePost(props.post.id, props.user.id, 1); 
   }
 
   function onDownvote() {

@@ -14,7 +14,6 @@ const mapDispatchToProps = (dispatch) => ({
   resetErrors: () => dispatch(resetPostFormErrors()),
 });
 
-// ToDo: add form errors on frontend
 export class ImagePostEditPage extends React.Component {
   constructor(props) {
     super(props);
@@ -36,14 +35,30 @@ export class ImagePostEditPage extends React.Component {
   handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value,
+      errors: undefined
     });
     if (this.props.errors) {
       this.props.resetErrors();
     }
   };
 
+  formErrorsCheck(state) {
+    if (state.title === "") {
+      return "Title field must not be empty";
+    } else if (state.title.length < 3) {
+      return "Title must be no less than 3 characters long";
+    } else return;
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
+    const errors = this.formErrorsCheck(this.state);
+    if (errors) {
+      this.setState({
+        errors: errors
+      });
+      return;
+    }
     const formData = {
       title: this.state.title,
     };

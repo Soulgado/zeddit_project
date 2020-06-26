@@ -24,6 +24,13 @@ export class PostCreateForm extends React.Component {
       dropdownActive: false,
       errors: undefined
     }
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubzedditChange = this.handleSubzedditChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubzedditFocus = this.handleSubzedditFocus.bind(this);
+    this.handleSubzedditBlur = this.handleSubzedditBlur.bind(this);
+    this.handleDropdownClick = this.handleDropdownClick.bind(this);
   }
 
   componentDidMount() {

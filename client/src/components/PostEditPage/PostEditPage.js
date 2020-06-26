@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import PropTypes from 'prop-types';
 import TextPostEditPage from "./TextPostEditPage";
 import ImagePostEditPage from "./ImagePostEditPage";
@@ -8,6 +8,7 @@ import Placeholder from "../fetchingPlaceholder";
 import { resetCommentCreationFlag } from "../../redux/actionCreators";
 
 const mapStateToProps = (state) => ({
+  user: state.currentUser.user,
   loading: state.loading.loading,
   creationFlag: state.post.creationFlag,
   post: state.post.post,
@@ -23,9 +24,11 @@ class PostEditPage extends React.Component {
   }
 
   renderingOptions() {
-    const { loading, creationFlag, post } = this.props;
+    const { loading, creationFlag, post, user } = this.props;
     const editPost = this.props.location.state.post;
-    if (loading) {
+    if (editPost.creator !== user.id) {
+      return <Redirect to="/" />;
+    } else if (loading) {
       return <Placeholder />;
     } else if (creationFlag) {
       return (
@@ -48,8 +51,6 @@ class PostEditPage extends React.Component {
     }
   }
 
-  // ToDo: check for user === post.creator => Redirect to main page
-
   render() {
     return (
       <div className="create-page">
@@ -60,6 +61,7 @@ class PostEditPage extends React.Component {
 }
 
 PostEditPage.propTypes = {
+  user: PropTypes.object,
   loading: PropTypes.bool,
   creationFlag: PropTypes.bool,
   post: PropTypes.object,

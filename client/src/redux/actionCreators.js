@@ -118,6 +118,7 @@ export const getPost = (post, user) => {
   let request = {
     type: types.GET_POST,
     meta: {
+      loading: true,
       type: "api",
     },
   };

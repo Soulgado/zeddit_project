@@ -84,7 +84,9 @@ exports.post_create_image = [
     .trim()
     .notEmpty()
     .withMessage("Title field should not be empty"),
-  body("user").trim().notEmpty().toInt().isInt(), // change later according to user table
+  body("user")
+    .trim()
+    .notEmpty().withMessage("User field should not be empty"),
   body("subzeddit")
     .trim()
     .notEmpty()
@@ -260,7 +262,6 @@ exports.post_comment = [
         );
         level = parent_comment_level.level + 1;
       }
-      // sent comment_level within body??
       const id = uuid.v4();
       return t.one(
         `INSERT INTO 

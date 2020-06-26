@@ -3,13 +3,12 @@ import * as types from "../types";
 const defaultUser = {
   id: 2,
   username: "soul",
-  password: "admin",
   email: "somemail@gmail.com",
 }; // temporary user for production build testing
 
 export const initialState = {
-  user: defaultUser,
-  loggedIn: true,
+  user: undefined,
+  loggedIn: false,
   successFlag: false,
   formErrors: undefined,
 };
@@ -25,7 +24,12 @@ export const reducer = (state = initialState, action) => {
       }
     case types.LOGIN:
       if (action.payload.result === "success") {
-        return { ...state, user: action.payload.user, loggedIn: true };
+        return { 
+          ...state,
+          user: action.payload.user,
+          loggedIn: true,
+          successFlag: true
+        };
       } else {
         return { ...state, formErrors: action.payload.errors };
       }

@@ -14,7 +14,6 @@ const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(logout()),
 });
 
-// named export for testing
 export class MainNavigation extends React.Component {
   checkLoggedIn() {
     if (!this.props.loggedIn) {

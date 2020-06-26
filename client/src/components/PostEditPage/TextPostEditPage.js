@@ -20,6 +20,7 @@ export class TextPostEditPage extends React.Component {
     this.state = {
       title: "",
       content: "",
+      errors: undefined
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -37,15 +38,30 @@ export class TextPostEditPage extends React.Component {
   handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value,
+      errors: undefined
     });
     if (this.props.errors) {
       this.props.resetErrors();
     }
-    
   };
+
+  formErrorsCheck(state) {
+    if (state.title === "") {
+      return "Post title should not be empty";
+    } else if (state.content === "") {
+      return "Post content should not be empty";
+    } else return;
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
+    const errors = this.formErrorsCheck.bind(this);
+    if (errors) {
+      this.setState({
+        errors: errors
+      });
+      return;
+    }
     const formData = {
       title: this.state.title,
       content: this.state.content,
@@ -59,7 +75,7 @@ export class TextPostEditPage extends React.Component {
   }
 
   render() {
-    const { title, content } = this.state;
+    const { title, content, errors } = this.state;
     const { handleChange, handleSubmit } = this;
     return (
       <form onSubmit={handleSubmit}>
@@ -78,6 +94,7 @@ export class TextPostEditPage extends React.Component {
           />
         </div>
         <div className="form-errors">
+          {errors && <p>{errors}</p>}
           {this.props.errors && <p>{this.props.errors}</p>}
         </div>
         <button className="form-button" type="submit">

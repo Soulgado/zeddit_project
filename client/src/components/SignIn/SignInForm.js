@@ -79,7 +79,6 @@ export class SignInForm extends React.Component {
             type="text"
             value={username}
             onChange={handleChange}
-            required
           />
         </div>
         <div className="form-element">
@@ -89,7 +88,6 @@ export class SignInForm extends React.Component {
             id="password"
             value={password}
             onChange={handleChange}
-            required
           />
         </div>
         <div className="form-errors">

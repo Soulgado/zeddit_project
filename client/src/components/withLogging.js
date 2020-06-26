@@ -7,13 +7,13 @@ export function withLogging(WrappedComponent, redirectTo) {
     render() {
       const { loggedIn, ...otherProps } = this.props;
       return (
-        <div>
+        <>
           {loggedIn ? (
             <Redirect to={redirectTo} />
           ) : (
             <WrappedComponent {...otherProps} />
           )}
-        </div>
+        </>
       );
     }
   };
@@ -25,7 +25,7 @@ export function withoutLogging(WrappedComponent, redirectTo, message) {
     render() {
       const { loggedIn, ...otherProps } = this.props;
       return (
-        <div>
+        <>
           {loggedIn ? (
             <WrappedComponent {...otherProps} />
           ) : (
@@ -37,7 +37,7 @@ export function withoutLogging(WrappedComponent, redirectTo, message) {
               }}
             />
           )}
-        </div>
+        </>
       );
     }
   };

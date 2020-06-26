@@ -1,4 +1,8 @@
 var pgp = require("pg-promise")();
-var db = pgp("postgres://postgres:admin@127.0.0.1:5432/postgres");
+require('dotenv').config();
+
+const env = process.env;
+
+var db = pgp(`postgres://${env.DB_USERNAME}:${env.DB_PASSWORD}@${env.DB_HOST}:${env.DB_PORT}/${env.DB_APP_NAME}`);
 
 module.exports = db;

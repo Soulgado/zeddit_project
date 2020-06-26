@@ -28,5 +28,4 @@ CreationTime.propTypes = {
   time: PropTypes.string
 }
 
-
 export default CreationTime;

@@ -69,8 +69,6 @@ export class UserProfilePage extends React.Component {
     });
   }
 
-  // ToDo: close all other forms when one form is opened
-
   render() {
     const {usernameFormActive, passwordFormActive, emailFormActive} = this.state;
     return (
