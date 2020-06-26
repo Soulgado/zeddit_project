@@ -3,6 +3,15 @@ require('dotenv').config();
 
 const env = process.env;
 
-var db = pgp(`postgres://${env.DB_USERNAME}:${env.DB_PASSWORD}@${env.DB_HOST}:${env.DB_PORT}/${env.DB_APP_NAME}`);
+const cn = {
+  host: env.DB_HOST,
+  port: env.DB_PORT,
+  user: env.DB_USERNAME,
+  password: env.DB_PASSWORD,
+  database: env.DB_NAME,
+  max: 30
+};
+
+var db = pgp(cn);
 
 module.exports = db;
