@@ -33,14 +33,14 @@ export class SubzedditList extends React.Component {
               <Placeholder />
             ) : (
               <ul id="subzeddits-list">
-                {subzedditsList.map((subzeddit) => {
+                {subzedditsList.length !== 0 ? subzedditsList.map((subzeddit) => {
                   return (
                     <SubzedditMinified
                       key={subzeddit.title}
                       subzeddit={subzeddit}
                     />
                   );
-                })}
+                }) : "There are no subzeddits yet."}
               </ul>
             )}
           </div>

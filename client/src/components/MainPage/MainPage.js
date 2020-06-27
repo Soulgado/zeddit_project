@@ -28,9 +28,9 @@ export class MainPage extends React.Component {
   renderPosts(posts) {
     return (
       <div className="posts-list">
-        {posts.map((post) => {
+        {posts.length !== 0 ? posts.map((post) => {
           return <PostMinified key={post.id} post={post} />;
-        })}
+        }) : "There are no posts yet."} 
       </div>
     );
   }
@@ -66,7 +66,6 @@ MainPage.propTypes = {
   loggedIn: PropTypes.bool,
   loading: PropTypes.bool,
   mostPopularGlobal: PropTypes.array,
-  mostPopularUser: PropTypes.array,
   getMostPopularGlobal: PropTypes.func
 }
 

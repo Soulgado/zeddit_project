@@ -389,8 +389,32 @@ exports.rate_post = [
   },
 ];
 
-exports.get_most_popular_default = [
-  query("user").trim().notEmpty().isInt(),
+exports.get_most_popular_default = (req, res) => {
+  db.any(
+  `SELECT 
+  post.*,
+  creator.username,
+  subzeddit.title subzeddit_title
+  FROM posts post 
+  LEFT JOIN users creator ON post.creator = creator.id
+  LEFT JOIN subzeddits subzeddit ON post.subzeddit = subzeddit.id
+  ORDER BY upvotes DESC LIMIT 10`)
+  .then(data => {
+    res.json({
+      result: "success",
+      data
+    });
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(400).json({
+      result: "error"
+    });
+  });
+}
+
+exports.get_most_popular_user = [
+  query("user").trim().notEmpty().isUUID(),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -59,27 +59,28 @@ exports.subzeddit_all = [
   (req, res) => {
     // get all subzeddits
     // also fetch subscription status
-    let user;
-    if (req.query.user) {
-      user = req.query.user;
-    } else {
-      user = 0;
-    }
-    db.any(
-      `SELECT
-      subzeddit.id,
-      subzeddit.title,
-      subzeddit.creation_date,
-      subzeddit.subscriptions,
-      subscription.id subscription_status,
-      creator.username
-    FROM subzeddits subzeddit
-    LEFT JOIN users creator ON subzeddit.creator = creator.id
-    LEFT JOIN subzeddit_subscriptions subscription ON subscription.subzeddit = subzeddit.id AND subscription.subscriber = $1
-    ORDER BY title ASC
-    `,
-      user
-    )
+    db.tx("get all subzeddits", async t => {
+      if (req.query.user) {
+        return t.any(
+          `SELECT
+            subzeddit.*,
+            subscription.id subscription_status,
+            creator.username
+          FROM subzeddits subzeddit
+          LEFT JOIN users creator ON subzeddit.creator = creator.id
+          LEFT JOIN subzeddit_subscriptions subscription ON subscription.subzeddit = subzeddit.id AND subscription.subscriber = $1
+          ORDER BY title ASC`,
+          req.query.user)
+      } else {
+        return t.any(
+          `SELECT
+            subzeddit.*,
+            creator.username
+          FROM subzeddits subzeddit
+          LEFT JOIN users creator ON subzeddit.creator = creator.id
+          ORDER BY title ASC`)
+      }
+    })
       .then((data) => {
         res.json({
           result: "success",

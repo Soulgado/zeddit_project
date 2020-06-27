@@ -30,7 +30,9 @@ router.post("/create", subzeddit_controller.subzeddit_create);
 
 router.get("/subzeddits_list?", subzeddit_controller.subzeddit_all);
 
-router.get("/most_popular_default?", post_controller.get_most_popular_default);
+router.get("/most_popular_user?", post_controller.get_most_popular_user);
+
+router.get("/most_popular_default", post_controller.get_most_popular_default)
 
 router.get("/posts/:post?", post_controller.post_detail);
 

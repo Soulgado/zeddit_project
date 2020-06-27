@@ -240,14 +240,21 @@ export const getDownvotedPosts = (user) => ({
   },
 });
 
-export const getMostPopularDefault = (user) => ({
-  type: types.GET_MOST_POPULAR_DEFAULT,
-  meta: {
-    type: "api",
-    loading: true,
-    url: `/api/sz/most_popular_default?user=${user ? user.id : "0"}`,
-  },
-});
+export const getMostPopularDefault = (user) => {
+  let request = {
+    type: types.GET_MOST_POPULAR_DEFAULT,
+    meta: {
+      type: "api",
+      loading: true
+    }
+  };
+  if (user) {
+    request.meta.url = `/api/sz/most_popular_user?user=${user.id}`;
+  } else {
+    request.meta.url = `/api/sz/most_popular_default`
+  }
+  return request;
+};
 
 export const getSubzedditTitles = () => ({
   type: types.GET_SUBZEDDITS_TITLES,
