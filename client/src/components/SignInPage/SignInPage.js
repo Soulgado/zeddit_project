@@ -25,7 +25,12 @@ class SignInPage extends React.Component {
     } else if (successFlag) {
       return (
         <div className="success-message">
-          <p>You have successfully logged in. Redirecting to the main page in 5 sec.</p>
+          <p>You have successfully logged in. Redirecting to the last visited page in 5 sec.</p>
+          {setTimeout(() => {
+            if (this.props.history.length !== 0) {
+              this.props.history.goBack();
+            }
+          }, 5000)}
         </div>
       );
     } else {
@@ -52,6 +57,6 @@ SignInPage.propTypes = {
   loggedIn: PropTypes.bool
 }
 
-const ConnectedSignInPage = withLogging(SignInPage, "/");
+// const ConnectedSignInPage = withLogging(SignInPage, "/");
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConnectedSignInPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);

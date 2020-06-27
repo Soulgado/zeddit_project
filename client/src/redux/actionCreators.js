@@ -1,5 +1,7 @@
 import * as types from "./types";
 
+// user actions
+
 export const createAccount = (formData) => ({
   type: types.CREATE_ACCOUNT,
   payload: "",
@@ -39,13 +41,19 @@ export const logout = () => ({
   type: types.LOGOUT,
 });
 
+export const resetUserFormErrors = () => ({
+  type: types.RESET_USER_FORM_ERRORS,
+});
+
+// subzeddits actions
+
 export const createSubzeddit = (formData) => ({
   type: types.CREATE_SUBZEDDIT,
   payload: 0,
   meta: {
     type: "api",
     loading: true,
-    url: "/api/sz/create",
+    url: "/api/sz",
     method: "POST",
     body: JSON.stringify(formData),
     headers: {
@@ -54,16 +62,12 @@ export const createSubzeddit = (formData) => ({
   },
 });
 
-export const resetCreationSuccess = () => ({
-  type: types.RESET_CREATION_SUCCESS,
-});
-
 export const resetSubzedditFormErrors = () => ({
   type: types.RESET_SUBZEDDIT_FORM_ERRORS,
 });
 
-export const resetUserFormErrors = () => ({
-  type: types.RESET_USER_FORM_ERRORS,
+export const resetCreationSuccess = () => ({
+  type: types.RESET_CREATION_SUCCESS,
 });
 
 export const getSubzedditsList = (user) => ({
@@ -72,7 +76,7 @@ export const getSubzedditsList = (user) => ({
   meta: {
     type: "api",
     loading: true,
-    url: `/api/sz/subzeddits_list?user=${user ? user.id : ""}`,
+    url: `/api/sz/list?user=${user ? user.id : ""}`,
   },
 });
 
@@ -81,110 +85,11 @@ export const getSubzeddit = (title, user) => ({
   meta: {
     type: "api",
     loading: true,
-    url: `/api/sz/subzeddit/${title}?user=${user ? user.id : ""}`,
+    url: `/api/sz/${title}?user=${user ? user.id : ""}`,
   },
 });
 
-export const createNewPost = (user, formData) => ({
-  type: types.CREATE_POST,
-  meta: {
-    type: "api",
-    url: "/api/sz/post/create",
-    loading: true,
-    method: "POST",
-    body: JSON.stringify({ ...formData, user }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  },
-});
-
-export const createNewImagePost = (formData) => ({
-  type: types.CREATE_POST,
-  meta: {
-    type: "api",
-    loading: true,
-    url: "/api/sz/post/create_img",
-    method: "POST",
-    body: formData,
-  },
-});
-
-export const resetPostFormErrors = () => ({
-  type: types.RESET_POST_FORM_ERRORS,
-});
-
-export const getPost = (post, user) => {
-  let request = {
-    type: types.GET_POST,
-    meta: {
-      loading: true,
-      type: "api",
-    },
-  };
-  if (user) {
-    request.meta.url = `/api/sz/posts/${post}?user=${user.id}`;
-  } else {
-    request.meta.url = `/api/sz/posts/${post}?user=0`;
-  }
-  return request;
-};
-
-export const postComment = (user, content, post, parent_comment) => ({
-  type: types.POST_COMMENT,
-  meta: {
-    type: "api",
-    url: "/api/sz/comment/create",
-    method: "POST",
-    body: JSON.stringify({ user, content, post, parent_comment }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  },
-});
-
-export const resetCommentCreationFlag = () => ({
-  type: types.RESET_COMMENT_CREATION_FLAG,
-});
-
-export const editComment = (user, comment, content) => ({
-  type: types.EDIT_COMMENT,
-  meta: {
-    type: "api",
-    url: "/api/sz/comment/edit_comment",
-    method: "POST",
-    body: JSON.stringify({ user, comment, content }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  },
-});
-
-export const deleteComment = (user, comment) => ({
-  type: types.DELETE_COMMENT,
-  meta: {
-    type: "api",
-    url: "/api/sz/comment/delete_comment",
-    method: "DELETE",
-    body: JSON.stringify({ user, comment }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  },
-});
-
-export const votePost = (post, user, user_rating) => ({
-  type: types.VOTE_POST,
-  meta: {
-    type: "api",
-    url: "/api/sz/post/rate",
-    body: JSON.stringify({ post, user, user_rating }),
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  },
-});
+// user profile actions
 
 export const getUserSubscriptions = (user) => ({
   type: types.GET_USER_SUBSCRIPTIONS,
@@ -240,22 +145,6 @@ export const getDownvotedPosts = (user) => ({
   },
 });
 
-export const getMostPopularDefault = (user) => {
-  let request = {
-    type: types.GET_MOST_POPULAR_DEFAULT,
-    meta: {
-      type: "api",
-      loading: true
-    }
-  };
-  if (user) {
-    request.meta.url = `/api/sz/most_popular_user?user=${user.id}`;
-  } else {
-    request.meta.url = `/api/sz/most_popular_default`
-  }
-  return request;
-};
-
 export const getSubzedditTitles = () => ({
   type: types.GET_SUBZEDDITS_TITLES,
   meta: {
@@ -264,63 +153,9 @@ export const getSubzedditTitles = () => ({
   },
 });
 
-export const editTextPost = (user, post, formData) => ({
-  type: types.EDIT_POST,
-  meta: {
-    type: "api",
-    method: "PUT",
-    loading: true,
-    url: "/api/sz/edit_post",
-    body: JSON.stringify({ user, post, ...formData, type: "text" }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  },
-});
-
-export const editImagePost = (user, post, formData) => ({
-  type: types.EDIT_POST,
-  meta: {
-    type: "api",
-    method: "PUT",
-    loading: true,
-    url: "/api/sz/edit_post",
-    body: JSON.stringify({ user, post, ...formData, type: "image" }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  },
-});
-
-export const deletePost = (user, post) => ({
-  type: types.DELETE_POST,
-  meta: {
-    type: "api",
-    method: "DELETE",
-    url: "/api/sz/post/delete_post",
-    body: JSON.stringify({ user, post }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-    loading: true
-  },
-});
 
 export const resetPostDeleteFlag = () => ({
   type: types.RESET_POST_DELETE_FLAG
-});
-
-export const voteComment = (comment, user, user_rating) => ({
-  type: types.VOTE_COMMENT,
-  meta: {
-    type: "api",
-    url: "/api/sz/comment/rate_comment",
-    body: JSON.stringify({ comment, user, user_rating }),
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  },
 });
 
 export const editUsername = (formData) => ({
@@ -378,6 +213,182 @@ export const editEmail = (formData) => ({
     url: "/api/users/update_email",
     method: "PUT",
     body: JSON.stringify(formData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  },
+});
+
+// posts actions
+
+export const createNewPost = (user, formData) => ({
+  type: types.CREATE_POST,
+  meta: {
+    type: "api",
+    url: "/api/posts/create_text",
+    loading: true,
+    method: "POST",
+    body: JSON.stringify({ ...formData, user }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  },
+});
+
+export const createNewImagePost = (formData) => ({
+  type: types.CREATE_POST,
+  meta: {
+    type: "api",
+    loading: true,
+    url: "/api/posts/create_img",
+    method: "POST",
+    body: formData,
+  },
+});
+
+export const resetPostFormErrors = () => ({
+  type: types.RESET_POST_FORM_ERRORS,
+});
+
+export const getPost = (post, user) => {
+  let request = {
+    type: types.GET_POST,
+    meta: {
+      loading: true,
+      type: "api",
+    },
+  };
+  if (user) {
+    request.meta.url = `/api/posts/${post}?user=${user.id}`;
+  } else {
+    request.meta.url = `/api/posts/${post}`;
+  }
+  return request;
+};
+
+export const votePost = (post, user, user_rating) => ({
+  type: types.VOTE_POST,
+  meta: {
+    type: "api",
+    url: "/api/posts/rate",
+    body: JSON.stringify({ post, user, user_rating }),
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  },
+});
+
+export const getMostPopularDefault = (user) => {
+  let request = {
+    type: types.GET_MOST_POPULAR_DEFAULT,
+    meta: {
+      type: "api",
+      loading: true
+    }
+  };
+  if (user) {
+    request.meta.url = `/api/posts/most_popular_user?user=${user.id}`;
+  } else {
+    request.meta.url = `/api/posts/most_popular_default`
+  }
+  return request;
+};
+
+export const editTextPost = (user, post, formData) => ({
+  type: types.EDIT_POST,
+  meta: {
+    type: "api",
+    method: "PUT",
+    loading: true,
+    url: "/api/posts",
+    body: JSON.stringify({ user, post, ...formData, type: "text" }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  },
+});
+
+export const editImagePost = (user, post, formData) => ({
+  type: types.EDIT_POST,
+  meta: {
+    type: "api",
+    method: "PUT",
+    loading: true,
+    url: "/api/posts",
+    body: JSON.stringify({ user, post, ...formData, type: "image" }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  },
+});
+
+export const deletePost = (user, post) => ({
+  type: types.DELETE_POST,
+  meta: {
+    type: "api",
+    method: "DELETE",
+    url: "/api/posts",
+    body: JSON.stringify({ user, post }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    loading: true
+  },
+});
+
+// comments actions
+
+export const postComment = (user, content, post, parent_comment) => ({
+  type: types.POST_COMMENT,
+  meta: {
+    type: "api",
+    url: "/api/comments",
+    method: "POST",
+    body: JSON.stringify({ user, content, post, parent_comment }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  },
+});
+
+export const resetCommentCreationFlag = () => ({
+  type: types.RESET_COMMENT_CREATION_FLAG,
+});
+
+export const editComment = (user, comment, content) => ({
+  type: types.EDIT_COMMENT,
+  meta: {
+    type: "api",
+    url: "/api/comments",
+    method: "PUT",
+    body: JSON.stringify({ user, comment, content }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  },
+});
+
+export const deleteComment = (user, comment) => ({
+  type: types.DELETE_COMMENT,
+  meta: {
+    type: "api",
+    url: "/api/comments",
+    method: "DELETE",
+    body: JSON.stringify({ user, comment }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  },
+});
+
+export const voteComment = (comment, user, user_rating) => ({
+  type: types.VOTE_COMMENT,
+  meta: {
+    type: "api",
+    url: "/api/comments/rate",
+    body: JSON.stringify({ comment, user, user_rating }),
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },

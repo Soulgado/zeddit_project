@@ -3,6 +3,8 @@ const router = express.Router();
 const multer = require("multer");
 const crypto = require("crypto");
 const subzeddit_controller = require("../controllers/subzedditController");
+const post_controller = require("../controllers/postController");
+const comment_controller = require("../controllers/commentController");
 
 function generateFilename() {
   // generate random filename
@@ -24,19 +26,22 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post("/", subzeddit_controller.subzeddit_create);
+router.post("/create_text", post_controller.post_create);
 
-router.get("/list?", subzeddit_controller.subzeddit_all);
-
-router.get(
-  "/get_titles",
-  subzeddit_controller.get_subzeddits_titles
+router.post(
+  "create_img",
+  upload.single("file"),
+  post_controller.post_create_image
 );
 
-router.get("/subscribe_status?", subzeddit_controller.get_subscription_info);
+router.get("/:post?", post_controller.post_detail);
 
-router.get("/:title?", subzeddit_controller.get_subzeddit);
+router.get("/most_popular_user?", post_controller.get_most_popular_user);
 
+router.get("/most_popular_default", post_controller.get_most_popular_default);
 
+router.post("/rate", post_controller.rate_post);
 
-module.exports = router;
+router.put("/", post_controller.edit_post);
+
+router.delete("/", post_controller.delete_post);

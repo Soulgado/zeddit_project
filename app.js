@@ -6,7 +6,9 @@ var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-let subzedditsRouter = require("./routes/subzeddits");
+var subzedditsRouter = require("./routes/subzeddits");
+var postsRouter = require("./routes/posts");
+var commentsRouter = require("./routes/comments");
 
 var app = express();
 
@@ -24,6 +26,8 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 // app.use('/users', usersRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/sz", subzedditsRouter);
+app.use("/api/posts", postsRouter);
+app.use("/api/comments", commentsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

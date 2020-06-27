@@ -20,23 +20,28 @@ class SignUpPage extends React.Component {
     this.props.resetRegistrationSuccess();
   }
 
-  render() {
-    const { successFlag, loading } = this.props;
+  renderingOptions() {
+    const { loading, successFlag, ...otherProps } = this.props;
+    if (loading) {
+      return <Placeholder />;
+    } else if (successFlag) {
+      return (
+        <div className="success-message">
+          <p>Your account was successfully created!</p>
+          <p>
+            Go to <Link to="/login">Log in page</Link>
+          </p>
+        </div>
+      );
+    } else {
+      return <SignUpForm {...otherProps} />;
+    }
+  }
 
+  render() {
     return (
-      <div>
-        {successFlag ? (
-          <div>
-            <p>Your account was successfully created!</p>
-            <p>
-              Go to <Link to="/login">Log in page</Link>
-            </p>
-          </div>
-        ) : loading ? (
-          <Placeholder />
-        ) : (
-          <SignUpForm />
-        )}
+      <div className="create-page">
+        <div className="create-wrapper">{this.renderingOptions()}</div>
       </div>
     );
   }
