@@ -94,7 +94,6 @@ export class SignUpForm extends React.Component {
             type="text"
             value={username}
             onChange={handleChange}
-            required
           />
         </div>
         <div className="form-element">
@@ -104,7 +103,6 @@ export class SignUpForm extends React.Component {
             type="email"
             value={email}
             onChange={handleChange}
-            required
           />
         </div>
         <div className="form-element">
@@ -114,7 +112,6 @@ export class SignUpForm extends React.Component {
             type="password"
             value={password}
             onChange={handleChange}
-            required
           />
         </div>
         <div className="form-element">
@@ -124,7 +121,6 @@ export class SignUpForm extends React.Component {
             type="password"
             value={confPassword}
             onChange={handleChange}
-            required
           />
         </div>
         <div className="form-errors">

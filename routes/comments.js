@@ -10,3 +10,5 @@ router.post("/rate", comment_controller.rate_comment);
 router.put("/", comment_controller.edit_comment);
 
 router.delete("/", comment_controller.delete_comment);
+
+module.exports = router;

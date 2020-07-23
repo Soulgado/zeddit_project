@@ -153,8 +153,8 @@ exports.post_create_image = [
 ];
 
 exports.post_detail = [
-  query("user").trim().notEmpty().toInt().isInt(),
-  param("post").trim().notEmpty().isInt(),
+  query("user").trim().isUUID(),
+  param("post").trim().notEmpty().isUUID(),
 
   (req, res) => {
     const errors = validationResult(req);
@@ -163,6 +163,12 @@ exports.post_detail = [
         result: "error",
         errors: errors.array(),
       });
+    }
+    let user;
+    if (!req.query.user) {
+      user = "00000000-0000-0000-0000-000000000000";  // placeholder non-existent user for database query
+    } else {
+      user = req.query.user;
     }
     // get single post and its comments based on post's id
     db.task(async (t) => {
@@ -177,7 +183,7 @@ exports.post_detail = [
     LEFT JOIN subzeddits subzeddit ON post.subzeddit = subzeddit.id
     LEFT JOIN posts_rating user_rating ON user_rating.post = post.id AND user_rating.user_id = $1
     WHERE post.id = $2`,
-        [req.query.user, req.params.post]
+        [user, req.params.post]
       );
       const comments = await t.any(
         `SELECT 
@@ -188,7 +194,7 @@ exports.post_detail = [
       LEFT JOIN users author ON comment.author = author.id
       LEFT JOIN comments_rating rating ON rating.comment = comment.id AND rating.user_id = $1
       WHERE parent_post = $2 ORDER BY level`,
-        [req.query.user, req.params.post]
+        [user, req.params.post]
       );
       let commentListObject = {}; // mapping??
       // create object with comment objects with id as key
@@ -402,7 +408,7 @@ exports.get_most_popular_default = (req, res) => {
   .then(data => {
     res.json({
       result: "success",
-      data
+      data: data ? data : []  // if no posts exists return empty array
     });
   })
   .catch(error => {

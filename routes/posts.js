@@ -34,14 +34,16 @@ router.post(
   post_controller.post_create_image
 );
 
-router.get("/:post?", post_controller.post_detail);
-
 router.get("/most_popular_user?", post_controller.get_most_popular_user);
 
 router.get("/most_popular_default", post_controller.get_most_popular_default);
 
 router.post("/rate", post_controller.rate_post);
 
+router.get("/:post?", post_controller.post_detail);
+
 router.put("/", post_controller.edit_post);
 
 router.delete("/", post_controller.delete_post);
+
+module.exports = router;

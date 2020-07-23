@@ -37,6 +37,4 @@ router.get("/subscribe_status?", subzeddit_controller.get_subscription_info);
 
 router.get("/:title?", subzeddit_controller.get_subzeddit);
 
-
-
 module.exports = router;

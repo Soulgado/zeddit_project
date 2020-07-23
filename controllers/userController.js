@@ -238,7 +238,7 @@ exports.get_user_subscriptions = [
       .then((data) => {
         res.json({
           result: "success",
-          data: data,
+          data: data ? data : [],
         });
       })
       .catch((error) => {

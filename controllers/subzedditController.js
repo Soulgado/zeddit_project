@@ -104,7 +104,7 @@ exports.get_subzeddit = [
     if (req.query.user) {
       user = req.query.user;
     } else {
-      user = 0;
+      user = "00000000-0000-0000-0000-000000000000";
     }
     db.task(async (t) => {
       const subzeddit = await t.one(
