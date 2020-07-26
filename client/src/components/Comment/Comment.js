@@ -109,7 +109,7 @@ export class Comment extends React.Component {
                 {createFormActive ? "Hide" : "Reply"}
               </button>
             ) : null}
-            {loggedIn && Number(comment.author) === user.id ? (  // change for uuid
+            {loggedIn && comment.author === user.id ? (
               <>
                 <button
                   className="comment-edit-button"

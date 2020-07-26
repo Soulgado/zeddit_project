@@ -2,9 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const crypto = require("crypto");
-const subzeddit_controller = require("../controllers/subzedditController");
 const post_controller = require("../controllers/postController");
-const comment_controller = require("../controllers/commentController");
 
 function generateFilename() {
   // generate random filename
@@ -29,7 +27,7 @@ const upload = multer({ storage: storage });
 router.post("/create_text", post_controller.post_create);
 
 router.post(
-  "create_img",
+  "/create_img",
   upload.single("file"),
   post_controller.post_create_image
 );

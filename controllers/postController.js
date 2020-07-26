@@ -111,11 +111,11 @@ exports.post_create_image = [
       return t.one(
         `INSERT INTO posts(id, title, creator, filename, creation_date, subzeddit, type)
           VALUES ($1, $2, $3, $4, $5, $6, $7)
-          RETURNING id, title, creator, filename, creation_date, subzeddit`,
+          RETURNING id, title, creator, creation_date, subzeddit`,
         [
           id,
           req.body.title,
-          Number(req.body.user),
+          req.body.user,
           filename,
           new Date(),
           subzeddit ? subzeddit.id : 0,
@@ -153,7 +153,7 @@ exports.post_create_image = [
 ];
 
 exports.post_detail = [
-  query("user").trim().isUUID(),
+  query("user").trim().optional().isUUID(),
   param("post").trim().notEmpty().isUUID(),
 
   (req, res) => {
@@ -429,20 +429,18 @@ exports.get_most_popular_user = [
         errors: errors.array(),
       });
     }
-    // check for user first => get most popular with upvotes
     db.any(
-      `SELECT 
+    `SELECT 
     post.*,
     creator.username,
     subzeddit.title subzeddit_title,
     user_rating.rating
-  FROM posts post 
-  LEFT JOIN users creator ON post.creator = creator.id
-  LEFT JOIN subzeddits subzeddit ON post.subzeddit = subzeddit.id
-  LEFT JOIN posts_rating user_rating ON user_rating.post = post.id AND user_rating.user_id = $1
-  ORDER BY upvotes DESC LIMIT 10`,
-      req.query.user
-    )
+    FROM posts post 
+    LEFT JOIN users creator ON post.creator = creator.id
+    LEFT JOIN subzeddits subzeddit ON post.subzeddit = subzeddit.id
+    LEFT JOIN posts_rating user_rating ON user_rating.post = post.id AND user_rating.user_id = $1
+    ORDER BY upvotes DESC LIMIT 10`,
+    req.query.user)
       .then((data) => {
         res.json({
           result: "success",

@@ -89,6 +89,14 @@ export const getSubzeddit = (title, user) => ({
   },
 });
 
+export const getSubzedditTitles = () => ({
+  type: types.GET_SUBZEDDITS_TITLES,
+  meta: {
+    type: "api",
+    url: "/api/sz/get_titles",
+  },
+});
+
 // user profile actions
 
 export const getUserSubscriptions = (user) => ({
@@ -144,15 +152,6 @@ export const getDownvotedPosts = (user) => ({
     url: `/api/users/${user.id}/downvoted`,
   },
 });
-
-export const getSubzedditTitles = () => ({
-  type: types.GET_SUBZEDDITS_TITLES,
-  meta: {
-    type: "api",
-    url: "/api/sz/get_subzeddits_titles",
-  },
-});
-
 
 export const resetPostDeleteFlag = () => ({
   type: types.RESET_POST_DELETE_FLAG
