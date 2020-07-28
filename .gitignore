@@ -1,12 +1,8 @@
 # backend ignore
 node_modules/
 data/
-dbPopulate.js
-public/javascripts
-public/stylesheets
 *.png
 *.jpg
-*.env
 
 # frontend ignore
 client/node_modules/
