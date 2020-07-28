@@ -209,7 +209,7 @@ exports.unsubscribe_from_subzeddit = [
 ];
 
 exports.get_user_subscriptions = [
-  param("id").trim().isInt(), // change after id type
+  param("id").trim().isUUID(), // change after id type
 
   (req, res) => {
     const errors = validationResult(req);
@@ -251,7 +251,7 @@ exports.get_user_subscriptions = [
 ];
 
 exports.get_upvoted_posts = [
-  param("id").trim().notEmpty().isInt(),
+  param("id").trim().notEmpty().isUUID(),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -290,7 +290,7 @@ exports.get_upvoted_posts = [
 // unite these two controllers??
 
 exports.get_downvoted_posts = [
-  param("id").trim().notEmpty().isInt(),
+  param("id").trim().notEmpty().isUUID(),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -328,7 +328,7 @@ exports.get_downvoted_posts = [
 ];
 
 exports.get_created_posts = [
-  param("user").trim().notEmpty(),
+  param("user").trim().notEmpty().isUUID(),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

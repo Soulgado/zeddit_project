@@ -311,7 +311,7 @@ exports.post_comment = [
 exports.rate_post = [
   body("user").trim().notEmpty(),
   body("user_rating").trim().notEmpty().isInt().toInt(),
-  body("post").trim().notEmpty().isInt(),
+  body("post").trim().notEmpty().isUUID(),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
