@@ -43,7 +43,7 @@ export class SubscriptionsListNav extends React.Component {
   renderSubscriptions() {
     return (
       <ul className="subscriptions-dropdown">
-        {this.props.subscriptions.length !== 0 ? this.props.subscriptions.map((subzeddit) => {
+        {this.props.subscriptions ? this.props.subscriptions.map((subzeddit) => {
           return (
             <li key={subzeddit.title}>
               <Link to={`/sz/${subzeddit.title}`}>{subzeddit.title}</Link>

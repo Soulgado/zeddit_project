@@ -1,5 +1,6 @@
 const db = require("../db");
 const uuid = require("uuid");
+const fs = require("fs");
 const { body, query, param, validationResult } = require("express-validator");
 
 const POST_TYPES = {
@@ -404,7 +405,8 @@ exports.get_most_popular_default = (req, res) => {
   FROM posts post 
   LEFT JOIN users creator ON post.creator = creator.id
   LEFT JOIN subzeddits subzeddit ON post.subzeddit = subzeddit.id
-  ORDER BY upvotes DESC LIMIT 10`)
+  ORDER BY upvotes DESC, creation_date DESC
+  LIMIT 10`)
   .then(data => {
     res.json({
       result: "success",
@@ -539,12 +541,15 @@ exports.delete_post = [
     }
     db.tx("check user and delete post", async (t) => {
       const post = await t.one(
-        `SELECT creator FROM posts WHERE id = $1`,
+        `SELECT creator, filename FROM posts WHERE id = $1`,
         req.body.post
       );
       if (post.creator !== req.body.user) {
         return "Wrong user";
       }
+      fs.unlink(`../public/images/${post.filename}`, (err) => {
+        if (err) return;
+      });
       return t.one(`DELETE FROM posts WHERE id=$1`, req.body.post);
     })
       .then((data) => {

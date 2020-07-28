@@ -1,7 +1,8 @@
-// create subzeddits table
+
 const db = require("./db");
 
 db.task("create database", async (t) => {
+  // create users table
   await t.none(`
     CREATE TABLE users
     (
@@ -12,7 +13,7 @@ db.task("create database", async (t) => {
       PRIMARY KEY (id)
     );
     `);
-  
+  // create subzeddits table
   await t.none(`
     CREATE TABLE subzeddits
     (
@@ -30,14 +31,14 @@ db.task("create database", async (t) => {
         NOT VALID
     );
     `);
-    
+  // create posts table
   await t.none(`
     CREATE TABLE posts
     (
       id uuid NOT NULL,
       title character varying NOT NULL,
       creator uuid NOT NULL,
-      creation_date date NOT NULL,
+      creation_date timestamp with time zone NOT NULL,
       content character varying,
       subzeddit uuid NOT NULL,
       comments_num integer DEFAULT 0,
@@ -59,7 +60,7 @@ db.task("create database", async (t) => {
         ON DELETE CASCADE
     );
     `);
-       
+  // create comments table  
   await t.none(`
     CREATE TABLE comments
     (
@@ -90,7 +91,7 @@ db.task("create database", async (t) => {
         ON DELETE CASCADE
     );
     `);
-
+  // create table for subzeddits subscriptions
   await t.none(`
     CREATE TABLE subzeddit_subscriptions
     (
@@ -108,7 +109,7 @@ db.task("create database", async (t) => {
         ON DELETE CASCADE
     );
     `);
-
+  // create table for posts ratings
   await t.none(`
     CREATE TABLE posts_rating
     (
@@ -128,7 +129,7 @@ db.task("create database", async (t) => {
       CONSTRAINT "Rating value" CHECK (rating IN (-1, 1))
     );
     `);
-
+  // create table for comments ratings
   await t.none(`
     CREATE TABLE comments_rating
     (
@@ -153,5 +154,6 @@ db.task("create database", async (t) => {
     console.log("success");
   })
   .catch((error) => {
+    console.log("tables creation error");
     console.log(error);
   });

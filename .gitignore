@@ -7,7 +7,6 @@ public/stylesheets
 *.png
 *.jpg
 *.env
-README.md
 
 # frontend ignore
 client/node_modules/
