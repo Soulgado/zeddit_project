@@ -2,6 +2,7 @@ const db = require("../db");
 const { body, param, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const uuid = require("uuid");
+const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 exports.create_account = [
@@ -86,6 +87,20 @@ exports.sign_in = [
         errors: errors.array()[0].msg,
       });
     }
+    if (req.body.token) {
+      let decoded;
+      try {
+        decoded = jwt.verify(req.body.token, "secret");
+        req.body = decoded.data;
+        console.log(req.body);
+      } catch (err) {
+        console.log(err);
+        res.status(422).json({
+          result: "error",
+          errors: err.message
+        });
+      }
+    }
     db.oneOrNone(`SELECT * FROM users WHERE username=$1`, req.body.username)
       .then((user) => {
         if (user) {
@@ -94,7 +109,14 @@ exports.sign_in = [
             result
           ) {
             if (result) {
-              user.password = undefined;
+              let token = jwt.sign({
+                data: {
+                  id: user.id,
+                  username: user.username,
+                  password: req.body.password
+                }
+              }, "secret", { expiresIn: "1h" });
+              user.token = token;
               res.json({ result: "success", user });
             } else {
               res.status(400).json({

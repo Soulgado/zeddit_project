@@ -15,13 +15,30 @@ import MainPage from "./components/MainPage/MainPage";
 import PostEditPage from "./components/PostEditPage/PostEditPage";
 import UserDeleteForm from "./components/UserDeleteForm/UserDeleteForm";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
+import { login } from "./redux/actionCreators";
 
 const mapStateToProps = (state) => ({
   user: state.currentUser.user,
   loggedIn: state.currentUser.loggedIn,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  login: data => dispatch(login(data))
+});
+
 class App extends React.Component {
+  componentDidMount() {
+    let token = window.localStorage.getItem("zeddit_token");
+    if (token) {
+      // sign in callback
+      this.props.login({
+        username: "default",
+        password: "default",
+        token
+      });
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -51,4 +68,4 @@ class App extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

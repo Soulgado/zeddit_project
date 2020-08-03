@@ -1,6 +1,7 @@
 # backend ignore
 node_modules/
 data/
+.env
 *.png
 *.jpg
 

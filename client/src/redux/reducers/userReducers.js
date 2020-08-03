@@ -24,6 +24,7 @@ export const reducer = (state = initialState, action) => {
       }
     case types.LOGIN:
       if (action.payload.result === "success") {
+        window.localStorage.setItem("zeddit_token", action.payload.user.token);
         return { 
           ...state,
           user: action.payload.user,
