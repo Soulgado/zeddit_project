@@ -5,9 +5,8 @@ import PropTypes from "prop-types"
 import { format } from "date-fns";
 import { getSubzeddit } from "../../redux/actionCreators";
 import PostPageWrapper from "../PostPage/PostPageWrapper";
-import PostMinified from "../PostMinified/PostMinified";
 import SubscribeButton from "../SubscribeButton/SubscribeButton";
-import Placeholder from "../fetchingPlaceholder";
+import SubzedditPosts from "./SubzedditPosts";
 import "../../styles/subzedditPage.sass";
 
 const mapStateToProps = (state) => ({
@@ -22,6 +21,12 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export class SubzedditPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      page: 0
+    }
+  }
   componentDidMount() {
     const { title } = this.props.match.params;
     this.props.getSubzeddit(title, this.props.user);
@@ -43,22 +48,10 @@ export class SubzedditPage extends React.Component {
         </div>
         <div className="main-content">
           <Switch>
-            <Route exact path={`${url}/`}>
-              {loading ? (
-                <Placeholder />
-              ) : (
-                <div className="posts-list-wrapper">
-                  <div className="posts-list">
-                    {!subzeddit.posts || subzeddit.posts.length === 0 ? (
-                      <p>No posts yet, want to add the first?</p>
-                    ) : (
-                      subzeddit.posts.map((post) => {
-                        return <PostMinified key={post.id} post={post} />;
-                      })
-                    )}
-                  </div>
-                </div>
-              )}
+            <Route exact path={`${url}`}
+              render={routeProps => (
+                <SubzedditPosts {...routeProps} title={title} count={Number(subzeddit.posts_count)} />
+              )}>
             </Route>
             <Route
               path={`${path}/:post_id/:post_title`}

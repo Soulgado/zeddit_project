@@ -15,7 +15,7 @@ export const SubzedditMinified = ({ loggedIn, subzeddit }) => {
     <li>
       <div className="subzeddit-mini">
         <div className="subzeddit-metadata">
-          <Link to={`/sz/${subzeddit.title}`}>{subzeddit.title}</Link>
+          <Link to={`/sz/${subzeddit.title}?page=0`}>{subzeddit.title}</Link>
           <p>
             Created {format(Date.parse(subzeddit.creation_date), "dd MMMM yyyy")} by u/{subzeddit.username}
           </p>

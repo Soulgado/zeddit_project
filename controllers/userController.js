@@ -92,12 +92,10 @@ exports.sign_in = [
       try {
         decoded = jwt.verify(req.body.token, "secret");
         req.body = decoded.data;
-        console.log(req.body);
       } catch (err) {
         console.log(err);
         res.status(422).json({
-          result: "error",
-          errors: err.message
+          result: "error"
         });
       }
     }
@@ -117,6 +115,7 @@ exports.sign_in = [
                 }
               }, "secret", { expiresIn: "1h" });
               user.token = token;
+              user.password = undefined;
               res.json({ result: "success", user });
             } else {
               res.status(400).json({

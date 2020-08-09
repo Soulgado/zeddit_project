@@ -4,6 +4,7 @@ export const initialState = {
   subzedditsList: [],
   subzedditsTitles: [],
   subzeddit: {},
+  postsList: [],
   mostPopularGlobal: [],
   creationSuccess: false,
   formErrors: undefined,
@@ -25,6 +26,8 @@ export const reducer = (state = initialState, action) => {
       }
     case types.SUBZEDDIT_DETAIL:
       return { ...state, subzeddit: action.payload.data };
+    case types.GET_SUBZEDDIT_POSTS:
+      return { ...state, postsList: action.payload.data };
     case types.GET_MOST_POPULAR_DEFAULT:
       return { ...state, mostPopularGlobal: action.payload.data };
     case types.GET_SUBZEDDITS_TITLES:

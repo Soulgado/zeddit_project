@@ -116,6 +116,41 @@ exports.get_subzeddit = [
         WHERE title = $2`,
         [user, req.params.title]
       );
+      return subzeddit;
+    })
+      .then((data) => {
+        res.json({
+          result: "success",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.json({
+          result: "error",
+        });
+      });
+  },
+];
+
+exports.get_subzeddit_posts = [
+  param("title").trim().notEmpty(),
+  query("user").trim(),
+  query("page").trim().toInt(),
+  (req, res) => {
+    let user;
+    if (req.query.user) {
+      user = req.query.user;
+    } else {
+      user = "00000000-0000-0000-0000-000000000000";
+    }
+    db.task(async (t) => {
+      const subzeddit = await t.one(
+        `SELECT id
+        FROM subzeddits
+        WHERE title = $1`,
+        req.params.title
+      );
       const posts = await t.any(
         `SELECT 
         post.*,
@@ -124,14 +159,14 @@ exports.get_subzeddit = [
       FROM posts post 
       LEFT JOIN users creator ON post.creator = creator.id
       LEFT JOIN posts_rating user_rating ON user_rating.post = post.id AND user_rating.user_id = $1
-      WHERE subzeddit = $2 ORDER BY creation_date DESC LIMIT 10`,
-        [user, subzeddit.id]
+      WHERE subzeddit = $2 ORDER BY creation_date DESC
+      LIMIT 10 OFFSET $3`,
+        [user, subzeddit.id, req.query.page * 10]
       );
-      posts.forEach((post) => (post.subzeddit_title = subzeddit.title));
-      subzeddit.posts = posts;
-      return subzeddit;
+      return posts;
     })
       .then((data) => {
+        data.forEach(post => post.subzeddit_title = req.params.title);
         res.json({
           result: "success",
           data: data,

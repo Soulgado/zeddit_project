@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import Placeholder from "../fetchingPlaceholder";
 import SignInForm from "../SignIn/SignInForm";
 import { resetRegistrationSuccess } from "../../redux/actionCreators";
-import { withLogging } from "../withLogging";
 
 const mapStateToProps = (state) => ({
   loading: state.loading.loading,

@@ -23,6 +23,7 @@ db.task("create database", async (t) => {
       creation_date date NOT NULL,
       subscriptions bigint DEFAULT 0,
       description character varying,
+      posts_count bigint DEFAULT 0,
       PRIMARY KEY (id),
       CONSTRAINT "User creator" FOREIGN KEY (creator)
         REFERENCES users (id) MATCH SIMPLE

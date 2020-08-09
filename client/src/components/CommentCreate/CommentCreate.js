@@ -80,7 +80,7 @@ CommentCreateForm.propTypes = {
   errors: PropTypes.string,
   postComment: PropTypes.func,
   resetErrors: PropTypes.func,
-  post: PropTypes.number,
+  post: PropTypes.string,
   parent: PropTypes.object
 }
 

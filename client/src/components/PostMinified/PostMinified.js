@@ -36,7 +36,7 @@ export class PostMinified extends React.Component {
             <p className="post-general-info">
               {post.updated ? "Updated" : "Posted"} by u/
               {post.username} <CreationTime time={post.creation_date} /> to{" "}
-              <Link to={`/sz/${post.subzeddit_title}`}>
+              <Link to={`/sz/${post.subzeddit_title}?page=0`}>
                 z/{post.subzeddit_title}
               </Link>
             </p>

@@ -14,7 +14,6 @@ exports.rate_comment = [
         errors: errors.array(),
       });
     }
-    // add validation
     const { user, user_rating, comment } = req.body;
     db.tx("rate-comment", async (t) => {
       // get existing entry on post rating from user

@@ -34,7 +34,10 @@ exports.post_create = [
     const id = uuid.v4();
     db.tx("insert-post", async (t) => {
       const subzeddit = await t.oneOrNone(
-        "SELECT id FROM subzeddits WHERE title = $1",
+        `SELECT id FROM subzeddits WHERE title = $1;
+        UPDATE subzeddits 
+        SET posts_count = posts_count + 1
+        WHERE title = $1`,
         [req.body.subzeddit]
       );
       return t.one(
@@ -106,7 +109,10 @@ exports.post_create_image = [
     const id = uuid.v4();
     db.tx("insert-image-post", async (t) => {
       const subzeddit = await t.oneOrNone(
-        "SELECT id FROM subzeddits WHERE title = $1",
+        `UPDATE subzeddits 
+        SET posts_count = posts_count + 1
+        WHERE title = $1
+        RETURNING id`,
         [req.body.subzeddit]
       );
       return t.one(
@@ -541,15 +547,18 @@ exports.delete_post = [
     }
     db.tx("check user and delete post", async (t) => {
       const post = await t.one(
-        `SELECT creator, filename FROM posts WHERE id = $1`,
+        `SELECT creator, filename, subzeddit FROM posts WHERE id = $1`,
         req.body.post
       );
       if (post.creator !== req.body.user) {
         return "Wrong user";
       }
-      fs.unlink(`../public/images/${post.filename}`, (err) => {
-        if (err) return;
-      });
+      if (post.filename) {
+        fs.unlink(`../public/images/${post.filename}`, (err) => {
+          if (err) return;
+        });
+      }
+      await t.none("UPDATE subzeddits SET posts_count = posts_count - 1 WHERE id = $1", post.subzeddit);
       return t.one(`DELETE FROM posts WHERE id=$1`, req.body.post);
     })
       .then((data) => {
