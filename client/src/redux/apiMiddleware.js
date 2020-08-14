@@ -16,17 +16,19 @@ const apiMiddleware = (store) => (next) => (action) => {
   const { url } = action.meta;
   const fetchOptions = Object.assign({}, action.meta);
 
-  fetch(url, fetchOptions)
+  return fetch(url, fetchOptions)
     .then((resp) => resp.json())
     .then((json) => {
       let newAction = Object.assign({}, action, {
         payload: json,
       });
+      if (action.meta.loading) {
+        store.dispatch({
+          type: types.END_LOADING,
+        });
+      }
       delete newAction.meta;
       store.dispatch(newAction);
-      store.dispatch({
-        type: types.END_LOADING,
-      });
     });
 };
 

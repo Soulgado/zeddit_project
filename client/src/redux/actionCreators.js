@@ -5,7 +5,7 @@ import * as types from "./types";
 export const createAccount = (formData) => ({
   type: types.CREATE_ACCOUNT,
   payload: "",
-  meta: {
+  meta: {  
     type: "api",
     method: "POST",
     url: "api/users/register",
@@ -91,7 +91,6 @@ export const getSubzeddit = (title, user) => ({
 
 export const getSubzedditPosts = (title, user, page) => ({
   type: types.GET_SUBZEDDIT_POSTS,
-  loading: true,
   meta: {
     type: "api",
     loading: true,
@@ -117,6 +116,8 @@ export const getUserSubscriptions = (user) => ({
   },
 });
 
+/*
+// helper action
 export const getUserSubscription = (user, subzeddit) => ({
   type: types.GET_USER_SUBSCRIPTION,
   meta: {
@@ -124,6 +125,7 @@ export const getUserSubscription = (user, subzeddit) => ({
     url: `/api/sz/subscribe_status?user=${user}&subzeddit=${subzeddit}`,
   },
 });
+*/
 
 export const changeSubscriptionStatus = (user, subzeddit, status) => {
   let request = {
