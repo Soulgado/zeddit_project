@@ -133,16 +133,25 @@ exports.get_subzeddit = [
   },
 ];
 
+// store query parameters corresponding to database commands
+const SORT_DICT = {   
+  "new": "creation_date",
+  "top": "upvotes",
+  "controversial": "downvotes",
+  "best": "upvotes - downvotes"
+}
+
 exports.get_subzeddit_posts = [
   param("title").trim().notEmpty(),
   query("user").trim(),
   query("page").trim().toInt(),
+  query("sort").trim().isIn(["new", "top", "controversial", "best"]),
   (req, res) => {
     let user;
     if (req.query.user) {
       user = req.query.user;
     } else {
-      user = "00000000-0000-0000-0000-000000000000";
+      user = "00000000-0000-0000-0000-000000000000";  // placeholder value for anonymous user
     }
     db.task(async (t) => {
       const subzeddit = await t.one(
@@ -159,7 +168,7 @@ exports.get_subzeddit_posts = [
       FROM posts post 
       LEFT JOIN users creator ON post.creator = creator.id
       LEFT JOIN posts_rating user_rating ON user_rating.post = post.id AND user_rating.user_id = $1
-      WHERE subzeddit = $2 ORDER BY creation_date DESC
+      WHERE subzeddit = $2 ORDER BY ${SORT_DICT[req.query.sort]} DESC
       LIMIT 10 OFFSET $3`,
         [user, subzeddit.id, req.query.page * 10]
       );

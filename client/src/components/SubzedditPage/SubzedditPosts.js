@@ -65,9 +65,9 @@ export class SubzedditPosts extends React.Component {
               <Link to={`${url}?page=${page-2}`} >Previous</Link>  
             </button>
             )}
-            <p className="page-nums">
+            <p className="posts_navigation__page-nums">
               {page > 1 && (<span>{page-1}</span>)}
-              <span className="current-page">{page}</span>
+              <span className="posts_navigation__page-nums_current">{page}</span>
               {page * 10 < count && <span>{page+1}</span>}
             </p>
             {page * 10 < count &&

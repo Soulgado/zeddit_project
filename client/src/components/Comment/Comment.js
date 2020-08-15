@@ -85,7 +85,7 @@ export class Comment extends React.Component {
         <div className="comment-main">
           <div className="comment-info">
             <span>
-              {comment.username} - {comment.updated ? "updated " : "posted "}
+              {comment.username ? comment.username : "[deleted]"} - {comment.updated ? "updated " : "posted "}
               <CreationTime time={comment.creation_time} />
             </span>
           </div>

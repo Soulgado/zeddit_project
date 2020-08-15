@@ -347,6 +347,261 @@ describe("testing correct returning values of actions", () => {
     const actualResult = actions.editEmail(formData);
     expect(actualResult).toEqual(expectedResult);
   });
+
+  it("createNewPost returns correct object", () => {
+    const formData = {
+      title: "new_post",
+      content: "some content"
+    };
+
+    const user = {
+      username: "admin"
+    };
+
+    const expectedResult = {
+      type: types.CREATE_POST,
+      meta: {
+        type: "api",
+        url: "/api/posts/create_text",
+        loading: true,
+        method: "POST",
+        body: JSON.stringify({ ...formData, user }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    };
+
+    const actualResult = actions.createNewPost(user, formData);
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  it("createNewImagePost returns correct object", () => {
+    const formData = {
+      title: "new_image_post",
+      image: "cool_image.jpg"
+    };
+
+    const expectedResult = {
+      type: types.CREATE_POST,
+      meta: {
+        type: "api",
+        loading: true,
+        url: "/api/posts/create_img",
+        method: "POST",
+        body: formData,
+      },
+    };
+
+    const actualResult = actions.createNewImagePost(formData);
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  it("resetPostFormErrors returns correct object", () => {
+    const expectedResult = {
+      type: types.RESET_POST_FORM_ERRORS
+    };
+
+    const actualResult = actions.resetPostFormErrors();
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  it("getPost returns correct object", () => {
+    const expectedResult = {
+      type: types.GET_POST,
+      meta: {
+        loading: true,
+        type: "api",
+        url: "/api/posts/098765?user=1234"
+      },
+    };
+
+    const actualResult = actions.getPost("098765", { id: "1234" });
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  it("votePost returns correct object", () => {
+    const expectedResult = {
+      type: types.VOTE_POST,
+      meta: {
+        type: "api",
+        url: "/api/posts/rate",
+        body: JSON.stringify({ post: "098765", user: "1234", user_rating: 1 }),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    };
+
+    const actualResult = actions.votePost("098765", "1234", 1);
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  it("getMostPopularDefault returns correct object", () => {
+    const expectedResult = {
+      type: types.GET_MOST_POPULAR_DEFAULT,
+      meta: {
+        type: "api",
+        loading: true,
+        url: "/api/posts/most_popular_user?user=1234"
+      }
+    };
+
+    const actualResult = actions.getMostPopularDefault({ id: "1234" });
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  it("editTextPost returns correct object", () => {
+    const expectedResult = {
+      type: types.EDIT_POST,
+      meta: {
+        type: "api",
+        method: "PUT",
+        loading: true,
+        url: "/api/posts",
+        body: JSON.stringify({ 
+          user: "1234",
+          post: "098765",
+          new_title: "some_title",
+          new_content: "some new content",
+          type: "text"
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    };
+
+    const formData = {
+      new_title: "some_title",
+      new_content: "some new content",
+    };
+
+    const actualResult = actions.editTextPost("1234", "098765", formData);
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  it("editImagePost returns correct object", () => {
+    const expectedResult = {
+      type: types.EDIT_POST,
+      meta: {
+        type: "api",
+        method: "PUT",
+        loading: true,
+        url: "/api/posts",
+        body: JSON.stringify({ 
+          user: "1234",
+          post: "098765",
+          new_title: "some_title",
+          new_image: "new_image.jpg",
+          type: "image"
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    };
+
+    const formData = {
+      new_title: "some_title",
+      new_image: "new_image.jpg",
+    };
+
+    const actualResult = actions.editImagePost("1234", "098765", formData);
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  it("deletePost returns correct object", () => {
+    const expectedActions = {
+      type: types.DELETE_POST,
+      meta: {
+        type: "api",
+        method: "DELETE",
+        url: "/api/posts",
+        body: JSON.stringify({ user: "1234", post: "098765" }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        loading: true
+      },
+    };
+
+    const actualResult = actions.deletePost("1234", "098765");
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  it("postComment returns correct object", () => {
+    const expectedResult = {
+      type: types.POST_COMMENT,
+      meta: {
+        type: "api",
+        url: "/api/comments",
+        method: "POST",
+        body: JSON.stringify({
+          user: "1234",
+          content: "comment content",
+          post: "098765",
+          parent_comment: "54321"
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    };
+
+    const actualResult = actions.postComment("1234", "comment content", "098765", "54321");
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  it("resetCommentCreationFlag returns correct object", () => {
+    const expectedResult = {
+      type: types.RESET_COMMENT_CREATION_FLAG,
+    };
+
+    const actualResult = actions.resetCommentCreationFlag();
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  it("editComment returns correct object", () => {
+    const expectedResult = {
+      type: types.EDIT_COMMENT,
+      meta: {
+        type: "api",
+        url: "/api/comments",
+        method: "PUT",
+        body: JSON.stringify({ 
+          user: "1234",
+          comment: "54321",
+          content: "new comment content"
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    };
+    
+    const actualResult = actions.editComment("1234", "54321", "new comment content");
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  it("deleteComment returns correct object", () => {
+    const expectedResult = {
+      type: types.DELETE_COMMENT,
+      meta: {
+        type: "api",
+        url: "/api/comments",
+        method: "DELETE",
+        body: JSON.stringify({ user: "1234", comment: "54321" }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    };
+
+    const actualResult = actions.deleteComment("1234", "54321");
+    expect(actualResult).toEqual(expectedResult);
+  });
 });
 
 describe("testing async actions", () => {

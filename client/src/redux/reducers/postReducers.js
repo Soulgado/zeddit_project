@@ -4,7 +4,7 @@ export const initialState = {
   post: {},
   creationFlag: false,
   postDeleteFlag: false,
-  formErrors: "",
+  formErrors: undefined,
 };
 
 export const reducer = (state = initialState, action) => {
@@ -27,7 +27,7 @@ export const reducer = (state = initialState, action) => {
       if (action.payload.result === "success") {
         return { ...state, creationFlag: true };
       } else {
-        return state;
+        return state; 
       }
     case types.DELETE_COMMENT:
       if (action.payload.result === "success") {

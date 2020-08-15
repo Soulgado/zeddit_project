@@ -34,7 +34,7 @@ export class PostPage extends React.Component {
           <div className="post-info">
             <p>
               {post.updated ? "Updated " : "Posted "}
-              by u/{post.username} <CreationTime time={post.creation_date} />
+              by u/{post.username ? post.username : "[deleted]"} <CreationTime time={post.creation_date} />
             </p>
           </div>
           <div className="post-content">

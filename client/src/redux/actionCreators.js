@@ -253,7 +253,7 @@ export const createNewImagePost = (formData) => ({
     loading: true,
     url: "/api/posts/create_img",
     method: "POST",
-    body: formData,
+    body: formData,  // formData already formatted with FormsAPI
   },
 });
 
