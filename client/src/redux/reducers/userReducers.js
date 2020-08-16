@@ -24,7 +24,9 @@ export const reducer = (state = initialState, action) => {
       }
     case types.LOGIN:
       if (action.payload.result === "success") {
-        window.localStorage.setItem("zeddit_token", action.payload.user.token);
+        if (action.payload.user.token) {
+          window.localStorage.setItem("zeddit_token", action.payload.user.token);
+        }
         return { 
           ...state,
           user: action.payload.user,
@@ -47,6 +49,12 @@ export const reducer = (state = initialState, action) => {
         return { ...state, formErrors: action.payload.errors };
       }
     case types.UPDATE_PASSWORD:
+      if (action.payload.result === "success") {
+        return { ...state, successFlag: true };
+      } else {
+        return { ...state, formErrors: action.payload.errors };
+      }
+    case types.UPDATE_EMAIL:
       if (action.payload.result === "success") {
         return { ...state, successFlag: true };
       } else {
