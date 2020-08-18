@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Placeholder from "../fetchingPlaceholder";
 import PostMinified from "../PostMinified/PostMinified";
+import SortedOrder from "./SortedOrder";
 import { getSubzedditPosts } from "../../redux/actionCreators";
 import "../../styles/subzedditPosts.sass";
 
@@ -15,25 +16,36 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getPosts: (title, user, page) => dispatch(getSubzedditPosts(title, user, page))
+  getPosts: (title, user, page, sort) => dispatch(getSubzedditPosts(title, user, page, sort))
 });
 
 export class SubzedditPosts extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      sort: ["Top", "top"]
+    }
 
     this.getPage = this.getPage.bind(this);
+    this.handleSortChange = this.handleSortChange.bind(this);
   }
 
   componentDidMount() {
-    this.props.getPosts(this.props.title, this.props.user, this.getPage());
+    this.props.getPosts(this.props.title, this.props.user, this.getPage(), this.state.sort[1]);
     // get posts
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.location.search !== prevProps.location.search) {
-      this.props.getPosts(this.props.title, this.props.user, this.getPage());
+      this.props.getPosts(this.props.title, this.props.user, this.getPage(), this.state.sort[1]);
     }
+  }
+
+  handleSortChange(sort) {
+    this.setState({
+      sort
+    });
+    this.props.getPosts(this.props.title, this.props.user, this.getPage(), sort[1]);
   }
 
   getPage() {
@@ -48,6 +60,7 @@ export class SubzedditPosts extends React.Component {
     return (
       <>
         <div className="posts-list-wrapper">
+          <SortedOrder sort={this.state.sort} handleSortChange={this.handleSortChange} />
         {loading ? <Placeholder /> : (
           <div className="posts-list">
           {!posts || posts.length === 0 ? (

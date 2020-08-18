@@ -89,12 +89,12 @@ export const getSubzeddit = (title, user) => ({
   },
 });
 
-export const getSubzedditPosts = (title, user, page) => ({
+export const getSubzedditPosts = (title, user, page, sort) => ({
   type: types.GET_SUBZEDDIT_POSTS,
   meta: {
     type: "api",
     loading: true,
-    url: `/api/sz/${title}/posts?user=${user ? user.id : ""}&page=${page}`
+    url: `/api/sz/${title}/posts?user=${user ? user.id : ""}&page=${page}&sort=${sort}`
   }
 })
 

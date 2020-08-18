@@ -2,16 +2,31 @@
 
 Копия веб-сайта [reddit](reddit.com) с базовым функционалом CRUD приложения, с использованием REST API.
 
-Использованные технологии:
+Фронтенд создан с использованием:
 - React
 - Redux
-- React-router
-- Node.js
+
+Бэкенд создан с использованием:
 - Express
-- express-validator
-- date-fns
-- multer
+- Node.js
+
+База данных:
 - PostgreSQL
+
+Вспомогательные библиотеки:
+- Авторизация:
+  - jsonwebtoken
+  - bcrypt
+- Тестирование:
+  - Jest
+  - Enzyme
+  - fetch-mock
+  - react-mock-store
+- Другие:
+  - react-router
+  - express-validator
+  - date-fns
+  - multer
 
 ## Запуск
 

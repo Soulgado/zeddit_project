@@ -602,6 +602,24 @@ describe("testing correct returning values of actions", () => {
     const actualResult = actions.deleteComment("1234", "54321");
     expect(actualResult).toEqual(expectedResult);
   });
+
+  it("voteComment returns correct object", () => {
+    const expectedResult = {
+      type: types.VOTE_COMMENT,
+      meta: {
+        type: "api",
+        url: "/api/comments/rate",
+        body: JSON.stringify({ comment: "54321", user: "1234", user_rating: 1 }),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    };
+
+    const actualResult = actions.voteComment("54321", "1234", 1);
+    expect(actualResult).toEqual(expectedResult);
+  });
 });
 
 describe("testing async actions", () => {
@@ -769,4 +787,199 @@ describe("testing async actions", () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
-})
+
+  it("calls actions in the correct order in GET_USER_SUBSCRIPTIONS action", () => {
+    const payload = {
+      result: "success",
+      data: ["first subscription", "second subscription"]
+    };
+
+    fetchMock.getOnce("/api/users/1234/subscriptions", {
+      body: payload,
+      headers
+    });
+
+    const expectedActions = [
+      { type: types.LOADING },
+      { type: types.END_LOADING },
+      { type: types.GET_USER_SUBSCRIPTIONS, 
+        payload }
+    ];
+
+    return store.dispatch(actions.getUserSubscriptions({ id: "1234" })).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it("calls actions in the correct order in CHANGE_SUBSCRIPTION_STATUS action", () => {
+    const payload = {
+      result: "success",
+    };
+
+    fetchMock.postOnce("/api/users/subscribe_to_subzeddit", {
+      body: payload,
+      headers
+    });
+
+    const expectedActions = [
+      { type: types.CHANGE_SUBSCRIPTION_STATUS,
+        payload }
+    ];
+
+    return store.dispatch(actions.changeSubscriptionStatus("1234", "Title", false)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it("calls actions in the correct order in GET_UPVOTED_POSTS action", () => {
+    const payload = {
+      result: "success",
+      data: ["first upvoted post", "second upvoted post"]
+    };
+
+    fetchMock.getOnce("/api/users/1234/upvoted", {
+      body: payload,
+      headers
+    });
+
+    const expectedActions = [
+      { type: types.GET_USER_UPVOTED_POSTS, 
+        payload }
+    ];
+
+    return store.dispatch(actions.getUpvotedPosts({ id: "1234" })).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it("calls actions in the correct order in GET_DOWNVOTED_POSTS action", () => {
+    const payload = {
+      result: "success",
+      data: ["first downvoted post", "second downvoted post"]
+    };
+
+    fetchMock.getOnce("/api/users/1234/downvoted", {
+      body: payload,
+      headers
+    });
+
+    const expectedActions = [
+      { type: types.GET_USER_DOWNVOTED_POSTS,
+        payload }
+    ];
+
+    return store.dispatch(actions.getDownvotedPosts({ id: "1234" })).then(() => {
+      expect(store.getAction()).toEqual(expectedActions);
+    });
+  });
+
+  it("calls actions in the correct order in UPDATE_USERNAME action", () => {
+    const payload = {
+      result: "success",
+      payload: {
+        username: "new_username"
+      }
+    };
+
+    fetchMock.putOnce("/api/users/update_username", {
+      body: payload,
+      headers
+    });
+
+    const expectedActions = [
+      { type: types.UPDATE_USERNAME, 
+        payload }
+    ];
+
+    return store.dispatch(actions.editUsername()).then(() => {
+      expect(store.getAction()).toEqual(expectedActions);
+    });
+  });
+
+  it("calls actions in the correct order in UPDATE_PASSWORD action", () => {
+    const payload = {
+      result: "success",
+      payload: {
+        username: "admin",
+        password: "new_password"
+      }
+    };
+
+    fetchMock.putOnce("/api/users/update_password", {
+      body: payload,
+      headers
+    });
+
+    const expectedActions = [
+      { type: types.UPDATE_PASSWORD, payload }
+    ];
+
+    return store.dispatch(actions.editPassword()).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it("calls actions in the correct order in DELETE_ACCOUNT action", () => {
+    const payload = {
+      result: "success"
+    };
+
+    fetchMock.deleteOnce("/api/users/delete_user", {
+      body: payload,
+      headers
+    });
+
+    const expectedActions = [
+      { type: types.DELETE_ACCOUNT, payload }
+    ];
+
+    return store.dispatch(actions.deleteAccount()).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it("calls actions in the correct order in GET_SUBMITTED_POSTS action", () => {
+    const payload = {
+      result: "success",
+      posts: ["first submitted post", "second submitted post"]
+    };
+
+    fetchMock.getOnce("/api/users/1234/created_posts", {
+      body: payload,
+      headers
+    });
+
+    const expectedActions = [
+      { type: types.LOADING },
+      { type: types.END_LOADING },
+      { type: types.GET_SUBMITTED_POSTS, payload }
+    ];
+
+    return store.dispatch(actions.getSubmittedPosts({ id: "1234" })).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it("calls actions in the correct order in UPDATE_EMAIL action", () => {
+    const payload = {
+      result: "success",
+      user: {
+        username: "admin",
+        email: "new_email@mail.com"
+      }
+    };
+
+    fetchMock.putOnce("/api/users/update_email", {
+      body: payload,
+      headers
+    });
+
+    const expectedActions = [
+      { type: types.UPDATE_EMAIL, payload }
+    ];
+
+    return store.dispatch(actions.editEmail()).then(() => {
+      expect(store.getAction()).toEqual(expectedActions);
+    });
+  });
+});
