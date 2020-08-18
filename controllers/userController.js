@@ -58,11 +58,11 @@ exports.create_account = [
               msg =
                 "Unknown errors happened, please fill the form fields again";
           }
-          res.status(400).json({
+          console.log(error);
+          return res.status(400).json({
             result: "error",
             errors: msg,
           });
-          console.log(error);
         });
     });
   },
@@ -93,8 +93,7 @@ exports.sign_in = [
         decoded = jwt.verify(req.body.token, "secret");
         req.body = decoded.data;
       } catch (err) {
-        console.log(err);
-        res.status(422).json({
+        return res.status(422).json({
           result: "error"
         });
       }
@@ -118,7 +117,7 @@ exports.sign_in = [
               user.password = undefined;
               res.json({ result: "success", user });
             } else {
-              res.status(400).json({
+              return res.status(400).json({
                 result: "error",
                 errors: "Wrong username or password",
               });
@@ -134,7 +133,7 @@ exports.sign_in = [
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
           errors: error.message,
         });
@@ -174,14 +173,14 @@ exports.subscribe_to_subzeddit = [
       );
     })
       .then((data) => {
-        res.json({
+        return res.json({
           result: "success",
           data: data,
         });
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
         });
       });
@@ -216,13 +215,13 @@ exports.unsubscribe_from_subzeddit = [
       );
     })
       .then(() => {
-        res.json({
+        return res.json({
           result: "success",
         });
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
         });
       });
@@ -257,14 +256,14 @@ exports.get_user_subscriptions = [
       req.params.id
     )
       .then((data) => {
-        res.json({
+        return res.json({
           result: "success",
           data: data ? data : [],
         });
       })
       .catch((error) => {
         console.log(error);
-        res.json({
+        return res.json({
           result: "error",
         });
       });
@@ -295,14 +294,14 @@ exports.get_upvoted_posts = [
       req.params.id
     )
       .then((data) => {
-        res.json({
+        return res.json({
           result: "success",
           data: data,
         });
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
         });
       });
@@ -334,14 +333,14 @@ exports.get_downvoted_posts = [
       req.params.id
     )
       .then((data) => {
-        res.json({
+        return res.json({
           result: "success",
           data: data,
         });
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
         });
       });
@@ -373,14 +372,14 @@ exports.get_created_posts = [
       req.params.user
     )
       .then((data) => {
-        res.json({
+        return res.json({
           result: "success",
           data,
         });
       })
       .catch((error) => {
         console.log(error);
-        res.json({
+        return res.json({
           result: "error",
           errors: error,
         });
@@ -426,7 +425,7 @@ exports.edit_name = [
                 [req.body.new_username, req.body.username]
               )
                 .then((user) => {
-                  res.json({
+                   return res.json({
                     result: "success",
                     user,
                   });
@@ -441,14 +440,14 @@ exports.edit_name = [
                       msg =
                         "Unknown errors happened, please fill the form fields again";
                   }
-                  res.status(400).json({
+                  console.log(error);
+                  return res.status(400).json({
                     result: "error",
                     errors: msg,
                   });
-                  console.log(error);
                 });
             } else {
-              res.status(400).json({
+              return res.status(400).json({
                 result: "error",
                 errors: "Wrong username or password",
               });
@@ -464,7 +463,7 @@ exports.edit_name = [
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
           errors: error.message,
         });
@@ -510,7 +509,7 @@ exports.edit_password = [
                   [hash, req.body.user]
                 )
                   .then((user) => {
-                    res.json({
+                    return res.json({
                       result: "success",
                       user,
                     });
@@ -518,15 +517,15 @@ exports.edit_password = [
                   .catch((error) => {
                     msg =
                       "Unknown errors happened, please fill the form fields again";
-                    res.status(400).json({
+                    console.log(error);
+                    return res.status(400).json({
                       result: "error",
                       errors: msg,
                     });
-                    console.log(error);
                   });
               });
             } else {
-              res.status(400).json({
+              return res.status(400).json({
                 result: "error",
                 errors: "Wrong username or password",
               });
@@ -542,7 +541,7 @@ exports.edit_password = [
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
           errors: error.message,
         });
@@ -582,21 +581,22 @@ exports.delete_account = [
                 req.body.username
               )
                 .then(() => {
-                  res.json({
+                  return res.json({
                     result: "success",
                   });
                 })
                 .catch((error) => {
                   msg =
                     "Unknown errors happened, please fill the form fields again";
-                  res.status(400).json({
+                  console.log(error);
+                  return res.status(400).json({
                     result: "error",
                     errors: msg,
                   });
-                  console.log(error);
+                  
                 });
             } else {
-              res.status(400).json({
+              return res.status(400).json({
                 result: "error",
                 errors: "Wrong username or password",
               });
@@ -612,7 +612,7 @@ exports.delete_account = [
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
           errors: error.message,
         });
@@ -660,7 +660,7 @@ exports.edit_email = [
                 [req.body.new_email, req.body.user]
               )
                 .then((user) => {
-                  res.json({
+                  return res.json({
                     result: "success",
                     user,
                   });
@@ -668,15 +668,16 @@ exports.edit_email = [
                 .catch((error) => {
                   let msg =
                     "Unknown errors happened, please fill the form fields again";
-                  res.status(400).json({
+                  console.log(error);
+                  return res.status(400).json({
                     result: "error",
                     errors: msg,
                   });
-                  console.log(error);
+                  
                 });
             } else {
               // if password is wrong
-              res.status(400).json({
+              return res.status(400).json({
                 result: "error",
                 errors: "Wrong username or password",
               });
@@ -692,7 +693,7 @@ exports.edit_email = [
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
           errors: error.message,
         });

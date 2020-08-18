@@ -28,7 +28,7 @@ exports.subzeddit_create = [
       [id, req.body.title, req.body.user, new Date(), req.body.description]
     )
       .then((subzeddit) => {
-        res.json({
+        return res.json({
           result: "success",
           data: subzeddit,
         });
@@ -45,11 +45,11 @@ exports.subzeddit_create = [
           default:
             msg = "Unknown error";
         }
-        res.status(400).json({
+        console.log(error);
+        return res.status(400).json({
           result: "error",
           errors: msg,
         });
-        console.log(error);
       });
   },
 ];
@@ -82,14 +82,14 @@ exports.subzeddit_all = [
       }
     })
       .then((data) => {
-        res.json({
+        return res.json({
           result: "success",
           data: data,
         });
       })
       .catch((error) => {
         console.log(error);
-        res.json({
+        return res.json({
           result: "error",
         });
       });
@@ -119,14 +119,14 @@ exports.get_subzeddit = [
       return subzeddit;
     })
       .then((data) => {
-        res.json({
+        return res.json({
           result: "success",
           data: data,
         });
       })
       .catch((error) => {
         console.log(error);
-        res.json({
+        return res.json({
           result: "error",
         });
       });
@@ -147,6 +147,13 @@ exports.get_subzeddit_posts = [
   query("page").trim().toInt(),
   query("sort").trim().isIn(["new", "top", "controversial", "best"]),
   (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        result: "error",
+        errors: errors.array()[0].msg,
+      });
+    }
     let user;
     if (req.query.user) {
       user = req.query.user;
@@ -176,14 +183,14 @@ exports.get_subzeddit_posts = [
     })
       .then((data) => {
         data.forEach(post => post.subzeddit_title = req.params.title);
-        res.json({
+        return res.json({
           result: "success",
           data: data,
         });
       })
       .catch((error) => {
         console.log(error);
-        res.json({
+        return res.json({
           result: "error",
         });
       });
@@ -211,7 +218,7 @@ exports.get_subscription_info = function (req, res) {
   })
     .then((data) => {
       if (!data) {
-        res.json({
+        return res.json({
           result: "success",
           data: {
             subzeddit,
@@ -219,7 +226,7 @@ exports.get_subscription_info = function (req, res) {
           },
         });
       } else {
-        res.json({
+        return res.json({
           result: "success",
           data: {
             subzeddit,
@@ -230,7 +237,7 @@ exports.get_subscription_info = function (req, res) {
     })
     .catch((error) => {
       console.log(error);
-      res.status(400).json({
+      return res.status(400).json({
         result: "error",
       });
     });
@@ -242,14 +249,14 @@ exports.get_subzeddits_titles = function (req, res) {
     FROM subzeddits`
   )
     .then((data) => {
-      res.json({
+      return res.json({
         result: "success",
         data,
       });
     })
     .catch((error) => {
       console.log(error);
-      res.status(400).json({
+      return res.status(400).json({
         result: "error",
       });
     });

@@ -57,7 +57,7 @@ exports.post_create = [
     })
       .then((data) => {
         data.subzeddit = req.body.subzeddit;
-        res.json({
+        return res.json({
           result: "success",
           data: data,
         });
@@ -74,11 +74,11 @@ exports.post_create = [
           default:
             msg = "Unknown error";
         }
-        res.status(400).json({
+        console.log(error);
+        return res.status(400).json({
           error: "error",
           errors: msg,
-        });
-        console.log(error);
+        }); 
       });
   },
 ];
@@ -132,7 +132,7 @@ exports.post_create_image = [
     })
       .then((data) => {
         data.subzeddit = req.body.subzeddit;
-        res.json({
+        return res.json({
           result: "success",
           data: data,
         });
@@ -151,7 +151,7 @@ exports.post_create_image = [
             msg = "Unknown error";
         }
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           error: "error",
           errors: msg,
         });
@@ -229,14 +229,14 @@ exports.post_detail = [
       return post;
     })
       .then((post) => {
-        res.json({
+        return res.json({
           result: "success",
           data: post,
         });
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({ result: "error" });
+        return res.status(400).json({ result: "error" });
       });
   },
 ];
@@ -285,7 +285,7 @@ exports.post_comment = [
       );
     })
       .then((comment) => {
-        res.json({
+        return res.json({
           result: "success",
           data: comment,
         });
@@ -306,7 +306,7 @@ exports.post_comment = [
             msg = "Unknown error";
         }
         console.log(error);
-        res.json({
+        return res.json({
           result: "error",
           errors: msg,
         });
@@ -389,13 +389,13 @@ exports.rate_post = [
       }
     })
       .then(() => {
-        res.json({
+        return res.json({
           result: "success",
         });
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
         });
       });
@@ -414,14 +414,14 @@ exports.get_most_popular_default = (req, res) => {
   ORDER BY upvotes DESC, creation_date DESC
   LIMIT 10`)
   .then(data => {
-    res.json({
+    return res.json({
       result: "success",
       data: data ? data : []  // if no posts exists return empty array
     });
   })
   .catch(error => {
     console.log(error);
-    res.status(400).json({
+    return res.status(400).json({
       result: "error"
     });
   });
@@ -450,14 +450,14 @@ exports.get_most_popular_user = [
     ORDER BY upvotes DESC LIMIT 10`,
     req.query.user)
       .then((data) => {
-        res.json({
+        return res.json({
           result: "success",
           data,
         });
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
         });
       });
@@ -515,11 +515,11 @@ exports.edit_post = [
       .then((data) => {
         if (data === "Wrong user" || data === "Wrong post type") {
           console.log(data);
-          res.status(400).json({
+          return res.status(400).json({
             result: "error",
           });
         } else {
-          res.json({
+          return res.json({
             result: "success",
             data,
           });
@@ -527,7 +527,7 @@ exports.edit_post = [
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
         });
       });
@@ -563,19 +563,19 @@ exports.delete_post = [
     })
       .then((data) => {
         if (data === "Wrong user") {
-          res.status(400).json({
+          return res.status(400).json({
             result: "error",
             errors: "Wrong user",
           });
         } else {
-          res.json({
+          return res.json({
             result: "success",
           });
         }
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
           errors: error,
         });

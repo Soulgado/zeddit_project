@@ -75,13 +75,13 @@ exports.rate_comment = [
       }
     })
       .then(() => {
-        res.json({
+        return res.json({
           result: "success",
         });
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
         });
       });
@@ -120,12 +120,12 @@ exports.edit_comment = [
     })
       .then((data) => {
         if (data === "Wrong user") {
-          res.status(400).json({
+          return res.status(400).json({
             result: "error",
             errors: "Wrong user",
           });
         } else {
-          res.json({
+          return res.json({
             result: "success",
             data,
           });
@@ -133,7 +133,7 @@ exports.edit_comment = [
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
           errors: error,
         });
@@ -172,12 +172,12 @@ exports.delete_comment = [
     })
       .then((data) => {
         if (data === "Wrong user") {
-          res.status(400).json({
+          return res.status(400).json({
             result: "error",
             errors: "Wrong user",
           });
         } else {
-          res.json({
+          return res.json({
             result: "success",
             data,
           });
@@ -185,7 +185,7 @@ exports.delete_comment = [
       })
       .catch((error) => {
         console.log(error);
-        res.status(400).json({
+        return res.status(400).json({
           result: "error",
           errors: error,
         });
